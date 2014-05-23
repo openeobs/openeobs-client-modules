@@ -1,0 +1,40 @@
+<openerp>
+    <data>
+        <!-- Activity Kanban View -->
+        <record model="ir.ui.view" id="view_ldh_activity_workload_kanban">
+            <field name="name">ldh.kanban.workload</field>
+            <field name="model">t4.activity</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="data_model" edit="false" quick_create="false" create="false">
+                    <field name="data_model"/>
+                    <field name="summary"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div><b><field name="summary"/></b></div>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_show_ldh_workload">
+            <field name="name">Activity Workload</field>
+            <field name="res_model">t4.activity</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree,kanban</field>
+            <field name="view_id" ref="view_ldh_activity_workload_kanban"/>
+			<field name="domain">[['data_model','in',['t4.clinical.patient.placement','t4.clinical.ldh.patient.clerking','t4.clinical.ldh.patient.review']],['state','not in',['cancelled','completed']]]</field>
+        </record>
+
+        <menuitem name="Activity Workload"
+                  parent="t4clinical_ui.menu_t4ui_left_patient"
+                  id="menu_t4ldh_left_workload"
+                  action="action_show_ldh_workload"
+                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_doctor,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+    </data>
+</openerp>
