@@ -7,10 +7,10 @@ ews_data = {
     'RR':       [  18,   11,   11,   11,   11,   11,   24,   24,   24,   24,   25,   25,   25,   25,   25,   25,   24,   25,   18,   11,   25],
     'O2':       [  99,   97,   95,   95,   95,   95,   95,   93,   93,   93,   93,   91,   91,   91,   91,   91,   91,   91,   99,   99,   91],
     'O2_flag':  [   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    1,    0,    0,    1],
-    'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
+    'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
     'BPS':      [ 110,  110,  110,  110,   90,   90,   90,   90,   80,   80,   80,   80,   80,   80,   75,  220,  220,  220,  120,  120,  220],
     'BPD':      [  80,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   80,   80,   70],
-    'PR':       [  65,   55,   55,   55,   55,   50,  110,   50,   50,  130,  130,  130,  130,  130,  130,  135,  135,  135,   65,   65,  135],
+    'PR':       [  65,   55,   55,   55,   55,   90,   90,   90,   90,  110,  110,  110,  130,  130,   30,   30,  130,  130,   65,   65,  130],
     'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
 }
 
@@ -34,7 +34,7 @@ class TestBtuhPolicy(common.SingleTransactionCase):
     def setUp(self):
         global cr, uid
         global patient_pool, activity_pool, ews_pool, register_pool, admit_pool, placement_pool, location_pool
-        global ews_data
+        global ews_data, o2target_pool, o2target_activity_pool, api_pool
 
         cr, uid = self.cr, self.uid
 
@@ -46,6 +46,9 @@ class TestBtuhPolicy(common.SingleTransactionCase):
         activity_pool = self.registry('t4.activity')
         placement_pool = self.registry('t4.clinical.patient.placement')
         location_pool = self.registry('t4.clinical.location')
+        o2target_pool = self.registry('t4.clinical.o2level')
+        o2target_activity_pool = self.registry('t4.clinical.patient.o2target')
+        api_pool = self.registry('t4.clinical.api')
 
         super(TestBtuhPolicy, self).setUp()
 
@@ -55,15 +58,12 @@ class TestBtuhPolicy(common.SingleTransactionCase):
         db_id = imd_id and imd_pool.browse(self.cr, self.uid, imd_id[0]).res_id or False
         return db_id
 
-    def test_ews_policy_cases(self):
+    def test_btuh_ews_policy_cases(self):
         global cr, uid
         global patient_pool, activity_pool, ews_pool, register_pool, admit_pool, placement_pool, location_pool
-        global ews_data, faker
+        global ews_data, faker, o2target_pool, o2target_activity_pool, api_pool
 
-        adt_uid = self.xml2db_id("demo_user_adt_uhg")
-        wm_uid = self.xml2db_id("demo_user_manager")
-        hca_uid = self.xml2db_id("demo_user_hca")
-        nur_uid = self.xml2db_id("demo_user_nurse")
+        adt_uid = self.xml2db_id("t4c_btuh_adt_user")
 
         gender = faker.random_element(array=('M', 'F'))
         patient_data = {
@@ -85,7 +85,7 @@ class TestBtuhPolicy(common.SingleTransactionCase):
         admit_data = {
             'code': str(faker.random_int(min=10001, max=99999)),
             'other_identifier': patient_data['other_identifier'],
-            'location': 'W'+faker.random_element(array=('8', '9')),
+            'location': 'E'+faker.random_element(array=('8', '9')),
             'start_date': faker.date_time_between(start_date="-1w", end_date="-1h").strftime(DTF)
         }
         admit_activity_id = admit_pool.create_activity(cr, adt_uid, {}, admit_data)
@@ -93,15 +93,17 @@ class TestBtuhPolicy(common.SingleTransactionCase):
         activity_pool.complete(cr, adt_uid, admit_activity_id)
         print "TEST - setting up BTUH EWS policy tests - " + "Patient admitted."
         available_bed_location_ids = location_pool.get_available_location_ids(cr, uid, ['bed'])
-        if admit_data['location'] == 'W8':
-            location_ids = location_pool.search(cr, uid, [
-                ('code', '=', 'B'+faker.random_element(array=('1', '2', '3', '4'))),
-                ('id','in',available_bed_location_ids)])
+        if admit_data['location'] == 'E8':
+            wm_uid = self.xml2db_id("t4c_btuh_ward_manager_winifred_user")
+            hca_uid = self.xml2db_id("t4c_btuh_hca_harold_user")
+            nur_uid = self.xml2db_id("t4c_btuh_nurse_norah_user")
         else:
-            location_ids = location_pool.search(cr, uid, [
-                ('code', '=', 'B'+faker.random_element(array=('5', '6', '7', '8'))),
-                ('id','in',available_bed_location_ids)])
-        # self.assertTrue(location_ids, msg='Location not found')
+            wm_uid = self.xml2db_id("t4c_btuh_ward_manager_whitney_user")
+            hca_uid = self.xml2db_id("t4c_btuh_hca_hannah_user")
+            nur_uid = self.xml2db_id("t4c_btuh_nurse_nathan_user")
+        location_ids = location_pool.search(cr, uid, [
+                ('parent_id.code', '=', admit_data['location']),
+                ('id', 'in', available_bed_location_ids)])
         if not location_ids:
             print "No available locations found for parent location %s" % admit_data['location']
             return
@@ -142,3 +144,7 @@ class TestBtuhPolicy(common.SingleTransactionCase):
             self.assertTrue(ews_activity.data_ref.score == ews_data['SCORE'][i], msg='Score not matching')
             activity_ids = activity_pool.search(cr, nur_uid, [('state', '=', 'scheduled')])
             self.assertTrue(activity_ids)
+        spell_activity_id = api_pool.get_patient_spell_activity_id(cr, uid, patient_id)
+        o2target_ids = o2target_pool.search(cr, uid, [('name', '=', '88-92')])
+        o2target_activity_id = o2target_activity_pool.create_activity(cr, uid, {'parent_id': spell_activity_id, 'location_id': location_id}, {'level_id': o2target_ids[0], 'patient_id': patient_id})
+        activity_pool.complete(cr, wm_uid, o2target_activity_id)
