@@ -1,6 +1,9 @@
 from openerp.tests import common
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from faker import Faker
+import logging
+
+_logger = logging.getLogger(__name__)
 
 ews_data = {
     'SCORE':    [   0,    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,   11,   12,   13,   14,   15,   16,   17,    3,    4,   20],
@@ -14,11 +17,24 @@ ews_data = {
     'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
 }
 
+o2_ews_data = {
+    'SCORE':    [   0,    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,    8,    9,   10,   11,   12,   16,   17,    3,    4,   20],
+    'RR':       [  18,   11,   11,   11,   11,   11,   24,   24,   24,   24,   25,   25,   25,   25,   25,   25,   24,   25,   18,   11,   25],
+    'O2':       [  99,   97,   95,   95,   95,   95,   95,   93,   93,   93,   93,   92,   91,   90,   89,   88,   87,   87,   99,   99,   87],
+    'O2_flag':  [   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    1,    0,    0,    1],
+    'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
+    'BPS':      [ 110,  110,  110,  110,   90,   90,   90,   90,   80,   80,   80,   80,   80,   80,   75,  220,  220,  220,  120,  120,  220],
+    'BPD':      [  80,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   80,   80,   70],
+    'PR':       [  65,   55,   55,   55,   55,   90,   90,   90,   90,  110,  110,  110,  130,  130,   30,   30,  130,  130,   65,   65,  130],
+    'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
+}
+
 faker = Faker()
 
 """
 TESTS
-case 0 (score 0) -> we expect review ews frequency activity, no notifications
+we expect review ews frequency activity on every case except 1.
+case 0 (score 0) -> no notifications
 case 1 (score 1-4) -> we expect assess patient notification
 case 2.1 (score 5-6) -> we expect urgently inform medical team and consider assessment by CCOT beep 6427 notifications
 case 2.2 (three in one) -> we expect urgently inform medical team and consider assessment by CCOT beep 6427 notifications
@@ -34,7 +50,7 @@ class TestBtuhPolicy(common.SingleTransactionCase):
     def setUp(self):
         global cr, uid
         global patient_pool, activity_pool, ews_pool, register_pool, admit_pool, placement_pool, location_pool
-        global ews_data, o2target_pool, o2target_activity_pool, api_pool
+        global ews_data, o2_ews_data, o2target_pool, o2target_activity_pool, api_pool
 
         cr, uid = self.cr, self.uid
 
@@ -61,7 +77,7 @@ class TestBtuhPolicy(common.SingleTransactionCase):
     def test_btuh_ews_policy_cases(self):
         global cr, uid
         global patient_pool, activity_pool, ews_pool, register_pool, admit_pool, placement_pool, location_pool
-        global ews_data, faker, o2target_pool, o2target_activity_pool, api_pool
+        global ews_data, o2_ews_data, faker, o2target_pool, o2target_activity_pool, api_pool
 
         adt_uid = self.xml2db_id("t4c_btuh_adt_user")
 
@@ -105,7 +121,8 @@ class TestBtuhPolicy(common.SingleTransactionCase):
                 ('parent_id.code', '=', admit_data['location']),
                 ('id', 'in', available_bed_location_ids)])
         if not location_ids:
-            print "No available locations found for parent location %s" % admit_data['location']
+            _logger.warning("No available locations found for parent location %s" % admit_data['location'])
+            # print "No available locations found for parent location %s" % admit_data['location']
             return
         location_id = location_ids[0]
         placement_activity_ids = placement_pool.search(cr, uid, [('patient_id', '=', patient_id)])
@@ -146,5 +163,31 @@ class TestBtuhPolicy(common.SingleTransactionCase):
             self.assertTrue(activity_ids)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, uid, patient_id)
         o2target_ids = o2target_pool.search(cr, uid, [('name', '=', '88-92')])
-        o2target_activity_id = o2target_activity_pool.create_activity(cr, uid, {'parent_id': spell_activity_id, 'location_id': location_id}, {'level_id': o2target_ids[0], 'patient_id': patient_id})
+        o2target_activity_id = o2target_activity_pool.create_activity(cr, uid, {'parent_id': spell_activity_id}, {'level_id': o2target_ids[0], 'patient_id': patient_id})
         activity_pool.complete(cr, wm_uid, o2target_activity_id)
+        for i in range(0, 21):
+            test_message = "TEST - BTUH EWS policy tests - " + 'Iteration ' + str(21 + i) + ' score: ' + str(o2_ews_data['SCORE'][i])
+            if 18 <= i <= 19:
+                test_message = test_message + ' 3 in 1 Flag'
+            print test_message
+            ews_ids = ews_pool.search(cr, uid, [('patient_id', '=', patient_id), ('state', '=', 'scheduled')])
+            self.assertTrue(ews_ids, msg='EWS activity not created')
+            ews_id = ews_pool.read(cr, uid, ews_ids[0], ['activity_id'])
+            ews_activity_id = ews_id['activity_id'][0]
+            ews = {
+                'respiration_rate': o2_ews_data['RR'][i],
+                'indirect_oxymetry_spo2': o2_ews_data['O2'][i],
+                'oxygen_administration_flag': o2_ews_data['O2_flag'][i],
+                'body_temperature': o2_ews_data['BT'][i],
+                'blood_pressure_systolic': o2_ews_data['BPS'][i],
+                'blood_pressure_diastolic': o2_ews_data['BPD'][i],
+                'pulse_rate': o2_ews_data['PR'][i],
+                'avpu_text': o2_ews_data['AVPU'][i]
+            }
+            activity_pool.submit(cr, nur_uid, ews_activity_id, ews)
+            activity_pool.start(cr, nur_uid, ews_activity_id)
+            activity_pool.complete(cr, nur_uid, ews_activity_id)
+            ews_activity = activity_pool.browse(cr, uid, ews_activity_id)
+            self.assertTrue(ews_activity.data_ref.score == o2_ews_data['SCORE'][i], msg='Score not matching')
+            activity_ids = activity_pool.search(cr, nur_uid, [('state', '=', 'scheduled')])
+            self.assertTrue(activity_ids)

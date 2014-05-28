@@ -1,4 +1,4 @@
-from openerp.osv import orm
+from openerp.osv import orm, fields
 from openerp.addons.t4activity.activity import except_if
 from datetime import datetime as dt, timedelta as td
 import bisect
@@ -35,6 +35,11 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
     def _get_score(self, cr, uid, ids, field_names, arg, context=None):
         res = {}
         for ews in self.browse(cr, uid, ids, context):
+            activity_pool = self.pool['t4.activity']
+            domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
+            o2target_ids = activity_pool.search(cr, uid, domain, order='date_terminated desc', context=context)
+            o2target = activity_pool.browse(cr, uid, o2target_ids[0], context=context) if o2target_ids else False
+
             score = 0
             three_in_one = False
 
@@ -42,7 +47,10 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
             three_in_one = three_in_one or aux == 3
             score += aux
 
-            aux = int(self._O2_RANGES['scores'][bisect.bisect_left(self._O2_RANGES['ranges'], ews.indirect_oxymetry_spo2)])
+            if o2target and (o2target.data_ref.level_id.min <= ews.indirect_oxymetry_spo2 <= o2target.data_ref.level_id.max):
+                aux = 0
+            else:
+                aux = int(self._O2_RANGES['scores'][bisect.bisect_left(self._O2_RANGES['ranges'], ews.indirect_oxymetry_spo2)])
             three_in_one = three_in_one or aux == 3
             score += aux
 
@@ -71,6 +79,18 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
             _logger.debug("Observation EWS activity_id=%s ews_id=%s score: %s" % (ews.activity_id.id, ews.id, res[ews.id]))
         return res
 
+    _columns = {
+        'score': fields.function(_get_score, type='integer', multi='score', string='Score', store={
+            't4.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10) # all fields of self
+        }),
+        'three_in_one': fields.function(_get_score, type='boolean', multi='score', string='3 in 1 flag', store={
+            't4.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10) # all fields of self
+        }),
+        'clinical_risk': fields.function(_get_score, type='char', multi='score', string='Clinical Risk', store={
+            't4.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10)
+        }),
+    }
+
     def complete(self, cr, uid, activity_id, context=None):
         """
         Implementation of the BTUH EWS policy
@@ -86,19 +106,49 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
         hcagroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'T4 Clinical HCA Group')])
         nursegroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'T4 Clinical Nurse Group')])
         group = nursegroup_ids and 'nurse' or hcagroup_ids and 'hca' or False
+        spell_activity_id = activity.parent_id.id
+
+        # TRIGGER NOTIFICATIONS
         if group == 'hca':
-            hca_pool.create_activity(cr,  SUPERUSER_ID, {'summary': 'Inform registered nurse', 'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
-            nurse_pool.create_activity(cr, SUPERUSER_ID, {'summary': 'Informed about patient status', 'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
+            hca_pool.create_activity(cr,  SUPERUSER_ID, {
+                'summary': 'Inform registered nurse',
+                'parent_id': spell_activity_id,
+                'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
+            nurse_pool.create_activity(cr, SUPERUSER_ID, {
+                'summary': 'Informed about patient status',
+                'parent_id': spell_activity_id,
+                'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
         if case:
             for n in self._POLICY['notifications'][case]:
-                nurse_pool.create_activity(cr, SUPERUSER_ID, {'summary': n, 'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
+                nurse_pool.create_activity(cr, SUPERUSER_ID, {
+                    'summary': n,
+                    'parent_id': spell_activity_id,
+                    'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
+
+        # CHECK O2TARGET
+        domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
+        o2target_ids = activity_pool.search(cr, uid, domain, order='date_terminated desc', context=context)
+        o2target = activity_pool.browse(cr, uid, o2target_ids[0], context=context) if o2target_ids else False
+        if o2target:
+            o2 = activity.data_ref.indirect_oxymetry_spo2
+            if o2target.data_ref.level_id.min > o2 or o2 > o2target.data_ref.level_id.max:
+                domain = [('parent_id', '=', spell_activity_id),
+                          ('summary', '=', 'Review Oxygen Regime'),
+                          ('state', 'not in', ['completed', 'cancelled'])]
+                oxygen_activity_ids = activity_pool.search(cr, SUPERUSER_ID, domain, context=context)
+                [activity_pool.cancel(cr, SUPERUSER_ID, id) for id in oxygen_activity_ids]
+                nurse_pool.create_activity(cr, SUPERUSER_ID, {
+                    'summary': 'Review Oxygen Regime',
+                    'parent_id': spell_activity_id,
+                    'creator_id': activity_id
+                }, {'patient_id': activity.data_ref.patient_id.id})
+
         # create next EWS
-        spell_activity_id = activity.parent_id.id
         next_activity_id = self.create_activity(cr, SUPERUSER_ID,
                              {'creator_id': activity_id, 'parent_id': spell_activity_id},
                              {'patient_id': activity.data_ref.patient_id.id})
         activity_pool.schedule(cr, SUPERUSER_ID, next_activity_id, dt.today()+td(minutes=self._POLICY['frequencies'][case]))
         activity_pool.submit(cr, SUPERUSER_ID, spell_activity_id,
                              {'ews_frequency': self._POLICY['frequencies'][case]},
-                             context)
-        return super(t4_clinical_patient_observation_btuh_ews, self).complete(cr, SUPERUSER_ID, activity_id, context)
+                             context=context)
+        return super(t4_clinical_patient_observation_btuh_ews, self).complete(cr, SUPERUSER_ID, activity_id, context=context)
