@@ -1,6 +1,6 @@
-from openerp.osv import orm
+from openerp.osv import orm, fields
 from openerp.addons.t4activity.activity import except_if
-from openerp import SUPERUSER_ID
+from openerp import SUPERUSER_ID, tools
 
 
 class t4_clinical_ldh_patient_review(orm.Model):
@@ -62,19 +62,41 @@ class t4_clinical_patient_placement(orm.Model):
         return res
 
 
-class t4_activity(orm.Model):
-    _name = 't4.activity'
-    _inherit = 't4.activity'
+class t4_clinical_workload(orm.Model):
+    _name = "t4.ldh.activity.workload"
+    _inherits = {'t4.activity': 'activity_id'}
+    _description = "LDH Activity Workload"
+    _auto = False
+    _table = "t4_ldh_activity_workload"
+    _data_models = [(10, 'Placement'),
+                    (20, 'Clerking'),
+                    (30, 'Review')]
+    _columns = {
+        'activity_id': fields.many2one('t4.activity', 'Activity', required=True, ondelete='cascade'),
+        'activity_type': fields.selection(_data_models, 'Activity Type', readonly=True),
+    }
+
+    def init(self, cr):
+        tools.drop_view_if_exists(cr, 'wardboard')
+        cr.execute("""
+                drop view if exists %s;
+                create or replace view %s as (
+                    select
+                        act.id,
+                        act.id as activity_id,
+                        case
+                            when act.data_model = 't4.clinical.patient.placement' then 10
+                            when act.data_model = 't4.clinical.ldh.patient.clerking' then 20
+                            when act.data_model = 't4.clinical.ldh.patient.review' then 30
+                        else null end as activity_type
+                    from t4_activity act
+                )
+        """ % (self._table, self._table))
 
     def _get_groups(self, cr, uid, ids, domain, read_group_order=None, access_rights_uid=None, context=None):
-        res = [
-            ['t4.clinical.patient.placement', 'Placement'],
-            ['t4.clinical.ldh.patient.clerking', 'Clerking'],
-            ['t4.clinical.ldh.patient.review', 'Review']]
-        fold = {r[0]: False for r in res}
-        return res, fold
+        at_copy = [(at[0], at[1]) for at in self._data_models]
+        groups = at_copy
+        fold = {at[0]: False for at in at_copy}
+        return groups, fold
 
-
-    # _group_by_full = {
-    #     'data_model': _get_groups,
-    # }
+    _group_by_full = {'activity_type': _get_groups}

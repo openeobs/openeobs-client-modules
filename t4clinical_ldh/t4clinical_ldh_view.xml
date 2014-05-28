@@ -1,30 +1,51 @@
 <openerp>
     <data>
-        <!-- Activity Kanban View -->
-        <record model="ir.ui.view" id="view_ldh_activity_workload_kanban">
-            <field name="name">ldh.kanban.workload</field>
-            <field name="model">t4.activity</field>
+         <!-- Activity Workload Kanban View -->
+       <record model="ir.ui.view" id="view_ldh_activity_workload_kanban">
+            <field name="name">t4.ldh.activity.workload.kanban</field>
+            <field name="model">t4.ldh.activity.workload</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="data_model" edit="false" quick_create="false" create="false">
-                    <field name="data_model"/>
+                <kanban default_group_by="activity_type" version="7.0" class="oe_background_grey"
+                        edit="false" quick_create="false" create="false">
+                    <field name="activity_type"/>
                     <field name="summary"/>
+                    <field name="state"/>
+                    <field name="user_id"/>
+                    <field name="user_ids"/>
+                    <field name="patient_id"/>
+                    <field name="location_id"/>
+                    <field name="date_scheduled"/>
                     <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                                <div class="oe_kanban_content">
-                                    <div><b><field name="summary"/></b></div>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div><b><field name="summary"/></b></div>
+                                <div>
+                                    <field name="parent_id"/><br/>
+                                    <t t-if="record.date_scheduled.raw_value and record.date_scheduled.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
+                                    <span t-attf-class="#{red || ''}"><i><field name="date_scheduled"/></i></span>
                                 </div>
-                                <div class="oe_clear"></div>
+                                <div class="oe_kanban_footer_left" style="margin-top:5px;">
+				                    <field name="state"/>
+				                    <field name="user_id"/>
+				                    <field name="user_ids"/>
+				                    <field name="patient_id"/>
+				                    <field name="location_id"/>
+				                    <field name="date_scheduled"/>
+				                    <field name="activity_type"/>
+                                </div>
                             </div>
-                        </t>
+                            <div class="oe_clear"></div>
+                        </div>
+                    </t>
                     </templates>
                 </kanban>
             </field>
-        </record>
+         </record>
 
         <record model="ir.actions.act_window" id="action_show_ldh_workload">
             <field name="name">Activity Workload</field>
-            <field name="res_model">t4.activity</field>
+            <field name="res_model">t4.ldh.activity.workload</field>
             <field name="view_type">tree</field>
             <field name="view_mode">tree,kanban</field>
             <field name="view_id" ref="view_ldh_activity_workload_kanban"/>
