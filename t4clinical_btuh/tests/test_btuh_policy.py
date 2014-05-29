@@ -43,7 +43,7 @@ case 3 (score 7+) -> we expect immediately inform medical team and urgent assess
 if we submit ews_data[PARAMETER][X] for every parameter in EWS we should obtain a score of X
 except for special cases X = 18 and X = 19 which contain score 3 and 4 respectively but with three in one true.
 """
-# NEED TO ADD O2 TARGET POLICIES (OUT OF TARGET TRIGGERS REVIEW OXYGEN REGIME ACTIVITY + IN TARGET O2 SCORES 0
+
 
 class TestBtuhPolicy(common.SingleTransactionCase):
 

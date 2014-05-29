@@ -147,8 +147,8 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
         next_activity_id = self.create_activity(cr, SUPERUSER_ID,
                              {'creator_id': activity_id, 'parent_id': spell_activity_id},
                              {'patient_id': activity.data_ref.patient_id.id})
-        activity_pool.schedule(cr, SUPERUSER_ID, next_activity_id, dt.today()+td(minutes=self._POLICY['frequencies'][case]))
-        activity_pool.submit(cr, SUPERUSER_ID, spell_activity_id,
-                             {'ews_frequency': self._POLICY['frequencies'][case]},
-                             context=context)
+        api_pool.change_activity_frequency(cr, SUPERUSER_ID,
+                                           activity.data_ref.patient_id.id,
+                                           self._name,
+                                           self._POLICY['frequencies'][case], context=context)
         return super(t4_clinical_patient_observation_btuh_ews, self).complete(cr, SUPERUSER_ID, activity_id, context=context)
