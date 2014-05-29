@@ -26,10 +26,11 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
     """
     _POLICY = {'ranges': [0, 4, 6], 'case': '0123', 'frequencies': [720, 240, 60, 30],
                'notifications': [
-                   [],
-                   ['Assess patient'],
-                   ['Urgently inform medical team', 'Consider assessment by CCOT beep 6427'],
-                   ['Immediately inform medical team', 'Urgent assessment by CCOT beep 6427']],
+                   {'nurse': [], 'assessment': False, 'frequency': True},
+                   {'nurse': [], 'assessment': True, 'frequency': False},
+                   {'nurse': ['Urgently inform medical team', 'Consider assessment by CCOT beep 6427'], 'assessment': False, 'frequency': True},
+                   {'nurse': ['Immediately inform medical team', 'Urgent assessment by CCOT beep 6427'], 'assessment': False, 'frequency': True}
+               ],
                'risk': ['None', 'Low', 'Medium', 'High']}
 
     def _get_score(self, cr, uid, ids, field_names, arg, context=None):
@@ -118,12 +119,10 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
                 'summary': 'Informed about patient status',
                 'parent_id': spell_activity_id,
                 'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
-        if case:
-            for n in self._POLICY['notifications'][case]:
-                nurse_pool.create_activity(cr, SUPERUSER_ID, {
-                    'summary': n,
-                    'parent_id': spell_activity_id,
-                    'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
+
+        notifications = self._POLICY['notifications'][case]
+        api_pool.trigger_notifications(cr, uid, notifications, spell_activity_id, activity_id,
+                                       activity.data_ref.patient_id.id, self._name, context=context)
 
         # CHECK O2TARGET
         domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
