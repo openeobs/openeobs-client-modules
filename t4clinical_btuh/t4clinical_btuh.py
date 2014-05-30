@@ -142,6 +142,11 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
                     'creator_id': activity_id
                 }, {'patient_id': activity.data_ref.patient_id.id})
 
+        res = super(t4_clinical_patient_observation_btuh_ews, self).complete(cr, SUPERUSER_ID, activity_id, context=context)
+
+        # cancel open EWS
+        api_pool.cancel_open_activities(cr, uid, spell_activity_id, self._name, context=context)
+
         # create next EWS
         next_activity_id = self.create_activity(cr, SUPERUSER_ID,
                              {'creator_id': activity_id, 'parent_id': spell_activity_id},
@@ -150,4 +155,4 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
                                            activity.data_ref.patient_id.id,
                                            self._name,
                                            self._POLICY['frequencies'][case], context=context)
-        return super(t4_clinical_patient_observation_btuh_ews, self).complete(cr, SUPERUSER_ID, activity_id, context=context)
+        return res
