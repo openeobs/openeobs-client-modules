@@ -2,32 +2,9 @@ from openerp.tests import common
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from faker import Faker
 import logging
+from openerp.addons.t4clinical_activity_types.tests.test_scenario import ActivityTypesTest
 
 _logger = logging.getLogger(__name__)
-
-ews_data = {
-    'SCORE':    [   0,    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,   11,   12,   13,   14,   15,   16,   17,    3,    4,   20],
-    'RR':       [  18,   11,   11,   11,   11,   11,   24,   24,   24,   24,   25,   25,   25,   25,   25,   25,   24,   25,   18,   11,   25],
-    'O2':       [  99,   97,   95,   95,   95,   95,   95,   93,   93,   93,   93,   91,   91,   91,   91,   91,   91,   91,   99,   99,   91],
-    'O2_flag':  [   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    1,    0,    0,    1],
-    'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
-    'BPS':      [ 110,  110,  110,  110,   90,   90,   90,   90,   80,   80,   80,   80,   80,   80,   75,  220,  220,  220,  120,  120,  220],
-    'BPD':      [  80,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   80,   80,   70],
-    'PR':       [  65,   55,   55,   55,   55,   90,   90,   90,   90,  110,  110,  110,  130,  130,   30,   30,  130,  130,   65,   65,  130],
-    'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
-}
-
-o2_ews_data = {
-    'SCORE':    [   0,    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,    8,    9,   10,   11,   12,   16,   17,    3,    4,   20],
-    'RR':       [  18,   11,   11,   11,   11,   11,   24,   24,   24,   24,   25,   25,   25,   25,   25,   25,   24,   25,   18,   11,   25],
-    'O2':       [  99,   97,   95,   95,   95,   95,   95,   93,   93,   93,   93,   92,   91,   90,   89,   88,   87,   87,   99,   99,   87],
-    'O2_flag':  [   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    1,    0,    0,    1],
-    'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
-    'BPS':      [ 110,  110,  110,  110,   90,   90,   90,   90,   80,   80,   80,   80,   80,   80,   75,  220,  220,  220,  120,  120,  220],
-    'BPD':      [  80,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   80,   80,   70],
-    'PR':       [  65,   55,   55,   55,   55,   90,   90,   90,   90,  110,  110,  110,  130,  130,   30,   30,  130,  130,   65,   65,  130],
-    'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
-}
 
 faker = Faker()
 
@@ -45,149 +22,246 @@ except for special cases X = 18 and X = 19 which contain score 3 and 4 respectiv
 """
 
 
-class TestBtuhPolicy(common.SingleTransactionCase):
+class TestBtuhPolicy(ActivityTypesTest):
 
     def setUp(self):
-        global cr, uid
-        global patient_pool, activity_pool, ews_pool, register_pool, admit_pool, placement_pool, location_pool
-        global ews_data, o2_ews_data, o2target_pool, o2target_activity_pool, api_pool
+        global cr, uid, \
+               register_pool, patient_pool, admit_pool, activity_pool, transfer_pool, ews_pool, \
+               activity_id, api_pool, location_pool, pos_pool, user_pool, imd_pool, discharge_pool, \
+               device_connect_pool, device_disconnect_pool, partner_pool, height_pool, blood_sugar_pool, \
+               blood_product_pool, weight_pool, stools_pool, gcs_pool, vips_pool, o2target_pool, o2target_activity_pool
 
         cr, uid = self.cr, self.uid
 
-        patient_pool = self.registry('t4.clinical.patient')
-        activity_pool = self.registry('t4.activity')
-        ews_pool = self.registry('t4.clinical.patient.observation.ews')
         register_pool = self.registry('t4.clinical.adt.patient.register')
+        patient_pool = self.registry('t4.clinical.patient')
         admit_pool = self.registry('t4.clinical.adt.patient.admit')
+        discharge_pool = self.registry('t4.clinical.patient.discharge')
         activity_pool = self.registry('t4.activity')
-        placement_pool = self.registry('t4.clinical.patient.placement')
+        transfer_pool = self.registry('t4.clinical.adt.patient.transfer')
+        ews_pool = self.registry('t4.clinical.patient.observation.ews')
+        height_pool = self.registry('t4.clinical.patient.observation.height')
+        weight_pool = self.registry('t4.clinical.patient.observation.weight')
+        blood_sugar_pool = self.registry('t4.clinical.patient.observation.blood_sugar')
+        blood_product_pool = self.registry('t4.clinical.patient.observation.blood_product')
+        stools_pool = self.registry('t4.clinical.patient.observation.stools')
+        gcs_pool = self.registry('t4.clinical.patient.observation.gcs')
+        vips_pool = self.registry('t4.clinical.patient.observation.vips')
+        api_pool = self.registry('t4.clinical.api')
         location_pool = self.registry('t4.clinical.location')
+        pos_pool = self.registry('t4.clinical.pos')
+        user_pool = self.registry('res.users')
+        partner_pool = self.registry('res.partner')
+        imd_pool = self.registry('ir.model.data')
+        device_connect_pool = self.registry('t4.clinical.device.connect')
+        device_disconnect_pool = self.registry('t4.clinical.device.disconnect')
         o2target_pool = self.registry('t4.clinical.o2level')
         o2target_activity_pool = self.registry('t4.clinical.patient.o2target')
-        api_pool = self.registry('t4.clinical.api')
 
         super(TestBtuhPolicy, self).setUp()
-
-    def xml2db_id(self, xmlid):
-        imd_pool = self.registry('ir.model.data')
-        imd_id = imd_pool.search(self.cr, self.uid, [('name','=', xmlid)])
-        db_id = imd_id and imd_pool.browse(self.cr, self.uid, imd_id[0]).res_id or False
-        return db_id
-
-    def test_btuh_ews_policy_cases(self):
-        global cr, uid
-        global patient_pool, activity_pool, ews_pool, register_pool, admit_pool, placement_pool, location_pool
-        global ews_data, o2_ews_data, faker, o2target_pool, o2target_activity_pool, api_pool
-
-        adt_uid = self.xml2db_id("t4c_btuh_adt_user")
-
-        gender = faker.random_element(array=('M', 'F'))
-        patient_data = {
-            'family_name': faker.last_name(),
-            'other_identifier': str(faker.random_int(min=1001, max=9999)),
-            'dob': faker.date_time_between(start_date="-80y", end_date="-10y").strftime(DTF),
-            'gender': gender,
-            'sex': gender,
-            'given_name': faker.first_name()
+            
+    def test_btuh_ews_observations_policy(self):
+        ews_test_data = {
+            'SCORE':    [   0,    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,   11,   12,   13,   14,   15,   16,   17,    3,    4,   20],
+            'CASE':     [   0,    1,    1,    1,    1,    2,    2,    3,    3,    3,    3,    3,    3,    3,    3,    3,    3,    3,    2,    2,    3],
+            'RR':       [  18,   11,   11,   11,   11,   11,   24,   24,   24,   24,   25,   25,   25,   25,   25,   25,   24,   25,   18,   11,   25],
+            'O2':       [  99,   97,   95,   95,   95,   95,   95,   93,   93,   93,   93,   91,   91,   91,   91,   91,   91,   91,   99,   99,   91],
+            'O2_flag':  [   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    1,    0,    0,    1],
+            'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
+            'BPS':      [ 110,  110,  110,  110,   90,   90,   90,   90,   80,   80,   80,   80,   80,   80,   75,  220,  220,  220,  120,  120,  220],
+            'BPD':      [  80,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   80,   80,   70],
+            'PR':       [  65,   55,   55,   55,   55,   90,   90,   90,   90,  110,  110,  110,  130,  130,   30,   30,  130,  130,   65,   65,  130],
+            'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
         }
-        reg_activity_id = register_pool.create_activity(cr, adt_uid, {}, patient_data)
-        self.assertTrue(reg_activity_id, msg='Error trying to register patient')
-        print "TEST - setting up BTUH EWS policy tests - " + "Patient registered."
-
-        patient_domain = [(k, '=', v) for k, v in patient_data.iteritems()]
-        patient_id = patient_pool.search(cr, adt_uid, patient_domain)
-        self.assertTrue(patient_id, msg='Patient not created')
-        patient_id = patient_id[0]
-        admit_data = {
-            'code': str(faker.random_int(min=10001, max=99999)),
-            'other_identifier': patient_data['other_identifier'],
-            'location': 'E'+faker.random_element(array=('8', '9')),
-            'start_date': faker.date_time_between(start_date="-1w", end_date="-1h").strftime(DTF)
+        
+        o2_test_data = {
+            'SCORE':    [   0,    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,    8,    9,   10,   11,   12,   16,   17,    3,    4,   20],
+            'CASE':     [   0,    1,    1,    1,    1,    2,    2,    3,    3,    3,    3,    3,    3,    3,    3,    3,    3,    3,    2,    2,    3],
+            'RR':       [  18,   11,   11,   11,   11,   11,   24,   24,   24,   24,   25,   25,   25,   25,   25,   25,   24,   25,   18,   11,   25],
+            'O2':       [  99,   97,   95,   95,   95,   95,   95,   93,   93,   93,   93,   92,   91,   90,   89,   88,   87,   87,   99,   99,   87],
+            'O2_flag':  [   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    1,    0,    0,    1],
+            'BT':       [37.5, 36.5, 36.5, 35.5, 35.5, 35.5, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 39.0, 39.0, 35.0, 35.0, 35.0, 37.5, 37.5, 35.0],
+            'BPS':      [ 110,  110,  110,  110,   90,   90,   90,   90,   80,   80,   80,   80,   80,   80,   75,  220,  220,  220,  120,  120,  220],
+            'BPD':      [  80,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   70,   80,   80,   70],
+            'PR':       [  65,   55,   55,   55,   55,   90,   90,   90,   90,  110,  110,  110,  130,  130,   30,   30,  130,  130,   65,   65,  130],
+            'AVPU':     [ 'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'A',  'V',  'P',  'U']
         }
-        admit_activity_id = admit_pool.create_activity(cr, adt_uid, {}, admit_data)
-        self.assertTrue(admit_activity_id, msg='Error trying to admit patient')
-        activity_pool.complete(cr, adt_uid, admit_activity_id)
-        print "TEST - setting up BTUH EWS policy tests - " + "Patient admitted."
-        available_bed_location_ids = location_pool.get_available_location_ids(cr, uid, ['bed'])
-        if admit_data['location'] == 'E8':
-            wm_uid = self.xml2db_id("t4c_btuh_ward_manager_winifred_user")
-            hca_uid = self.xml2db_id("t4c_btuh_hca_harold_user")
-            nur_uid = self.xml2db_id("t4c_btuh_nurse_norah_user")
-        else:
-            wm_uid = self.xml2db_id("t4c_btuh_ward_manager_whitney_user")
-            hca_uid = self.xml2db_id("t4c_btuh_hca_hannah_user")
-            nur_uid = self.xml2db_id("t4c_btuh_nurse_nathan_user")
-        location_ids = location_pool.search(cr, uid, [
-                ('parent_id.code', '=', admit_data['location']),
-                ('id', 'in', available_bed_location_ids)])
-        if not location_ids:
-            _logger.warning("No available locations found for parent location %s" % admit_data['location'])
-            # print "No available locations found for parent location %s" % admit_data['location']
-            return
-        location_id = location_ids[0]
-        placement_activity_ids = placement_pool.search(cr, uid, [('patient_id', '=', patient_id)])
-        self.assertTrue(placement_activity_ids, msg='Placement activity not created')
-        placement_id = placement_pool.read(cr, uid, placement_activity_ids[0], ['activity_id'])
-        placement_activity_id = placement_id['activity_id'][0]
+        
+        btuh_policy = {
+            'frequencies': [720, 240, 60, 30],
+            'risk': ['None', 'Low', 'Medium', 'High'],
+            'notifications': [
+                {'nurse': [], 'assessment': False, 'frequency': True},
+                {'nurse': [], 'assessment': True, 'frequency': False},
+                {'nurse': ['Urgently inform medical team', 'Consider assessment by CCOT beep 6427'], 'assessment': False, 'frequency': True},
+                {'nurse': ['Immediately inform medical team', 'Urgent assessment by CCOT beep 6427'], 'assessment': False, 'frequency': True}
+            ]
+        }
+        
+        # environment
+        pos1_env = self.create_pos_environment()
+        # register
+        [self.adt_patient_register(env=pos1_env) for i in range(5)]
 
-        activity_pool.submit(cr, wm_uid, placement_activity_id, {'location_id': location_id})
+        # admit
+        [self.adt_patient_admit(data_vals={'other_identifier': other_identifier}, env=pos1_env) for other_identifier in pos1_env['other_identifiers']]
 
-        activity_pool.complete(cr, wm_uid, placement_activity_id)
-        print "TEST - setting up BTUH EWS policy tests - " + "Patient placement completed."
+        # placements
+        [self.patient_placement(data_vals={'patient_id': patient_id}, env=pos1_env) for patient_id in pos1_env['patient_ids']]
 
+        # ews
         for i in range(0, 21):
-            test_message = "TEST - BTUH EWS policy tests - " + 'Iteration ' + str(i) + ' score: ' + str(ews_data['SCORE'][i])
-            if 18 <= i <= 19:
-                test_message = test_message + ' 3 in 1 Flag'
-            print test_message
-            ews_ids = ews_pool.search(cr, uid, [('patient_id', '=', patient_id), ('state', '=', 'scheduled')])
-            self.assertTrue(ews_ids, msg='EWS activity not created')
-            ews_id = ews_pool.read(cr, uid, ews_ids[0], ['activity_id'])
-            ews_activity_id = ews_id['activity_id'][0]
-            ews = {
-                'respiration_rate': ews_data['RR'][i],
-                'indirect_oxymetry_spo2': ews_data['O2'][i],
-                'oxygen_administration_flag': ews_data['O2_flag'][i],
-                'body_temperature': ews_data['BT'][i],
-                'blood_pressure_systolic': ews_data['BPS'][i],
-                'blood_pressure_diastolic': ews_data['BPD'][i],
-                'pulse_rate': ews_data['PR'][i],
-                'avpu_text': ews_data['AVPU'][i]
-            }
-            activity_pool.submit(cr, nur_uid, ews_activity_id, ews)
-            activity_pool.start(cr, nur_uid, ews_activity_id)
-            activity_pool.complete(cr, nur_uid, ews_activity_id)
-            ews_activity = activity_pool.browse(cr, uid, ews_activity_id)
-            self.assertTrue(ews_activity.data_ref.score == ews_data['SCORE'][i], msg='Score not matching')
-            activity_ids = activity_pool.search(cr, nur_uid, [('state', '=', 'scheduled')])
-            self.assertTrue(activity_ids)
-        spell_activity_id = api_pool.get_patient_spell_activity_id(cr, uid, patient_id)
+            ews_id = self.observation_ews(data_vals={
+                'respiration_rate': ews_test_data['RR'][i],
+                'indirect_oxymetry_spo2': ews_test_data['O2'][i],
+                'oxygen_administration_flag': ews_test_data['O2_flag'][i],
+                'body_temperature': ews_test_data['BT'][i],
+                'blood_pressure_systolic': ews_test_data['BPS'][i],
+                'blood_pressure_diastolic': ews_test_data['BPD'][i],
+                'pulse_rate': ews_test_data['PR'][i],
+                'avpu_text': ews_test_data['AVPU'][i]
+            }, env=pos1_env)
+
+            frequency = btuh_policy['frequencies'][ews_test_data['CASE'][i]]
+            clinical_risk = btuh_policy['risk'][ews_test_data['CASE'][i]]
+            nurse_notifications = btuh_policy['notifications'][ews_test_data['CASE'][i]]['nurse']
+            assessment = btuh_policy['notifications'][ews_test_data['CASE'][i]]['assessment']
+            review_frequency = btuh_policy['notifications'][ews_test_data['CASE'][i]]['frequency']
+
+            print "TEST - BTUH observation EWS: expecting score %s, frequency %s, risk %s" % (ews_test_data['SCORE'][i], frequency, clinical_risk)
+            ews_activity = activity_pool.browse(cr, uid, ews_id)
+
+            # # # # # # # # # # # # # # # # # # # # # # # # #
+            # Check the score, frequency and clinical risk  #
+            # # # # # # # # # # # # # # # # # # # # # # # # #
+            self.assertEqual(ews_activity.data_ref.score, ews_test_data['SCORE'][i], msg='Score not matching')
+            self.assertEqual(ews_activity.data_ref.clinical_risk, clinical_risk, msg='Risk not matching')
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', ews_pool._name)]
+            ews_activity_ids = activity_pool.search(cr, uid, domain)
+            self.assertTrue(ews_activity_ids, msg='Next EWS activity was not triggered')
+            next_ews_activity = activity_pool.browse(cr, uid, ews_activity_ids[0])
+            self.assertEqual(next_ews_activity.data_ref.frequency, frequency, msg='Frequency not matching')
+
+            # # # # # # # # # # # # # # # #
+            # Check notification triggers #
+            # # # # # # # # # # # # # # # #
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', 't4.clinical.notification.assessment')]
+            assessment_ids = activity_pool.search(cr, uid, domain)
+            if assessment:
+                self.assertTrue(assessment_ids, msg='Assessment notification not triggered')
+                activity_pool.complete(cr, uid, assessment_ids[0])
+                domain = [
+                    ('creator_id', '=', assessment_ids[0]),
+                    ('state', 'not in', ['completed', 'cancelled']),
+                    ('data_model', '=', 't4.clinical.notification.frequency')]
+                frequency_ids = activity_pool.search(cr, uid, domain)
+                self.assertTrue(frequency_ids, msg='Review frequency not triggered after Assessment complete')
+                activity_pool.cancel(cr, uid, frequency_ids[0])
+            else:
+                self.assertFalse(assessment_ids, msg='Assessment notification triggered')
+
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', 't4.clinical.notification.frequency')]
+            frequency_ids = activity_pool.search(cr, uid, domain)
+            if review_frequency:
+                self.assertTrue(frequency_ids, msg='Review frequency notification not triggered')
+                activity_pool.cancel(cr, uid, frequency_ids[0])
+            else:
+                self.assertFalse(frequency_ids, msg='Review frequency notification triggered')
+
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', 't4.clinical.notification.nurse')]
+            notification_ids = activity_pool.search(cr, uid, domain)
+            self.assertEqual(len(notification_ids), len(nurse_notifications), msg='Wrong notifications triggered')
+        
+        # o2targets
         o2target_ids = o2target_pool.search(cr, uid, [('name', '=', '88-92')])
-        o2target_activity_id = o2target_activity_pool.create_activity(cr, uid, {'parent_id': spell_activity_id}, {'level_id': o2target_ids[0], 'patient_id': patient_id})
-        activity_pool.complete(cr, wm_uid, o2target_activity_id)
+        [self.o2target(data_vals={'patient_id': patient_id, 'level_id': o2target_ids[0]}, env=pos1_env) for patient_id in pos1_env['patient_ids']]
+        
         for i in range(0, 21):
-            test_message = "TEST - BTUH EWS policy tests - " + 'Iteration ' + str(21 + i) + ' score: ' + str(o2_ews_data['SCORE'][i])
-            if 18 <= i <= 19:
-                test_message = test_message + ' 3 in 1 Flag'
-            print test_message
-            ews_ids = ews_pool.search(cr, uid, [('patient_id', '=', patient_id), ('state', '=', 'scheduled')])
-            self.assertTrue(ews_ids, msg='EWS activity not created')
-            ews_id = ews_pool.read(cr, uid, ews_ids[0], ['activity_id'])
-            ews_activity_id = ews_id['activity_id'][0]
-            ews = {
-                'respiration_rate': o2_ews_data['RR'][i],
-                'indirect_oxymetry_spo2': o2_ews_data['O2'][i],
-                'oxygen_administration_flag': o2_ews_data['O2_flag'][i],
-                'body_temperature': o2_ews_data['BT'][i],
-                'blood_pressure_systolic': o2_ews_data['BPS'][i],
-                'blood_pressure_diastolic': o2_ews_data['BPD'][i],
-                'pulse_rate': o2_ews_data['PR'][i],
-                'avpu_text': o2_ews_data['AVPU'][i]
-            }
-            activity_pool.submit(cr, nur_uid, ews_activity_id, ews)
-            activity_pool.start(cr, nur_uid, ews_activity_id)
-            activity_pool.complete(cr, nur_uid, ews_activity_id)
-            ews_activity = activity_pool.browse(cr, uid, ews_activity_id)
-            self.assertTrue(ews_activity.data_ref.score == o2_ews_data['SCORE'][i], msg='Score not matching')
-            activity_ids = activity_pool.search(cr, nur_uid, [('state', '=', 'scheduled')])
-            self.assertTrue(activity_ids)
+            ews_id = self.observation_ews(data_vals={
+                'respiration_rate': o2_test_data['RR'][i],
+                'indirect_oxymetry_spo2': o2_test_data['O2'][i],
+                'oxygen_administration_flag': o2_test_data['O2_flag'][i],
+                'body_temperature': o2_test_data['BT'][i],
+                'blood_pressure_systolic': o2_test_data['BPS'][i],
+                'blood_pressure_diastolic': o2_test_data['BPD'][i],
+                'pulse_rate': o2_test_data['PR'][i],
+                'avpu_text': o2_test_data['AVPU'][i]
+            }, env=pos1_env)
+
+            frequency = btuh_policy['frequencies'][o2_test_data['CASE'][i]]
+            clinical_risk = btuh_policy['risk'][o2_test_data['CASE'][i]]
+            nurse_notifications = btuh_policy['notifications'][o2_test_data['CASE'][i]]['nurse']
+            assessment = btuh_policy['notifications'][o2_test_data['CASE'][i]]['assessment']
+            review_frequency = btuh_policy['notifications'][o2_test_data['CASE'][i]]['frequency']
+
+            print "TEST - BTUH observation EWS: expecting score %s, frequency %s, risk %s" % (o2_test_data['SCORE'][i], frequency, clinical_risk)
+            ews_activity = activity_pool.browse(cr, uid, ews_id)
+
+            # # # # # # # # # # # # # # # # # # # # # # # # #
+            # Check the score, frequency and clinical risk  #
+            # # # # # # # # # # # # # # # # # # # # # # # # #
+            self.assertEqual(ews_activity.data_ref.score, o2_test_data['SCORE'][i], msg='Score not matching')
+            self.assertEqual(ews_activity.data_ref.clinical_risk, clinical_risk, msg='Risk not matching')
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', ews_pool._name)]
+            ews_activity_ids = activity_pool.search(cr, uid, domain)
+            self.assertTrue(ews_activity_ids, msg='Next EWS activity was not triggered')
+            next_ews_activity = activity_pool.browse(cr, uid, ews_activity_ids[0])
+            self.assertEqual(next_ews_activity.data_ref.frequency, frequency, msg='Frequency not matching')
+
+            # # # # # # # # # # # # # # # #
+            # Check notification triggers #
+            # # # # # # # # # # # # # # # #
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', 't4.clinical.notification.assessment')]
+            assessment_ids = activity_pool.search(cr, uid, domain)
+            if assessment:
+                self.assertTrue(assessment_ids, msg='Assessment notification not triggered')
+                activity_pool.complete(cr, uid, assessment_ids[0])
+                domain = [
+                    ('creator_id', '=', assessment_ids[0]),
+                    ('state', 'not in', ['completed', 'cancelled']),
+                    ('data_model', '=', 't4.clinical.notification.frequency')]
+                frequency_ids = activity_pool.search(cr, uid, domain)
+                self.assertTrue(frequency_ids, msg='Review frequency not triggered after Assessment complete')
+                activity_pool.cancel(cr, uid, frequency_ids[0])
+            else:
+                self.assertFalse(assessment_ids, msg='Assessment notification triggered')
+
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', 't4.clinical.notification.frequency')]
+            frequency_ids = activity_pool.search(cr, uid, domain)
+            if review_frequency:
+                self.assertTrue(frequency_ids, msg='Review frequency notification not triggered')
+                activity_pool.cancel(cr, uid, frequency_ids[0])
+            else:
+                self.assertFalse(frequency_ids, msg='Review frequency notification triggered')
+
+            domain = [
+                ('creator_id', '=', ews_id),
+                ('state', 'not in', ['completed', 'cancelled']),
+                ('data_model', '=', 't4.clinical.notification.nurse')]
+            notification_ids = activity_pool.search(cr, uid, domain)
+            if 88 <= o2_test_data['O2'][i] <= 92:
+                self.assertEqual(len(notification_ids), len(nurse_notifications), msg='Wrong notifications triggered')
+            else:
+                # Review Oxygen Regime should be triggered as well
+                self.assertEqual(len(notification_ids), len(nurse_notifications)+1, msg='Wrong notifications triggered')
