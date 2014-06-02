@@ -1,7 +1,7 @@
 <openerp>
     <data>
          <!-- Activity Workload Kanban View -->
-       <record model="ir.ui.view" id="view_ldh_activity_workload_kanban">
+        <record model="ir.ui.view" id="view_ldh_activity_workload_kanban">
             <field name="name">t4.ldh.activity.workload.kanban</field>
             <field name="model">t4.ldh.activity.workload</field>
             <field name="arch" type="xml">
@@ -34,7 +34,7 @@
                     </templates>
                 </kanban>
             </field>
-         </record>
+        </record>
 
         <record model="ir.actions.act_window" id="action_show_ldh_workload">
             <field name="name">Activity Workload</field>
@@ -42,7 +42,7 @@
             <!--<field name="view_type">tree</field>-->
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="view_ldh_activity_workload_kanban"/>
-			<field name="domain">[['data_model','in',['t4.clinical.patient.placement','t4.clinical.ldh.patient.clerking','t4.clinical.ldh.patient.review']],['state','not in',['cancelled','completed']]]</field>
+            <field name="domain">[['data_model','in',['t4.clinical.patient.placement','t4.clinical.ldh.patient.clerking','t4.clinical.ldh.patient.review']],['state','not in',['cancelled','completed']]]</field>
         </record>
 
         <menuitem name="Activity Workload"
@@ -50,5 +50,62 @@
                   id="menu_t4ldh_left_workload"
                   action="action_show_ldh_workload"
                   groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_doctor,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+        
+        <record model="ir.ui.view" id="view_t4_clinical_ldh_clerking_tree">
+            <field name="name">T4 Clinical LDH Clerking Tree View</field>
+            <field name="model">t4.clinical.clerking</field>
+            <field name="arch" type="xml">
+                <tree string="T4 Clinical LDH Clerking Tree View" version="7.0" create="0">
+                    <button name="complete" type="object" string="Complete" class="oe_highlight" t4_icon="down-caret-1"/>
+                    <field name="location_id" />
+                    <field name="patient_id" />
+                    <field name="hospital_number" />
+                    <field name="pos_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_show_clerkings" >
+            <field name="name">Patient Clerkings</field>
+            <field name="res_model">t4.clinical.clerking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_t4_clinical_ldh_clerking_tree"/>
+        </record>
+        
+        <record model="ir.ui.view" id="view_t4_clinical_ldh_review_tree">
+            <field name="name">T4 Clinical LDH Review Tree View</field>
+            <field name="model">t4.clinical.review</field>
+            <field name="arch" type="xml">
+                <tree string="T4 Clinical LDH Review Tree View" version="7.0" create="0">
+                    <button name="complete" type="object" string="Complete" class="oe_highlight" t4_icon="down-caret-1"/>
+                    <field name="location_id" />
+                    <field name="patient_id" />
+                    <field name="hospital_number" />
+                    <field name="pos_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_show_reviews" >
+            <field name="name">Patient Reviews</field>
+            <field name="res_model">t4.clinical.review</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_t4_clinical_ldh_review_tree"/>
+        </record>
+
+        <menuitem name="Patient Clerkings"
+                  id="menu_t4_ldh_left_clerking"
+                  parent="t4clinical_ui.menu_t4ui_left_patient"
+                  action="action_show_clerkings"
+                  groups="t4clinical_base.group_t4clinical_hca,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+
+        <menuitem name="Patient Reviews"
+                  id="menu_t4_ldh_left_review"
+                  parent="t4clinical_ui.menu_t4ui_left_patient"
+                  action="action_show_reviews"
+                  groups="t4clinical_base.group_t4clinical_doctor,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+
     </data>
 </openerp>

@@ -100,3 +100,80 @@ class t4_clinical_workload(orm.Model):
         return groups, fold
 
     _group_by_full = {'activity_type': _get_groups}
+
+class t4_clinical_clerking(orm.Model):
+    _name = "t4.clinical.clerking"
+    _inherits = {'t4.activity': 'activity_id'}
+    _description = "Clerking View"
+    _auto = False
+    _table = "t4_clinical_clerking"
+    _columns = {
+        'activity_id': fields.many2one('t4.activity', 'Activity'),
+        'location_id': fields.many2one('t4.clinical.location', 'Ward'),
+        'pos_id': fields.many2one('t4.clinical.pos', 'POS'),
+        'patient_id': fields.many2one('t4.clinical.patient', 'Patient'),
+        'hospital_number': fields.text('Hospital Number')
+    }
+
+    def init(self, cr):
+
+        cr.execute("""
+                drop view if exists %s;
+                create or replace view %s as (
+                    select
+                        activity.id as id,
+                        activity.id as activity_id,
+                        activity.location_id as location_id,
+                        activity.patient_id as patient_id,
+                        activity.pos_id as pos_id,
+                        patient.other_identifier as hospital_number
+                    from t4_activity activity
+                    inner join t4_clinical_patient patient on activity.patient_id = patient.id
+                    where activity.data_model = 't4.clinical.ldh.patient.clerking' and activity.state not in ('completed','cancelled')
+                )
+        """ % (self._table, self._table))
+
+    def complete(self, cr, uid, ids, context=None):
+        activity_pool = self.pool['t4.activity']
+        clerking = self.browse(cr, uid, ids[0], context=context)
+        activity_pool.complete(cr, uid, clerking.activity_id.id, context=context)
+        return True
+
+
+class t4_clinical_review(orm.Model):
+    _name = "t4.clinical.review"
+    _inherits = {'t4.activity': 'activity_id'}
+    _description = "Review View"
+    _auto = False
+    _table = "t4_clinical_review"
+    _columns = {
+        'activity_id': fields.many2one('t4.activity', 'Activity'),
+        'location_id': fields.many2one('t4.clinical.location', 'Ward'),
+        'pos_id': fields.many2one('t4.clinical.pos', 'POS'),
+        'patient_id': fields.many2one('t4.clinical.patient', 'Patient'),
+        'hospital_number': fields.text('Hospital Number')
+    }
+
+    def init(self, cr):
+
+        cr.execute("""
+                drop view if exists %s;
+                create or replace view %s as (
+                    select
+                        activity.id as id,
+                        activity.id as activity_id,
+                        activity.location_id as location_id,
+                        activity.patient_id as patient_id,
+                        activity.pos_id as pos_id,
+                        patient.other_identifier as hospital_number
+                    from t4_activity activity
+                    inner join t4_clinical_patient patient on activity.patient_id = patient.id
+                    where activity.data_model = 't4.clinical.ldh.patient.review' and activity.state not in ('completed','cancelled')
+                )
+        """ % (self._table, self._table))
+
+    def complete(self, cr, uid, ids, context=None):
+        activity_pool = self.pool['t4.activity']
+        review = self.browse(cr, uid, ids[0], context=context)
+        activity_pool.complete(cr, uid, review.activity_id.id, context=context)
+        return True
