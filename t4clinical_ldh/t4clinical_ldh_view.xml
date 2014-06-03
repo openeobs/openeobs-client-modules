@@ -21,7 +21,6 @@
                                 <div><b><field name="summary"/></b></div>
                                 <div class="oe_kanban_footer_left" style="margin-top:5px;">
 				                    <field name="user_id"/>
-				                    <field name="user_ids"/>
 				                    <field name="patient_id"/>
 				                    <field name="location_id"/>
 				                    <field name="date_scheduled"/>
@@ -49,7 +48,7 @@
                   parent="t4clinical_ui.menu_t4ui_left_patient"
                   id="menu_t4ldh_left_workload"
                   action="action_show_ldh_workload"
-                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_doctor,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_dev,base.user_root"/>
         
         <record model="ir.ui.view" id="view_t4_clinical_ldh_clerking_tree">
             <field name="name">T4 Clinical LDH Clerking Tree View</field>
