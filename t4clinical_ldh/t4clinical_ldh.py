@@ -3,9 +3,18 @@ from openerp.addons.t4activity.activity import except_if
 from openerp import SUPERUSER_ID, tools
 
 
+class t4_clinical_ldh_diagnosis(orm.Model):
+    _name = 't4.clinical.ldh.diagnosis'
+    _columns = {
+        'name': fields.char('Name', size=256, required=True)
+    }
+
 class t4_clinical_ldh_patient_review(orm.Model):
     _name = 't4.clinical.ldh.patient.review'
     _inherit = ['t4.clinical.notification']
+    _columns = {
+        'diagnosis_ids': fields.many2many('t4.clinical.ldh.diagnosis', rel='diagnosis_review_rel', string='Diagnosis')
+    }
 
 class t4_clinical_ldh_patient_clerking(orm.Model):
     _name = 't4.clinical.ldh.patient.clerking'
@@ -172,8 +181,29 @@ class t4_clinical_review(orm.Model):
                 )
         """ % (self._table, self._table))
 
+    # def complete(self, cr, uid, ids, context=None):
+    #     activity_pool = self.pool['t4.activity']
+    #     review = self.browse(cr, uid, ids[0], context=context)
+    #     activity_pool.complete(cr, uid, review.activity_id.id, context=context)
+    #     return True
+
     def complete(self, cr, uid, ids, context=None):
-        activity_pool = self.pool['t4.activity']
         review = self.browse(cr, uid, ids[0], context=context)
-        activity_pool.complete(cr, uid, review.activity_id.id, context=context)
-        return True
+
+        model_data_pool = self.pool['ir.model.data']
+        model_data_ids = model_data_pool.search(cr, uid, [('name', '=', 'view_patient_review_complete')], context=context)
+        if not model_data_ids:
+            pass # view doesnt exist
+        view_id = model_data_pool.read(cr, uid, model_data_ids, ['res_id'], context)[0]['res_id']
+
+        return {
+            'name': 'Complete Review',
+            'type': 'ir.actions.act_window',
+            'res_model': 't4.clinical.ldh.patient.review',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': review.activity_id.data_ref.id,
+            'target': 'new',
+            'view_id': int(view_id),
+            'context': context
+        }

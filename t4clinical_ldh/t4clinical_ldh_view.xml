@@ -106,5 +106,18 @@
                   action="action_show_reviews"
                   groups="t4clinical_base.group_t4clinical_doctor,t4clinical_base.group_t4clinical_dev,base.user_root"/>
 
+        <record model="ir.ui.view" id="view_patient_review_complete">
+            <field name="name">Patient Review</field>
+            <field name="model">t4.clinical.ldh.patient.review</field>
+            <field name="arch" type="xml">
+                <form string="Patient Review" version="7.0">
+                   <label for="patient_id" string="Patient"/>
+                   <field name="patient_id" readonly="1"/>
+                   <field name="diagnosis_ids" required="True" widget="many2many_tags"/>
+                   <button name="complete_ui" type="object" string="Confirm Review"/>
+                </form>
+            </field>
+        </record>
+
     </data>
 </openerp>

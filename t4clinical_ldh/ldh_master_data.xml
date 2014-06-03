@@ -405,5 +405,47 @@
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_admin'))]"/>
         </record>
 
+        <!--Diagnosis-->
+
+        <record id="t4c_ldh_diagnosis_1" model="t4.clinical.ldh.diagnosis">
+            <field name="name">D+V</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_2" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Dehydration</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_3" model="t4.clinical.ldh.diagnosis">
+            <field name="name">UTI</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_4" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Right Sided Weakness</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_5" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Chest Pain</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_6" model="t4.clinical.ldh.diagnosis">
+            <field name="name">FAF</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_7" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Dizzyness</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_8" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Palpitations</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_9" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Epilepsy</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_10" model="t4.clinical.ldh.diagnosis">
+            <field name="name">ACS</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_11" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Vomiting</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_12" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Meningitis</field>
+        </record>
+        <record id="t4c_ldh_diagnosis_13" model="t4.clinical.ldh.diagnosis">
+            <field name="name">Asthmatic</field>
+        </record>
+
     </data>
 </openerp>
