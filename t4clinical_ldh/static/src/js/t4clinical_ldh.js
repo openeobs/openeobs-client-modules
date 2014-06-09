@@ -2,7 +2,7 @@ openerp.t4clinical_ldh = function (instance) {
     instance.web.ListView.include({
         init: function(parent, dataset, view_id, options) {
             if (options.action){
-                if (options.action.name == "Patient Clerkings" || options.action.name == "Patient Reviews"){
+                if (options.action.name == "Patient Clerkings" || options.action.name == "Patient Reviews" || options.action.name == "Patient List"){
                     options.selectable = false;
                 };
             }

@@ -181,12 +181,6 @@ class t4_clinical_review(orm.Model):
                 )
         """ % (self._table, self._table))
 
-    # def complete(self, cr, uid, ids, context=None):
-    #     activity_pool = self.pool['t4.activity']
-    #     review = self.browse(cr, uid, ids[0], context=context)
-    #     activity_pool.complete(cr, uid, review.activity_id.id, context=context)
-    #     return True
-
     def complete(self, cr, uid, ids, context=None):
         review = self.browse(cr, uid, ids[0], context=context)
 
@@ -207,3 +201,91 @@ class t4_clinical_review(orm.Model):
             'view_id': int(view_id),
             'context': context
         }
+
+
+class t4_clinical_ldh_patientlist(orm.Model):
+    _name = "t4.clinical.ldh.patientlist"
+    _inherits = {
+                 't4.clinical.patient': 'patient_id',
+    }
+    _description = "Task List Wardboard"
+    _auto = False
+    _table = "t4_clinical_ldh_patientlist"
+    _rec_name = 'full_name'
+
+    _columns = {
+        'patient_id': fields.many2one('t4.clinical.patient', 'Patient'),
+        'referral': fields.text('Referral'),
+        'diagnosis': fields.many2many('t4.clinical.ldh.diagnosis', string='Diagnosis'),
+        'plan': fields.text('Plan'),
+        'clerked_by': fields.many2one('res.users', 'Clerked by'),
+        'senior_review': fields.many2one('res.users', 'Senior Review'),
+        'spell_activity_id': fields.many2one('t4.activity', 'Spell Activity'),
+        'spell_date_started': fields.datetime('Spell Start Date'),
+        'pos_id': fields.many2one('t4.clinical.pos', 'POS'),
+        'spell_code': fields.text('Spell Code'),
+        'full_name': fields.text("Family Name"),
+        'hospital_id': fields.text('Hospital ID'),
+        'location': fields.text("Current Location"),
+        'location_id': fields.many2one('t4.clinical.location',"Current Location"),
+        'sex': fields.text("Sex"),
+        'dob': fields.datetime("DOB"),
+        'age': fields.integer("Age"),
+        'responsible_user': fields.many2one('res.users', 'Responsible User')
+    }
+
+    def init(self, cr):
+        tools.drop_view_if_exists(cr, 'wardboard')
+        cr.execute("""
+drop view if exists %s;
+create or replace view %s as (
+with
+completed_clerkings as(
+        select
+            clerking.id,
+            spell.patient_id,
+            clerking.write_uid,
+            rank() over (partition by spell.patient_id order by activity.date_terminated desc, activity.id desc)
+        from t4_clinical_spell spell
+        left join t4_clinical_ldh_patient_clerking clerking on clerking.patient_id = spell.patient_id
+        inner join t4_activity activity on clerking.activity_id = activity.id
+        where activity.state = 'completed'
+),
+completed_reviews as(
+        select
+            review.id,
+            spell.patient_id,
+            review.write_uid,
+            rank() over (partition by spell.patient_id order by activity.date_terminated desc, activity.id desc)
+        from t4_clinical_spell spell
+        left join t4_clinical_ldh_patient_review review on review.patient_id = spell.patient_id
+        inner join t4_activity activity on review.activity_id = activity.id
+        where activity.state = 'completed'
+)
+select
+    spell.patient_id as id,
+    spell.patient_id as patient_id,
+    spell_activity.id as spell_activity_id,
+    spell_activity.date_started as spell_date_started,
+    spell.pos_id,
+    spell.code as spell_code,
+    coalesce(patient.family_name, '') || ', ' || coalesce(patient.given_name, '') || ' ' || coalesce(patient.middle_names,'') as full_name,
+    location.code as location,
+    location.id as location_id,
+    patient.sex,
+    patient.dob,
+    patient.other_identifier as hospital_id,
+    extract(year from age(now(), patient.dob)) as age,
+    clerking.write_uid as clerked_by,
+    review.write_uid as senior_review,
+    users.user_id as responsible_user
+from t4_clinical_spell spell
+inner join t4_activity spell_activity on spell_activity.id = spell.activity_id
+inner join t4_clinical_patient patient on spell.patient_id = patient.id
+left join t4_clinical_location location on location.id = spell.location_id
+left join (select id, patient_id, rank, write_uid from completed_clerkings where rank = 1) clerking on spell.patient_id = clerking.patient_id
+left join (select id, patient_id, rank, write_uid from completed_reviews where rank = 1) review on spell.patient_id = review.patient_id
+inner join activity_user_rel users on users.activity_id = spell.activity_id
+where spell_activity.state = 'started'
+)
+        """ % (self._table, self._table))

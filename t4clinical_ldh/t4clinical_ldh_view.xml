@@ -119,5 +119,40 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_patientlist_tree">
+            <field name="name">Patientlist Tree View</field>
+            <field name="model">t4.clinical.ldh.patientlist</field>
+            <field name="arch" type="xml">
+                <tree string="Patientlist Tree View" version="7.0" create="0">
+                    <field name="full_name"/>
+                    <field name="hospital_id"/>
+                    <field name="sex" widget="t4_gender"/>
+                    <field name="dob" widget="date"/>
+                    <field name="age"/>
+                    <!--<field name="referral"/>-->
+                    <!--<field name="diagnosis"/>-->
+                    <!--<field name="plan"/>-->
+                    <field name="clerked_by"/>
+                    <field name="senior_review"/>
+                    <field name="location"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_show_patientlist" >
+            <field name="name">Patient List</field>
+            <field name="res_model">t4.clinical.ldh.patientlist</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <!--<field name="view_id" ref="view_t4_clinical_ldh_review_tree"/>-->
+        </record>
+
+        <menuitem name="Patient List"
+                  sequence="1"
+                  id="menu_t4_ldh_left_patientlist"
+                  parent="t4clinical_ui.menu_t4ui_left_patient"
+                  action="action_show_patientlist"
+                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+
     </data>
 </openerp>
