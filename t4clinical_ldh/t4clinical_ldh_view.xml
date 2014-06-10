@@ -36,7 +36,7 @@
         </record>
 
         <record model="ir.actions.act_window" id="action_show_ldh_workload">
-            <field name="name">Activity Workload</field>
+            <field name="name">Patient Board</field>
             <field name="res_model">t4.ldh.activity.workload</field>
             <!--<field name="view_type">tree</field>-->
             <field name="view_mode">kanban</field>
@@ -44,11 +44,11 @@
             <field name="domain">[['data_model','in',['t4.clinical.patient.placement','t4.clinical.ldh.patient.clerking','t4.clinical.ldh.patient.review']],['state','not in',['cancelled','completed']]]</field>
         </record>
 
-        <menuitem name="Activity Workload"
+        <menuitem name="Patient Board"
                   parent="t4clinical_ui.menu_t4ui_left_patient"
                   id="menu_t4ldh_left_workload"
                   action="action_show_ldh_workload"
-                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_doctor,t4clinical_base.group_t4clinical_dev,base.user_root"/>
         
         <record model="ir.ui.view" id="view_t4_clinical_ldh_clerking_tree">
             <field name="name">T4 Clinical LDH Clerking Tree View</field>
