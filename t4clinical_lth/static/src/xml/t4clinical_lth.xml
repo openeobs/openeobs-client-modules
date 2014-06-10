@@ -3,7 +3,7 @@
     <t t-extend="Login">
         <t t-jquery=".oe_login_logo" t-operation="replace">
             <div class="oe_login_logo">
-                <img src="/t4clinical_lth/static/src/img/t4skr_logo.png"/>
+                <img src="/t4clinical_lth/static/src/img/leeds-logo.png"/>
             </div>
         </t>
         <t t-jquery="div.oe_login_footer" t-operation="replace">
