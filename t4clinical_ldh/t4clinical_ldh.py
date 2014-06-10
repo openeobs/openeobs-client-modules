@@ -244,7 +244,7 @@ completed_clerkings as(
         select
             clerking.id,
             spell.patient_id,
-            clerking.write_uid,
+            activity.complete_uid,
             rank() over (partition by spell.patient_id order by activity.date_terminated desc, activity.id desc)
         from t4_clinical_spell spell
         left join t4_clinical_ldh_patient_clerking clerking on clerking.patient_id = spell.patient_id
@@ -255,7 +255,7 @@ completed_reviews as(
         select
             review.id,
             spell.patient_id,
-            review.write_uid,
+            activity.complete_uid,
             rank() over (partition by spell.patient_id order by activity.date_terminated desc, activity.id desc)
         from t4_clinical_spell spell
         left join t4_clinical_ldh_patient_review review on review.patient_id = spell.patient_id
@@ -276,15 +276,15 @@ select
     patient.dob,
     patient.other_identifier as hospital_id,
     extract(year from age(now(), patient.dob)) as age,
-    clerking.write_uid as clerked_by,
-    review.write_uid as senior_review,
+    clerking.complete_uid as clerked_by,
+    review.complete_uid as senior_review,
     users.user_id as responsible_user
 from t4_clinical_spell spell
 inner join t4_activity spell_activity on spell_activity.id = spell.activity_id
 inner join t4_clinical_patient patient on spell.patient_id = patient.id
 left join t4_clinical_location location on location.id = spell.location_id
-left join (select id, patient_id, rank, write_uid from completed_clerkings where rank = 1) clerking on spell.patient_id = clerking.patient_id
-left join (select id, patient_id, rank, write_uid from completed_reviews where rank = 1) review on spell.patient_id = review.patient_id
+left join (select id, patient_id, rank, complete_uid from completed_clerkings where rank = 1) clerking on spell.patient_id = clerking.patient_id
+left join (select id, patient_id, rank, complete_uid from completed_reviews where rank = 1) review on spell.patient_id = review.patient_id
 inner join activity_user_rel users on users.activity_id = spell.activity_id
 where spell_activity.state = 'started'
 )
