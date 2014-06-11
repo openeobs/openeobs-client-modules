@@ -24,6 +24,9 @@ completed_reviews as(
 select
 	spell.patient_id as id,
 	spell.patient_id as patient_id,
+	spell.diagnosis as diagnosis,
+    spell.plan as plan,
+    spell.outstanding_jobs as outstanding_jobs,
 	spell_activity.id as spell_activity_id,
 	spell_activity.date_started as spell_date_started,
 	spell.pos_id,

@@ -18,13 +18,11 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div class="oe_kanban_content">
-                                <div><b><field name="summary"/></b></div>
+                                <div><b><field name="patient_id"/></b></div>
                                 <div class="oe_kanban_footer_left" style="margin-top:5px;">
 				                    <field name="user_id"/>
-				                    <field name="patient_id"/>
 				                    <field name="location_id"/>
 				                    <field name="date_scheduled"/>
-				                    <field name="activity_type"/>
                                 </div>
                             </div>
                             <div class="oe_clear"></div>
@@ -113,7 +111,6 @@
                 <form string="Patient Review" version="7.0">
                    <label for="patient_id" string="Patient"/>
                    <field name="patient_id" readonly="1"/>
-                   <field name="diagnosis_ids" required="True" widget="many2many_tags"/>
                    <button name="complete_ui" type="object" string="Confirm Review"/>
                 </form>
             </field>
@@ -130,8 +127,9 @@
                     <field name="dob" widget="date"/>
                     <field name="age"/>
                     <!--<field name="referral"/>-->
-                    <!--<field name="diagnosis"/>-->
-                    <!--<field name="plan"/>-->
+                    <field name="diagnosis"/>
+                    <field name="plan"/>
+                    <field name="outstanding_jobs"/>
                     <field name="clerked_by"/>
                     <field name="senior_review"/>
                     <field name="location"/>
@@ -139,11 +137,38 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_patientlist_form">
+            <field name="name">Patientlist Form View</field>
+            <field name="model">t4.clinical.ldh.patientlist</field>
+            <field name="arch" type="xml">
+                <form string="Patientlist Form View" version="7.0" create="0" delete="0">
+                    <sheet>
+                        <h1><field name="full_name" nolabel="1" readonly="1"/></h1>
+                        <group string="Patient Information">
+                            <field name="sex" readonly="1"/>
+                            <field name="dob" widget="date" readonly="1"/>
+                            <field name="age" readonly="1"/>
+                        </group>
+                        <group string="Hospital Information">
+                            <field name="hospital_id" readonly="1"/>
+                            <field name="diagnosis"/>
+                            <field name="plan"/>
+                            <field name="outstanding_jobs"/>
+                            <field name="clerked_by" readonly="1"/>
+                            <field name="senior_review" readonly="1"/>
+                            <field name="location" readonly="1"/>
+                        </group>
+                    </sheet>
+                    <!--<field name="referral"/>-->
+                </form>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_show_patientlist" >
             <field name="name">Patient List</field>
             <field name="res_model">t4.clinical.ldh.patientlist</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
             <!--<field name="view_id" ref="view_t4_clinical_ldh_review_tree"/>-->
         </record>
 
@@ -154,5 +179,24 @@
                   action="action_show_patientlist"
                   groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_dev,base.user_root"/>
 
+        <record model="ir.actions.act_window" id="t4clinical_ui.action_show_placements" >
+            <field name="name">Patient Referrals</field>
+        </record>
+        <menuitem name="Patient Referrals"
+                  id="t4clinical_ui.menu_t4ui_left_placement"
+                  parent="t4clinical_ui.menu_t4ui_left_patient"
+                  action="t4clinical_ui.action_show_placements"
+                  groups="t4clinical_base.group_t4clinical_ward_manager,t4clinical_base.group_t4clinical_dev,base.user_root"/>
+
+        <record model="ir.ui.view" id="view_patient_placement_complete_ldh">
+            <field name="name">Patient Placement</field>
+            <field name="model">t4.clinical.patient.placement</field>
+            <field name="inherit_id" ref="t4clinical_activity_types.view_patient_placement_complete"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/button" position="replace">
+                    <button name="complete_ui" type="object" string="Confirm Arrival"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>

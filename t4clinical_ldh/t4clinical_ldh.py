@@ -12,9 +12,7 @@ class t4_clinical_ldh_diagnosis(orm.Model):
 class t4_clinical_ldh_patient_review(orm.Model):
     _name = 't4.clinical.ldh.patient.review'
     _inherit = ['t4.clinical.notification']
-    _columns = {
-        'diagnosis_ids': fields.many2many('t4.clinical.ldh.diagnosis', rel='diagnosis_review_rel', string='Diagnosis')
-    }
+
 
 class t4_clinical_ldh_patient_clerking(orm.Model):
     _name = 't4.clinical.ldh.patient.clerking'
@@ -77,7 +75,7 @@ class t4_clinical_workload(orm.Model):
     _description = "LDH Activity Workload"
     _auto = False
     _table = "t4_ldh_activity_workload"
-    _data_models = [(10, 'Placement'),
+    _data_models = [(10, 'Referral'),
                     (20, 'Clerking'),
                     (30, 'Review')]
     _columns = {
@@ -203,6 +201,39 @@ class t4_clinical_review(orm.Model):
         }
 
 
+class t4_clinical_spell_ldh(orm.Model):
+
+    _name = 't4.clinical.spell'
+    _inherit = 't4.clinical.spell'
+
+    _columns = {
+        'diagnosis': fields.text('Diagnosis'),
+        'plan': fields.text('Plan'),
+        'outstanding_jobs': fields.text('Outstanding Jobs')
+    }
+
+
+class t4_clinical_ldh_spell_update(orm.Model):
+    _name = 't4.clinical.ldh.spell.update'
+    _inherit = ['t4.activity.data']
+    _columns = {
+        'spell_activity_id': fields.many2one('t4.activity', 'Spell Activity', required=True),
+        'diagnosis': fields.text('Diagnosis'),
+        'plan': fields.text('Plan'),
+        'outstanding_jobs': fields.text('Outstanding Jobs')
+    }
+
+    def complete(self, cr, uid, activity_id, context=None):
+        activity_pool = self.pool['t4.activity']
+        spell_update = activity_pool.browse(cr, uid, activity_id, context=context)
+        data = {}
+        data.update({'diagnosis': spell_update.data_ref.diagnosis}) if spell_update.data_ref.diagnosis else 0
+        data.update({'plan': spell_update.data_ref.plan}) if spell_update.data_ref.plan else 0
+        data.update({'outstanding_jobs': spell_update.data_ref.outstanding_jobs}) if spell_update.data_ref.outstanding_jobs else 0
+        activity_pool.submit(cr, uid, spell_update.data_ref.spell_activity_id.id, data, context=context)
+        return super(t4_clinical_ldh_spell_update, self).complete(cr, uid, activity_id, context=context)
+
+
 class t4_clinical_ldh_patientlist(orm.Model):
     _name = "t4.clinical.ldh.patientlist"
     _inherits = {
@@ -215,9 +246,10 @@ class t4_clinical_ldh_patientlist(orm.Model):
 
     _columns = {
         'patient_id': fields.many2one('t4.clinical.patient', 'Patient'),
-        'referral': fields.text('Referral'),
-        'diagnosis': fields.many2many('t4.clinical.ldh.diagnosis', string='Diagnosis'),
+        # 'referral': fields.text('Referral'),
+        'diagnosis': fields.text('Diagnosis'),
         'plan': fields.text('Plan'),
+        'outstanding_jobs': fields.text('Outstanding Jobs'),
         'clerked_by': fields.many2one('res.users', 'Clerked by'),
         'senior_review': fields.many2one('res.users', 'Senior Review'),
         'spell_activity_id': fields.many2one('t4.activity', 'Spell Activity'),
@@ -265,6 +297,9 @@ completed_reviews as(
 select
     spell.patient_id as id,
     spell.patient_id as patient_id,
+    spell.diagnosis as diagnosis,
+    spell.plan as plan,
+    spell.outstanding_jobs as outstanding_jobs,
     spell_activity.id as spell_activity_id,
     spell_activity.date_started as spell_date_started,
     spell.pos_id,
@@ -289,3 +324,48 @@ inner join activity_user_rel users on users.activity_id = spell.activity_id
 where spell_activity.state = 'started'
 )
         """ % (self._table, self._table))
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('diagnosis') or vals.get('plan') or vals.get('outstanding_jobs'):
+            update_pool = self.pool['t4.clinical.ldh.spell.update']
+            activity_pool = self.pool['t4.activity']
+            for patientlist in self.browse(cr, uid, ids, context=context):
+                activity = {
+                    'parent_id': patientlist.spell_activity_id.id
+                }
+                data = {
+                    'spell_activity_id': patientlist.spell_activity_id.id,
+                    'diagnosis': vals.get('diagnosis'),
+                    'plan': vals.get('plan'),
+                    'outstanding_jobs': vals.get('outstanding_jobs')
+                }
+                spell_update_id = update_pool.create_activity(cr, SUPERUSER_ID, activity, data, context=context)
+                activity_pool.complete(cr, uid, spell_update_id, context=context)
+        return True
+
+
+class t4_clinical_placement_ldh(orm.Model):
+    _name = "t4.clinical.placement"
+    _inherit = "t4.clinical.placement"
+
+    def complete(self, cr, uid, ids, context=None):
+        placement = self.browse(cr, uid, ids[0], context=context)
+
+        model_data_pool = self.pool['ir.model.data']
+        model_data_ids = model_data_pool.search(cr, uid, [('name', '=', 'view_patient_placement_complete')], context=context)
+        if not model_data_ids:
+            pass # view doesnt exist
+        view_id = model_data_pool.read(cr, uid, model_data_ids, ['res_id'], context)[0]['res_id']
+
+        return {
+            'name': 'Patient On Site',
+            'type': 'ir.actions.act_window',
+            'res_model': 't4.clinical.patient.placement',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': placement.activity_id.data_ref.id,
+            'target': 'new',
+            'view_id': int(view_id),
+            'context': context
+        }
+
