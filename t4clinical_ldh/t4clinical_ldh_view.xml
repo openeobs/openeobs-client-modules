@@ -120,19 +120,19 @@
             <field name="name">Patientlist Tree View</field>
             <field name="model">t4.clinical.ldh.patientlist</field>
             <field name="arch" type="xml">
-                <tree string="Patientlist Tree View" version="7.0" create="0">
-                    <field name="full_name"/>
-                    <field name="hospital_id"/>
-                    <field name="sex" widget="t4_gender"/>
-                    <field name="dob" widget="date"/>
-                    <field name="age"/>
+                <tree string="Patientlist Tree View" version="7.0" create="0" editable="1">
+                    <field name="full_name" readonly="1"/>
+                    <field name="hospital_id" readonly="1"/>
+                    <field name="sex" widget="t4_gender" readonly="1"/>
+                    <field name="dob" widget="date" readonly="1"/>
+                    <field name="age" readonly="1"/>
                     <!--<field name="referral"/>-->
                     <field name="diagnosis"/>
                     <field name="plan"/>
                     <field name="outstanding_jobs"/>
-                    <field name="clerked_by"/>
-                    <field name="senior_review"/>
-                    <field name="location"/>
+                    <field name="clerked_by" readonly="1"/>
+                    <field name="senior_review" readonly="1"/>
+                    <field name="location" readonly="1"/>
                 </tree>
             </field>
         </record>
