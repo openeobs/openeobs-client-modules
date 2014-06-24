@@ -26,10 +26,20 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
     """
     _POLICY = {'ranges': [0, 4, 6], 'case': '0123', 'frequencies': [720, 240, 60, 30],
                'notifications': [
-                   {'nurse': [], 'assessment': False, 'frequency': True},
-                   {'nurse': [], 'assessment': True, 'frequency': False},
-                   {'nurse': ['Urgently inform medical team', 'Consider assessment by CCOT beep 6427'], 'assessment': False, 'frequency': True},
-                   {'nurse': ['Immediately inform medical team', 'Urgent assessment by CCOT beep 6427'], 'assessment': False, 'frequency': True}
+                   [{'model': 'frequency', 'groups': ['nurse', 'hca']}],
+                   [{'model': 'assessment', 'groups': ['nurse', 'hca']},
+                    {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
+                    {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
+                   [{'model': 'medical_team', 'summary': 'Urgently inform medical team', 'groups': ['nurse', 'hca']},
+                    {'model': 'frequency', 'groups': ['nurse', 'hca']},
+                    {'model': 'nurse', 'summary': 'Consider assessment by CCOT beep 6427', 'groups': ['nurse', 'hca']},
+                    {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
+                    {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
+                   [{'model': 'medical_team', 'summary': 'Immediately inform medical team', 'groups': ['nurse', 'hca']},
+                    {'model': 'frequency', 'groups': ['nurse', 'hca']},
+                    {'model': 'nurse', 'summary': 'Urgent assessment by CCOT beep 6427', 'groups': ['nurse', 'hca']},
+                    {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
+                    {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}]
                ],
                'risk': ['None', 'Low', 'Medium', 'High']}
 
@@ -108,21 +118,7 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
         nursegroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'T4 Clinical Nurse Group')])
         group = nursegroup_ids and 'nurse' or hcagroup_ids and 'hca' or False
         spell_activity_id = activity.parent_id.id
-
-        # TRIGGER NOTIFICATIONS
-        if group == 'hca':
-            hca_pool.create_activity(cr,  SUPERUSER_ID, {
-                'summary': 'Inform registered nurse',
-                'parent_id': spell_activity_id,
-                'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
-            nurse_pool.create_activity(cr, SUPERUSER_ID, {
-                'summary': 'Informed about patient status',
-                'parent_id': spell_activity_id,
-                'creator_id': activity_id}, {'patient_id': activity.data_ref.patient_id.id})
-
-        notifications = self._POLICY['notifications'][case]
-        api_pool.trigger_notifications(cr, uid, notifications, spell_activity_id, activity_id,
-                                       activity.data_ref.patient_id.id, self._name, context=context)
+        notifications = self._POLICY['notifications'][case].copy()
 
         # CHECK O2TARGET
         domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
@@ -136,14 +132,18 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
                           ('state', 'not in', ['completed', 'cancelled'])]
                 oxygen_activity_ids = activity_pool.search(cr, SUPERUSER_ID, domain, context=context)
                 [activity_pool.cancel(cr, SUPERUSER_ID, id) for id in oxygen_activity_ids]
-                nurse_pool.create_activity(cr, SUPERUSER_ID, {
-                    'summary': 'Review Oxygen Regime',
-                    'parent_id': spell_activity_id,
-                    'creator_id': activity_id
-                }, {'patient_id': activity.data_ref.patient_id.id})
+                notifications.append({'model': 'nurse', 'summary': 'Review Oxygen Regime', 'groups': ['nurse', 'hca']})
+
+        api_pool.trigger_notifications(cr, uid, {
+            'notifications': notifications,
+            'parent_id': spell_activity_id,
+            'creator_id': activity_id,
+            'patient_id': activity.data_ref.patient_id.id,
+            'model': self._name,
+            'group': group
+        }, context=context)
 
         res = self.pool['t4.clinical.patient.observation'].complete(cr, SUPERUSER_ID, activity_id, context=context)
-        # res = super(t4_clinical_patient_observation_btuh_ews, self).complete(cr, SUPERUSER_ID, activity_id, context=context)
 
         # cancel open EWS
         api_pool.cancel_open_activities(cr, uid, spell_activity_id, self._name, context=context)
