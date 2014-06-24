@@ -10,9 +10,15 @@ class t4_clinical_patient_observation_lth_ews(orm.Model):
 
     _POLICY = {'ranges': [0, 4, 6], 'case': '0123', 'frequencies': [720, 240, 120, 60],
                'notifications': [
-                   {'nurse': [], 'assessment': False, 'frequency': False},
-                   {'nurse': [], 'assessment': True, 'frequency': False},
-                   {'nurse': ['Urgently inform medical team'], 'assessment': False, 'frequency': False},
-                   {'nurse': ['Immediately inform medical team'], 'assessment': False, 'frequency': False}
+                   [],
+                   [{'model': 'assessment', 'groups': ['nurse', 'hca']},
+                    {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
+                    {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
+                   [{'model': 'medical_team', 'summary': 'Urgently inform medical team', 'groups': ['nurse', 'hca']},
+                    {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
+                    {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
+                   [{'model': 'medical_team', 'summary': 'Immediately inform medical team', 'groups': ['nurse', 'hca']},
+                    {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
+                    {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}]
                ],
                'risk': ['None', 'Low', 'Medium', 'High']}
