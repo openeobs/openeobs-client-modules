@@ -118,7 +118,7 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
         nursegroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'T4 Clinical Nurse Group')])
         group = nursegroup_ids and 'nurse' or hcagroup_ids and 'hca' or False
         spell_activity_id = activity.parent_id.id
-        notifications = self._POLICY['notifications'][case].copy()
+        notifications = list(self._POLICY['notifications'][case])
 
         # CHECK O2TARGET
         domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
