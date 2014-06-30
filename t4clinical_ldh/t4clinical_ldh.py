@@ -34,39 +34,7 @@ class t4_clinical_patient_placement(orm.Model):
     _name = 't4.clinical.patient.placement'
     _inherit = 't4.clinical.patient.placement'
 
-    def complete(self, cr, uid, activity_id, context=None):
-        activity_pool = self.pool['t4.activity']
-        api_pool = self.pool['t4.clinical.api']
-        move_pool = self.pool['t4.clinical.patient.move']
-        clerking_pool = self.pool['t4.clinical.ldh.patient.clerking']
-        placement_activity = activity_pool.browse(cr, uid, activity_id, context=context)
-        except_if(not placement_activity.data_ref.location_id,
-                  msg="Location is not set for the placement thus the placement can't be completed!")
-        res = super(t4_clinical_patient_placement, self).complete(cr, uid, activity_id, context=context)
-
-        placement_activity = activity_pool.browse(cr, uid, activity_id, context=context)
-        # set spell location
-        spell_activity_id = api_pool.get_patient_spell_activity_id(cr, uid, placement_activity.data_ref.patient_id.id, context=context)
-        except_if(not spell_activity_id,
-                  cap="Spell in state 'started' is not found for patient_id=%s" % placement_activity.data_ref.patient_id.id,
-                  msg="Placement can not be completed")
-        # move to location
-        move_activity_id = move_pool.create_activity(cr, SUPERUSER_ID,
-                                                    {'parent_id': spell_activity_id,
-                                                     'creator_id': activity_id},
-                                                    {'patient_id': placement_activity.data_ref.patient_id.id,
-                                                     'location_id': placement_activity.data_ref.location_id.id})
-        activity_pool.complete(cr, uid, move_activity_id)
-        activity_pool.submit(cr, SUPERUSER_ID, spell_activity_id, {'location_id': placement_activity.data_ref.location_id.id})
-        clerking_activity_id = clerking_pool.create_activity(cr,  SUPERUSER_ID, {
-            'summary': placement_activity.data_ref.patient_id.name+' Clerking',
-            'parent_id': spell_activity_id,
-            'creator_id': activity_id,
-        }, {
-            'patient_id': placement_activity.data_ref.patient_id.id
-        })
-        activity_pool.start(cr, uid, clerking_activity_id)
-        return res
+    _POLICY = {'activities': [{'model': 't4.clinical.ldh.patient.clerking', 'type': 'start'}]}
 
 
 class t4_clinical_workload(orm.Model):
