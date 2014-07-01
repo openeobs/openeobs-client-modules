@@ -157,3 +157,118 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
                                            self._name,
                                            self._POLICY['frequencies'][case], context=context)
         return res
+
+
+class t4_clinical_api_btuh(orm.AbstractModel):
+    _name = 't4.clinical.api'
+    _inherit = 't4.clinical.api'
+
+    def update_bed(self, cr, uid, spell_activity_id, vals, context=None):
+        if not vals:
+            vals = {}
+        activity_pool = self.pool['t4.activity']
+        location_pool = self.pool['t4.clinical.location']
+        bed_ids = location_pool.search(cr, uid, [
+            ('parent_id', '=', vals['ward_id']),
+            ('name', '=', vals['bed'])
+        ], context=context)
+        if len(bed_ids) > 1:
+            _logger.warn("There is more than one bed %s in the same Ward" % vals['bed'])
+        if not bed_ids:
+            bed_ids = [location_pool.create(cr, uid, {
+                'name': vals['bed'],
+                'parent_id': vals['ward_id'],
+                'type': 'poc',
+                'usage': 'bed'
+            })]
+        bed = location_pool.browse(cr, uid, bed_ids[0], context=context)
+        except_if(not bed.is_available, 'Error! The bed is already being used:%s' % vals['bed'])
+        domain = [
+            ('data_model', '=', 't4.clinical.patient.placement'),
+            ('state', 'not in', ['completed', 'cancelled']),
+            ('parent_id', '=', spell_activity_id)]
+        placement_ids = activity_pool.search(cr, uid, domain, context=context)
+        if placement_ids:
+            activity_pool.submit(cr, uid, placement_ids[0], {'location_id': bed_ids[0]}, context=context)
+            activity_pool.complete(cr, uid, placement_ids[0], context=context)
+        else:
+            self.create_complete(cr, SUPERUSER_ID, 't4.clinical.patient.move', {
+                'parent_id': spell_activity_id,
+                'creator_id': vals.get('activity_id')
+            }, {
+                'patient_id': vals.get('patient_id'),
+                'location_id': bed_ids[0]
+            }, context=context)
+            activity_pool.submit(cr, SUPERUSER_ID, spell_activity_id, {'location_id': bed_ids[0]})
+
+
+class t4_clinical_adt_patient_admit_btuh(orm.Model):
+    _name = 't4.clinical.adt.patient.admit'
+    _inherit = 't4.clinical.adt.patient.admit'
+
+    _columns = {
+        'bed': fields.char('Bed', size=50)
+    }
+
+    def complete(self, cr, uid, activity_id, context=None):
+        res = {}
+        res[self._name] = super(t4_clinical_adt_patient_admit_btuh, self).complete(cr, uid, activity_id, context=context)
+        api_pool = self.pool['t4.clinical.api']
+        admit_activity = api_pool.get_activity(cr, uid, activity_id)
+        spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, admit_activity.data_ref.patient_id.id, context=context)
+        if admit_activity.bed:
+            api_pool.update_bed(cr, uid, spell_activity_id, {
+                'ward_id': admit_activity.suggested_location_id.id,
+                'bed': admit_activity.bed,
+                'activity_id': admit_activity.id,
+                'patient_id': admit_activity.data_ref.patient_id.id,
+            }, context=context)
+        return res
+            
+
+class t4_clinical_adt_spell_update_btuh(orm.Model):
+    _name = 't4.clinical.adt.spell.update'
+    _inherit = 't4.clinical.adt.spell.update'
+    
+    _columns = {
+        'bed': fields.char('Bed', size=50)
+    }
+    
+    def complete(self, cr, uid, activity_id, context=None):
+        res = {}
+        res[self._name] = super(t4_clinical_adt_spell_update_btuh, self).complete(cr, uid, activity_id, context=context)
+        api_pool = self.pool['t4.clinical.api']
+        update_activity = api_pool.get_activity(cr, uid, activity_id)
+        spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, update_activity.data_ref.patient_id.id, context=context)
+        if update_activity.bed:
+            api_pool.update_bed(cr, uid, spell_activity_id, {
+                'ward_id': update_activity.suggested_location_id.id,
+                'bed': update_activity.bed,
+                'activity_id': update_activity.id,
+                'patient_id': update_activity.data_ref.patient_id.id,
+            }, context=context)
+        return res
+            
+
+class t4_clinical_adt_patient_transfer_btuh(orm.Model):
+    _name = 't4.clinical.adt.patient.transfer'
+    _inherit = 't4.clinical.adt.patient.transfer'
+    
+    _columns = {
+        'bed': fields.char('Bed', size=50)
+    }
+    
+    def complete(self, cr, uid, activity_id, context=None):
+        res = {}
+        res[self._name] = super(t4_clinical_adt_patient_transfer_btuh, self).complete(cr, uid, activity_id, context=context)
+        api_pool = self.pool['t4.clinical.api']
+        transfer_activity = api_pool.get_activity(cr, uid, activity_id)
+        spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, transfer_activity.data_ref.patient_id.id, context=context)
+        if transfer_activity.bed:
+            api_pool.update_bed(cr, uid, spell_activity_id, {
+                'ward_id': transfer_activity.suggested_location_id.id,
+                'bed': transfer_activity.bed,
+                'activity_id': transfer_activity.id,
+                'patient_id': transfer_activity.data_ref.patient_id.id,
+            }, context=context)
+        return res
