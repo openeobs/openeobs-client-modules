@@ -49,167 +49,293 @@
             <field name="lot_discharge_id" ref="t4c_lister_location_lot_discharge"/>
         </record>
         
-        <!-- Location - Wards -->
-        <record id="t4c_lister_location_w8" model="t4.clinical.location">
-            <field name="name">Ward E8</field>
-            <field name="code">E8</field>
-            <field name="type">poc</field>
-            <field name="usage">ward</field>
-          <field name="parent_id" ref="t4c_lister_location_lh"/>
-        </record>        
-        <record id="t4c_lister_location_w9" model="t4.clinical.location">
-            <field name="name">Ward E9</field>
-            <field name="code">E9</field>
-            <field name="type">poc</field>
-            <field name="usage">ward</field>
+        <!-- Point of Service Delivery - Wards -->
+        <record id="t4c_lister_ward_6BN" model="t4.clinical.location">
+            <field name="name">6B North</field>
+            <field name="code">06BN</field>
             <field name="parent_id" ref="t4c_lister_location_lh"/>
+            <field name="type">poc</field>             
+            <field name="usage">ward</field>
         </record>
 
-        <!-- Point of Care - Beds -->
+        <record id="t4c_lister_ward_6BS" model="t4.clinical.location">
+            <field name="name">6B South</field>
+            <field name="code">06BS</field>
+            <field name="parent_id" ref="t4c_lister_location_lh"/>
+            <field name="type">poc</field>             
+            <field name="usage">ward</field>
+        </record>
 
-        <!-- BEDS E8 Ward -->
-        <record id="t4c_lister_location_b1" model="t4.clinical.location">
+
+        <!-- Point of Service Delivery - Beds -->
+
+        <!-- 6BN Ward -->
+        <record id="t4c_lister_ward_6BN_bed_1" model="t4.clinical.location">
             <field name="name">Bed 1</field>
-            <field name="code">B1</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
-        </record>   
-        <record id="t4c_lister_location_b2" model="t4.clinical.location">
+        </record>
+
+        <record id="t4c_lister_ward_6BN_bed_2" model="t4.clinical.location">
             <field name="name">Bed 2</field>
-            <field name="code">B2</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
-        </record>  
-        <record id="t4c_lister_location_b3" model="t4.clinical.location">
+        </record>
+
+        <record id="t4c_lister_ward_6BN_bed_3" model="t4.clinical.location">
             <field name="name">Bed 3</field>
-            <field name="code">B3</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
-        </record>  
-        <record id="t4c_lister_location_b4" model="t4.clinical.location">
+        </record>
+
+	    <record id="t4c_lister_ward_6BN_bed_4" model="t4.clinical.location">
             <field name="name">Bed 4</field>
-            <field name="code">B4</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
-        </record>          
-        <record id="t4c_lister_location_b5" model="t4.clinical.location">
+        </record>
+
+	    <record id="t4c_lister_ward_6BN_bed_5" model="t4.clinical.location">
             <field name="name">Bed 5</field>
-            <field name="code">B5</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
         </record>
-        <record id="t4c_lister_location_b6" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_6" model="t4.clinical.location">
             <field name="name">Bed 6</field>
-            <field name="code">B6</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
         </record>
-        <record id="t4c_lister_location_b7" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_7" model="t4.clinical.location">
             <field name="name">Bed 7</field>
-            <field name="code">B7</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
         </record>
-        <record id="t4c_lister_location_b8" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_8" model="t4.clinical.location">
             <field name="name">Bed 8</field>
-            <field name="code">B8</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
         </record>
-        <record id="t4c_lister_location_b9" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_9" model="t4.clinical.location">
             <field name="name">Bed 9</field>
-            <field name="code">B9</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
         </record>
-        <record id="t4c_lister_location_b10" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_10" model="t4.clinical.location">
             <field name="name">Bed 10</field>
-            <field name="code">B10</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w8"/>
         </record>
 
-
-        <!-- BEDS E9 Ward -->
-        <record id="t4c_lister_location_b11" model="t4.clinical.location">
+	    <record id="t4c_lister_ward_6BN_bed_11" model="t4.clinical.location">
             <field name="name">Bed 11</field>
-            <field name="code">B11</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
-        </record>   
-        <record id="t4c_lister_location_b12" model="t4.clinical.location">
+        </record>
+
+	    <record id="t4c_lister_ward_6BN_bed_12" model="t4.clinical.location">
             <field name="name">Bed 12</field>
-            <field name="code">B12</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
-        </record>  
-        <record id="t4c_lister_location_b13" model="t4.clinical.location">
+        </record>
+
+	    <record id="t4c_lister_ward_6BN_bed_13" model="t4.clinical.location">
             <field name="name">Bed 13</field>
-            <field name="code">B13</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
         </record>
-        <record id="t4c_lister_location_b14" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_14" model="t4.clinical.location">
             <field name="name">Bed 14</field>
-            <field name="code">B14</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
         </record>
-        <record id="t4c_lister_location_b15" model="t4.clinical.location">
+
+	    <record id="t4c_lister_ward_6BN_bed_15" model="t4.clinical.location">
             <field name="name">Bed 15</field>
-            <field name="code">B15</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
-        </record>  
-        <record id="t4c_lister_location_b16" model="t4.clinical.location">
+        </record>
+
+	    <record id="t4c_lister_ward_6BN_swap_location" model="t4.clinical.location">
+            <field name="name">Swap Location</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <!-- 6BS Ward -->
+
+        <record id="t4c_lister_ward_6BS_bed_16" model="t4.clinical.location">
             <field name="name">Bed 16</field>
-            <field name="code">B16</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
         </record>
-        <record id="t4c_lister_location_b17" model="t4.clinical.location">
+
+        <record id="t4c_lister_ward_6BS_bed_17" model="t4.clinical.location">
             <field name="name">Bed 17</field>
-            <field name="code">B17</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
         </record>
-        <record id="t4c_lister_location_b18" model="t4.clinical.location">
+
+        <record id="t4c_lister_ward_6BS_bed_18" model="t4.clinical.location">
             <field name="name">Bed 18</field>
-            <field name="code">B18</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
         </record>
-        <record id="t4c_lister_location_b19" model="t4.clinical.location">
+
+        <record id="t4c_lister_ward_6BS_bed_19" model="t4.clinical.location">
             <field name="name">Bed 19</field>
-            <field name="code">B19</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
         </record>
-        <record id="t4c_lister_location_b20" model="t4.clinical.location">
+
+        <record id="t4c_lister_ward_6BS_bed_20" model="t4.clinical.location">
             <field name="name">Bed 20</field>
-            <field name="code">B20</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
-            <field name="parent_id" ref="t4c_lister_location_w9"/>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_21" model="t4.clinical.location">
+            <field name="name">Bed 21</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_22" model="t4.clinical.location">
+            <field name="name">Bed 22</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_23" model="t4.clinical.location">
+            <field name="name">Bed 23</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_24" model="t4.clinical.location">
+            <field name="name">Bed 24</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_25" model="t4.clinical.location">
+            <field name="name">Bed 25</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_26" model="t4.clinical.location">
+            <field name="name">Bed 26</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_1" model="t4.clinical.location">
+            <field name="name">Day Case 1</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_2" model="t4.clinical.location">
+            <field name="name">Day Case 2</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_3" model="t4.clinical.location">
+            <field name="name">Day Case 3</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_4" model="t4.clinical.location">
+            <field name="name">Day Case 4</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_5" model="t4.clinical.location">
+            <field name="name">Day Case 5</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_6" model="t4.clinical.location">
+            <field name="name">Day Case 6</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_7" model="t4.clinical.location">
+            <field name="name">Day Case 7</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_8" model="t4.clinical.location">
+            <field name="name">Day Case 8</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_9" model="t4.clinical.location">
+            <field name="name">Day Case 9</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_dc_10" model="t4.clinical.location">
+            <field name="name">Day Case 10</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
+        </record>
+
+        <record id="t4c_lister_ward_6BS_bed_swap_location" model="t4.clinical.location">
+            <field name="name">Swap Location</field>
+            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="type">poc</field>
+            <field name="usage">bed</field>
         </record>
         
         <!--Users-->
@@ -228,7 +354,7 @@
             <field name="password">harold</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_hca_henry_user" model="res.users">
@@ -237,7 +363,7 @@
             <field name="password">henry</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_hca_hannah_user" model="res.users">
@@ -246,7 +372,7 @@
             <field name="password">hannah</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w9')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_norah_user" model="res.users">
@@ -255,7 +381,7 @@
             <field name="password">norah</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_nadine_user" model="res.users">
@@ -264,7 +390,7 @@
             <field name="password">nadine</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_nathan_user" model="res.users">
@@ -273,7 +399,7 @@
             <field name="password">nathan</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w9')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
         </record>
 
         <record id="t4c_lister_ward_manager_winifred_user" model="res.users">
@@ -282,7 +408,7 @@
             <field name="password">winifred</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_ward_manager'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_ward_manager_walter_user" model="res.users">
@@ -291,7 +417,7 @@
             <field name="password">walter</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_ward_manager'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_ward_manager_whitney_user" model="res.users">
@@ -300,7 +426,7 @@
             <field name="password">whitney</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_ward_manager'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w9')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
         </record>
 
         <record id="t4c_lister_doctor_dave_user" model="res.users">
@@ -309,7 +435,7 @@
             <field name="password">dave</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w8')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
         </record>
 
         <record id="t4c_lister_doctor_davina_user" model="res.users">
@@ -318,7 +444,7 @@
             <field name="password">davina</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_location_w9')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
         </record>
 
         <record id="base.user_root" model="res.users">
