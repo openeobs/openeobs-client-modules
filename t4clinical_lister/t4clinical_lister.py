@@ -1,4 +1,4 @@
-from openerp.osv import orm, fields
+from openerp.osv import orm, fields, osv
 import logging
 from datetime import datetime as dt, timedelta as td
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
@@ -75,3 +75,41 @@ class t4_clinical_patient_observation_lister_weight(orm.Model):
 
         activity_pool.schedule(cr, uid, next_activity_id, date_schedule, context=context)
         return res
+
+
+class lister_wardboard(osv.Model):
+    _name = "t4.clinical.wardboard"
+    _inherit = "t4.clinical.wardboard"
+
+    def _get_pbp_flag(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        pbp_pool = self.pool['t4.clinical.patient.observation.pbp']
+        for wb_id in ids:
+            pbp_ids = self.read(cr, uid, wb_id, ['pbp_ids'], context=context)['pbp_ids']
+            res[wb_id] = any([pbp_pool.read(cr, uid, pbp_id, ['result'], context=context)['result'] == 'yes' for pbp_id in pbp_ids]) if pbp_ids else False
+        return res
+
+    _columns = {
+        'pbp_flag': fields.function(_get_pbp_flag, type='boolean', string='PBP Flag', readonly=True)
+    }
+
+    def wardboard_ews(self, cr, uid, ids, context={}):
+        wardboard = self.browse(cr, uid, ids[0], context=context)
+
+        model_data_pool = self.pool['ir.model.data']
+        model_data_ids = model_data_pool.search(cr, uid, [('name', '=', 'view_lister_wardboard_obs_list_form')], context=context)
+        if not model_data_ids:
+            pass # view doesnt exist
+        view_id = model_data_pool.read(cr, uid, model_data_ids, ['res_id'], context)[0]['res_id']
+
+        return {
+            'name': wardboard.full_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 't4.clinical.wardboard',
+            'res_id': ids[0],
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new',
+            'view_id': int(view_id),
+            'context': context
+        }

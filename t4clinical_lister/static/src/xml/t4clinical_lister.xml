@@ -11,4 +11,8 @@
         </t>
     </t>
 
+    <t t-name="lister_updown"
+        ><img t-attf-src="#{prefix}/t4clinical_lister/static/src/img/icons/up_down.png" t-att-alt="widget.string"/>
+    </t>
+
 </templates>
