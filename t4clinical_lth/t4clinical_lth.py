@@ -10,14 +10,18 @@ class t4_clinical_patient_observation_lth_ews(orm.Model):
 
     _POLICY = {'ranges': [0, 4, 6], 'case': '0123', 'frequencies': [720, 240, 120, 60],
                'notifications': [
-                   [],
+                   [{'model': 'frequency', 'groups': ['nurse', 'hca']}],
                    [{'model': 'assessment', 'groups': ['nurse', 'hca']},
                     {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
                    [{'model': 'medical_team', 'summary': 'Urgently inform medical team', 'groups': ['nurse', 'hca']},
+                    {'model': 'frequency', 'groups': ['nurse', 'hca']},
+                    {'model': 'nurse', 'summary': 'Consider assessment by CCOT', 'groups': ['nurse', 'hca']},
                     {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
                    [{'model': 'medical_team', 'summary': 'Immediately inform medical team', 'groups': ['nurse', 'hca']},
+                    {'model': 'frequency', 'groups': ['nurse', 'hca']},
+                    {'model': 'nurse', 'summary': 'Urgent assessment by CCOT', 'groups': ['nurse', 'hca']},
                     {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}]
                ],
