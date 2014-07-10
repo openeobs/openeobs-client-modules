@@ -216,7 +216,7 @@ class t4_clinical_adt_patient_admit_btuh(orm.Model):
         api_pool = self.pool['t4.clinical.api']
         admit_activity = api_pool.get_activity(cr, uid, activity_id)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, admit_activity.data_ref.patient_id.id, context=context)
-        if admit_activity.bed:
+        if admit_activity.data_ref.bed:
             api_pool.update_bed(cr, uid, spell_activity_id, {
                 'ward_id': admit_activity.suggested_location_id.id,
                 'bed': admit_activity.bed,
@@ -240,7 +240,7 @@ class t4_clinical_adt_spell_update_btuh(orm.Model):
         api_pool = self.pool['t4.clinical.api']
         update_activity = api_pool.get_activity(cr, uid, activity_id)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, update_activity.data_ref.patient_id.id, context=context)
-        if update_activity.bed:
+        if update_activity.data_ref.bed:
             api_pool.update_bed(cr, uid, spell_activity_id, {
                 'ward_id': update_activity.suggested_location_id.id,
                 'bed': update_activity.bed,
@@ -264,7 +264,7 @@ class t4_clinical_adt_patient_transfer_btuh(orm.Model):
         api_pool = self.pool['t4.clinical.api']
         transfer_activity = api_pool.get_activity(cr, uid, activity_id)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, transfer_activity.data_ref.patient_id.id, context=context)
-        if transfer_activity.bed:
+        if transfer_activity.data_ref.bed:
             api_pool.update_bed(cr, uid, spell_activity_id, {
                 'ward_id': transfer_activity.suggested_location_id.id,
                 'bed': transfer_activity.bed,
