@@ -13,8 +13,6 @@
              'ldh_master_data.xml',
              't4clinical_ldh_view.xml'],
     'qweb': ['static/src/xml/t4clinical_ldh.xml'],
-    'css': ['static/src/css/t4clinical_ldh.css'],
-    'js': ['static/src/js/t4clinical_ldh.js'],
     'application': True,
     'installable': True,
     'active': False,

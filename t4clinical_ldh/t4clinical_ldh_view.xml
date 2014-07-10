@@ -1,5 +1,12 @@
 <openerp>
     <data>
+
+        <template id="assets_backend" name="t4clinical assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/t4clinical_ldh/static/src/js/t4clinical_ldh.js"></script>
+            </xpath>
+        </template>
+
          <!-- Activity Workload Kanban View -->
         <record model="ir.ui.view" id="view_ldh_activity_workload_kanban">
             <field name="name">t4.ldh.activity.workload.kanban</field>
@@ -120,7 +127,7 @@
             <field name="name">Patientlist Tree View</field>
             <field name="model">t4.clinical.ldh.patientlist</field>
             <field name="arch" type="xml">
-                <tree string="Patientlist Tree View" version="7.0" create="0" editable="1">
+                <tree string="Patientlist Tree View" class="t4c_wardboard" version="7.0" create="0" editable="1">
                     <field name="full_name" readonly="1"/>
                     <field name="hospital_id" readonly="1"/>
                     <field name="sex" widget="t4_gender" readonly="1"/>
