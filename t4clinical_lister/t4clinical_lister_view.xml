@@ -32,13 +32,13 @@
                                 </field>
                             </page>
                             <page string="Postural Blood Pressure">
-                                <field name="pbp_ids" readonly="1">
+                                <field name="pbp_ids" class="t4c_pbp" readonly="1">
                                     <tree class="t4c_obs_list">
                                         <field name="date_terminated" string="Date" widget="t4c_datetime"/>
-                                        <field name="systolic_sitting" string="Sitting/Lying Systolic"/>
-                                        <field name="diastolic_sitting" string="Sitting/Lying Diastolic"/>
-                                        <field name="systolic_standing" string="Standing Systolic"/>
-                                        <field name="diastolic_standing" string="Standing Diastolic"/>
+                                        <field name="systolic_sitting" string="Systolic"/>
+                                        <field name="diastolic_sitting" string="Diastolic"/>
+                                        <field name="systolic_standing" string="Systolic"/>
+                                        <field name="diastolic_standing" string="Diastolic"/>
                                         <field name="complete_uid"/>
                                         <field name="result"/>
                                     </tree>
