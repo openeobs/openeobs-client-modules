@@ -354,7 +354,8 @@
             <field name="password">harold</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_1'),ref('t4c_lister_ward_6BN_bed_2'),
+            ref('t4c_lister_ward_6BN_bed_3'),ref('t4c_lister_ward_6BN_bed_4')]]]"/>
         </record>
 
         <record id="t4c_lister_hca_henry_user" model="res.users">
@@ -363,7 +364,8 @@
             <field name="password">henry</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_5'),ref('t4c_lister_ward_6BN_bed_6'),
+            ref('t4c_lister_ward_6BN_bed_7'),ref('t4c_lister_ward_6BN_bed_8')]]]"/>
         </record>
 
         <record id="t4c_lister_hca_hannah_user" model="res.users">
@@ -372,7 +374,8 @@
             <field name="password">hannah</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_1'),ref('t4c_lister_ward_6BS_bed_2'),
+            ref('t4c_lister_ward_6BS_bed_3'),ref('t4c_lister_ward_6BS_bed_4')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_norah_user" model="res.users">
@@ -381,7 +384,8 @@
             <field name="password">norah</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_1'),ref('t4c_lister_ward_6BN_bed_2'),
+            ref('t4c_lister_ward_6BN_bed_3'),ref('t4c_lister_ward_6BN_bed_4')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_nadine_user" model="res.users">
@@ -390,7 +394,8 @@
             <field name="password">nadine</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_5'),ref('t4c_lister_ward_6BN_bed_6'),
+            ref('t4c_lister_ward_6BN_bed_7'),ref('t4c_lister_ward_6BN_bed_8')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_nathan_user" model="res.users">
@@ -399,7 +404,8 @@
             <field name="password">nathan</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_1'),ref('t4c_lister_ward_6BS_bed_2'),
+            ref('t4c_lister_ward_6BS_bed_3'),ref('t4c_lister_ward_6BS_bed_4')]]]"/>
         </record>
 
         <record id="t4c_lister_ward_manager_winifred_user" model="res.users">
@@ -435,7 +441,8 @@
             <field name="password">dave</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_1'),ref('t4c_lister_ward_6BN_bed_2'),
+            ref('t4c_lister_ward_6BN_bed_3'),ref('t4c_lister_ward_6BN_bed_4')]]]"/>
         </record>
 
         <record id="t4c_lister_doctor_davina_user" model="res.users">
@@ -444,7 +451,8 @@
             <field name="password">davina</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_1'),ref('t4c_lister_ward_6BS_bed_2'),
+            ref('t4c_lister_ward_6BS_bed_3'),ref('t4c_lister_ward_6BS_bed_4')]]]"/>
         </record>
 
         <record id="base.user_root" model="res.users">
