@@ -26,3 +26,22 @@ class t4_clinical_patient_observation_lth_ews(orm.Model):
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}]
                ],
                'risk': ['None', 'Low', 'Medium', 'High']}
+
+
+class lth_notification_frequency(orm.Model):
+    _name = 't4.clinical.notification.frequency'
+    _inherit = 't4.clinical.notification.frequency'
+
+    def complete(self, cr, uid, activity_id, context=None):
+        activity_pool = self.pool['t4.activity']
+        review_frequency = activity_pool.browse(cr, uid, activity_id, context=context)
+        domain = [
+            ('patient_id', '=', review_frequency.data_ref.patient_id.id),
+            ('data_model', '=', review_frequency.data_ref.observation),
+            ('state', 'not in', ['completed', 'cancelled'])
+        ]
+        obs_ids = activity_pool.search(cr, uid, domain, order='create_date desc, id desc', context=context)
+        obs = activity_pool.browse(cr, uid, obs_ids[0], context=context)
+        obs_pool = self.pool[review_frequency.data_ref.observation]
+        obs_pool.write(cr, uid, obs.data_ref.id, {'frequency': review_frequency.data_ref.frequency}, context=context)
+        return super(lth_notification_frequency, self).complete(cr, uid, activity_id, context=context)

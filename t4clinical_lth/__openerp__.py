@@ -11,7 +11,6 @@
     'depends': ['t4clinical_ui'],
     'data': ['lth_master_data.xml'],
     'qweb': ['static/src/xml/t4clinical_lth.xml'],
-    'css': ['static/src/css/t4clinical_lth.css'],
     'application': True,
     'installable': True,
     'active': False,
