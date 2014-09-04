@@ -374,8 +374,8 @@
             <field name="password">hannah</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_1'),ref('t4c_lister_ward_6BS_bed_2'),
-            ref('t4c_lister_ward_6BS_bed_3'),ref('t4c_lister_ward_6BS_bed_4')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_16'),ref('t4c_lister_ward_6BS_bed_17'),
+            ref('t4c_lister_ward_6BS_bed_18'),ref('t4c_lister_ward_6BS_bed_19')]]]"/>
         </record>
 
         <record id="t4c_lister_nurse_norah_user" model="res.users">
@@ -404,8 +404,8 @@
             <field name="password">nathan</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_1'),ref('t4c_lister_ward_6BS_bed_2'),
-            ref('t4c_lister_ward_6BS_bed_3'),ref('t4c_lister_ward_6BS_bed_4')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_16'),ref('t4c_lister_ward_6BS_bed_17'),
+            ref('t4c_lister_ward_6BS_bed_18'),ref('t4c_lister_ward_6BS_bed_19')]]]"/>
         </record>
 
         <record id="t4c_lister_ward_manager_winifred_user" model="res.users">
@@ -451,8 +451,8 @@
             <field name="password">davina</field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_1'),ref('t4c_lister_ward_6BS_bed_2'),
-            ref('t4c_lister_ward_6BS_bed_3'),ref('t4c_lister_ward_6BS_bed_4')]]]"/>
+            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_16'),ref('t4c_lister_ward_6BS_bed_17'),
+            ref('t4c_lister_ward_6BS_bed_18'),ref('t4c_lister_ward_6BS_bed_19')]]]"/>
         </record>
 
         <record id="base.user_root" model="res.users">

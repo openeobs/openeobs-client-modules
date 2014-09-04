@@ -26,12 +26,12 @@ class t4_clinical_patient_observation_lister_ews(orm.Model):
                    [{'model': 'assessment', 'groups': ['nurse', 'hca']},
                     {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
-                   [{'model': 'medical_team', 'summary': 'Urgently inform medical team', 'groups': ['nurse', 'hca']},
+                   [{'model': 'inform_doctor', 'summary': 'Urgently inform medical team', 'groups': ['nurse', 'hca']},
                     {'model': 'frequency', 'groups': ['nurse', 'hca']},
                     {'model': 'nurse', 'summary': 'Inform CCOT if unresolved after one hour. Bleep L1663 or Q0169', 'groups': ['nurse', 'hca']},
                     {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}],
-                   [{'model': 'medical_team', 'summary': 'Immediately inform SPR or above', 'groups': ['nurse', 'hca']},
+                   [{'model': 'inform_doctor', 'summary': 'Immediately inform SPR or above', 'groups': ['nurse', 'hca']},
                     {'model': 'nurse', 'summary': 'Urgent assessment by CCOT', 'groups': ['nurse', 'hca']},
                     {'model': 'hca', 'summary': 'Inform registered nurse', 'groups': ['hca']},
                     {'model': 'nurse', 'summary': 'Informed about patient status (NEWS)', 'groups': ['hca']}]
@@ -75,3 +75,35 @@ class lister_wardboard(osv.Model):
             'view_id': int(view_id),
             'context': context
         }
+
+
+class t4_clinical_notification_inform_doctor(orm.Model):
+    _name = 't4.clinical.notification.inform_doctor'
+    _inherit = ['t4.clinical.notification']
+    _description = 'Inform Medical Team?'
+    _notifications = [{'model': 'doctor_assessment', 'groups': ['nurse']}]
+
+    _columns = {
+        'doctor_id': fields.many2one('res.partner', 'Informed Doctor'),
+    }
+
+    def complete(self, cr, uid, activity_id, context=None):
+        activity_pool = self.pool['t4.activity']
+        activity = activity_pool.browse(cr, uid, activity_id, context=context)
+        api_pool = self.pool['t4.clinical.api']
+        api_pool.trigger_notifications(cr, uid, {
+            'notifications': self._notifications,
+            'parent_id': activity.parent_id.id,
+            'creator_id': activity_id,
+            'patient_id': activity.data_ref.patient_id.id,
+            'model': activity.creator_id._name,
+            'group': 'nurse'
+        }, context=context)
+        return super(t4_clinical_notification_inform_doctor, self).complete(cr, uid, activity_id, context=context)
+
+
+class lister_notification_frequency(orm.Model):
+    _name = 't4.clinical.notification.frequency'
+    _inherit = 't4.clinical.notification.frequency'
+    _description = 'Review Frequency'
+    _notifications = [{'model': 'inform_doctor', 'groups': ['nurse']}]
