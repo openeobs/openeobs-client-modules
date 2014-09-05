@@ -84,7 +84,7 @@ class t4_clinical_notification_inform_doctor(orm.Model):
     _notifications = [{'model': 'doctor_assessment', 'groups': ['nurse']}]
 
     _columns = {
-        'doctor_id': fields.many2one('res.partner', 'Informed Doctor'),
+        'doctor_id': fields.many2one('res.partner', 'Informed Doctor', domain=[('doctor', '=', True)]),
     }
 
     def complete(self, cr, uid, activity_id, context=None):
