@@ -1,5 +1,11 @@
 <openerp>
     <data>
+        <!--UI changes-->
+        <template id="assets_backend" name="lth assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/t4clinical_lth/static/src/js/t4clinical_lth.js"></script>
+            </xpath>
+        </template>
         <!--Main Partner-->
         <record model="res.company" id="base.main_company">
             <field name="name">Leeds Teaching Hospitals</field>
