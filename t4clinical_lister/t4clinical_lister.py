@@ -86,6 +86,13 @@ class t4_clinical_notification_inform_doctor(orm.Model):
     _columns = {
         'doctor_id': fields.many2one('res.partner', 'Informed Doctor', domain=[('doctor', '=', True)]),
     }
+    _form_description = [
+        {
+            'name': 'doctor_id',
+            'type': 'selection',
+            'label': 'Informed Doctor'
+        }
+    ]
 
     def complete(self, cr, uid, activity_id, context=None):
         activity_pool = self.pool['t4.activity']
@@ -100,6 +107,17 @@ class t4_clinical_notification_inform_doctor(orm.Model):
             'group': 'nurse'
         }, context=context)
         return super(t4_clinical_notification_inform_doctor, self).complete(cr, uid, activity_id, context=context)
+
+    def get_form_description(self, cr, uid, patient_id, context=None):
+        partner_pool = self.pool['res.partner']
+        fd = list(self._form_description)
+        # Find Doctors
+        doctor_ids = partner_pool.search(cr, uid, [('doctor', '=', True)], context=context)
+        doctor_selection = [[d, partner_pool.read(cr, uid, d, ['name'], context=context)['name']] for d in doctor_ids]
+        for field in fd:
+            if field['name'] == 'doctor_id':
+                field['selection'] = doctor_selection
+        return fd
 
 
 class lister_notification_frequency(orm.Model):
