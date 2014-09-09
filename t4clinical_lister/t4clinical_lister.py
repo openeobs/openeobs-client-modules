@@ -119,6 +119,9 @@ class t4_clinical_notification_inform_doctor(orm.Model):
                 field['selection'] = doctor_selection
         return fd
 
+    def is_cancellable(self, cr, uid, context=None):
+        return True
+
 
 class lister_notification_frequency(orm.Model):
     _name = 't4.clinical.notification.frequency'
