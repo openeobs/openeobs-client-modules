@@ -15,7 +15,7 @@
                             <tree>
                                 <field name="date_terminated" string="Date" widget="t4c_datetime"/>
                                 <field name="level_id" string="Value"/>
-                                <field name="complete_uid"/>
+                                <field name="terminate_uid"/>
                             </tree>
                        </field>
                     </group>
@@ -36,7 +36,7 @@
                             <tree>
                                 <field name="date_terminated" string="Date" widget="t4c_datetime"/>
                                 <field name="level_id" string="Value"/>
-                                <field name="complete_uid"/>
+                                <field name="terminate_uid"/>
                             </tree>
                        </field>
                     </group>
