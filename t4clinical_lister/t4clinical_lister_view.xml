@@ -39,7 +39,7 @@
                                         <field name="diastolic_sitting" string="Diastolic"/>
                                         <field name="systolic_standing" string="Systolic"/>
                                         <field name="diastolic_standing" string="Diastolic"/>
-                                        <field name="complete_uid"/>
+                                        <field name="terminate_uid"/>
                                         <field name="result"/>
                                     </tree>
                                 </field>
