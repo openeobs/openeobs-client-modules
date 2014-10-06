@@ -1,5 +1,5 @@
 from openerp.osv import orm, fields
-from openerp.addons.t4activity.activity import except_if
+from openerp.addons.nh_activity.activity import except_if
 from datetime import datetime as dt, timedelta as td
 import bisect
 from openerp import SUPERUSER_ID
@@ -8,9 +8,9 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class t4_clinical_patient_observation_btuh_ews(orm.Model):
-    _name = 't4.clinical.patient.observation.ews'
-    _inherit = 't4.clinical.patient.observation.ews'
+class nh_clinical_patient_observation_btuh_ews(orm.Model):
+    _name = 'nh.clinical.patient.observation.ews'
+    _inherit = 'nh.clinical.patient.observation.ews'
 
     _RR_RANGES = {'ranges': [8, 11, 20, 24], 'scores': '31023'}
     _O2_RANGES = {'ranges': [91, 93, 95], 'scores': '3210'}
@@ -46,8 +46,8 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
     def _get_score(self, cr, uid, ids, field_names, arg, context=None):
         res = {}
         for ews in self.browse(cr, uid, ids, context):
-            activity_pool = self.pool['t4.activity']
-            domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
+            activity_pool = self.pool['nh.activity']
+            domain = [('data_model', '=', 'nh.clinical.patient.o2target'), ('state', '=', 'completed')]
             o2target_ids = activity_pool.search(cr, uid, domain, order='date_terminated desc', context=context)
             o2target = activity_pool.browse(cr, uid, o2target_ids[0], context=context) if o2target_ids else False
 
@@ -92,13 +92,13 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
 
     _columns = {
         'score': fields.function(_get_score, type='integer', multi='score', string='Score', store={
-            't4.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10) # all fields of self
+            'nh.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10) # all fields of self
         }),
         'three_in_one': fields.function(_get_score, type='boolean', multi='score', string='3 in 1 flag', store={
-            't4.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10) # all fields of self
+            'nh.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10) # all fields of self
         }),
         'clinical_risk': fields.function(_get_score, type='char', multi='score', string='Clinical Risk', store={
-            't4.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10)
+            'nh.clinical.patient.observation.ews': (lambda self, cr, uid, ids, ctx: ids, [], 10)
         }),
     }
 
@@ -106,22 +106,22 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
         """
         Implementation of the BTUH EWS policy
         """
-        activity_pool = self.pool['t4.activity']
-        hca_pool = self.pool['t4.clinical.notification.hca']
-        nurse_pool = self.pool['t4.clinical.notification.nurse']
+        activity_pool = self.pool['nh.activity']
+        hca_pool = self.pool['nh.clinical.notification.hca']
+        nurse_pool = self.pool['nh.clinical.notification.nurse']
         groups_pool = self.pool['res.groups']
-        api_pool = self.pool['t4.clinical.api']
+        api_pool = self.pool['nh.clinical.api']
         activity = activity_pool.browse(cr, uid, activity_id, context=context)
         case = int(self._POLICY['case'][bisect.bisect_left(self._POLICY['ranges'], activity.data_ref.score)])
         case = 2 if activity.data_ref.three_in_one and case < 3 else case
-        hcagroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'T4 Clinical HCA Group')])
-        nursegroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'T4 Clinical Nurse Group')])
+        hcagroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'NH Clinical HCA Group')])
+        nursegroup_ids = groups_pool.search(cr, uid, [('users', 'in', [uid]), ('name', '=', 'NH Clinical Nurse Group')])
         group = nursegroup_ids and 'nurse' or hcagroup_ids and 'hca' or False
         spell_activity_id = activity.parent_id.id
         notifications = list(self._POLICY['notifications'][case])
 
         # CHECK O2TARGET
-        domain = [('data_model', '=', 't4.clinical.patient.o2target'), ('state', '=', 'completed')]
+        domain = [('data_model', '=', 'nh.clinical.patient.o2target'), ('state', '=', 'completed')]
         o2target_ids = activity_pool.search(cr, uid, domain, order='date_terminated desc', context=context)
         o2target = activity_pool.browse(cr, uid, o2target_ids[0], context=context) if o2target_ids else False
         if o2target:
@@ -143,7 +143,7 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
             'group': group
         }, context=context)
 
-        res = self.pool['t4.clinical.patient.observation'].complete(cr, SUPERUSER_ID, activity_id, context=context)
+        res = self.pool['nh.clinical.patient.observation'].complete(cr, SUPERUSER_ID, activity_id, context=context)
 
         # cancel open EWS
         api_pool.cancel_open_activities(cr, uid, spell_activity_id, self._name, context=context)
@@ -159,15 +159,15 @@ class t4_clinical_patient_observation_btuh_ews(orm.Model):
         return res
 
 
-class t4_clinical_api_btuh(orm.AbstractModel):
-    _name = 't4.clinical.api'
-    _inherit = 't4.clinical.api'
+class nh_clinical_api_btuh(orm.AbstractModel):
+    _name = 'nh.clinical.api'
+    _inherit = 'nh.clinical.api'
 
     def update_bed(self, cr, uid, spell_activity_id, vals, context=None):
         if not vals:
             vals = {}
-        activity_pool = self.pool['t4.activity']
-        location_pool = self.pool['t4.clinical.location']
+        activity_pool = self.pool['nh.activity']
+        location_pool = self.pool['nh.clinical.location']
         bed_ids = location_pool.search(cr, uid, [
             ('parent_id', '=', vals['ward_id']),
             ('name', '=', vals['bed'])
@@ -184,7 +184,7 @@ class t4_clinical_api_btuh(orm.AbstractModel):
         bed = location_pool.browse(cr, uid, bed_ids[0], context=context)
         except_if(not bed.is_available, 'Error! The bed is already being used:%s' % vals['bed'])
         domain = [
-            ('data_model', '=', 't4.clinical.patient.placement'),
+            ('data_model', '=', 'nh.clinical.patient.placement'),
             ('state', 'not in', ['completed', 'cancelled']),
             ('parent_id', '=', spell_activity_id)]
         placement_ids = activity_pool.search(cr, uid, domain, context=context)
@@ -192,7 +192,7 @@ class t4_clinical_api_btuh(orm.AbstractModel):
             activity_pool.submit(cr, uid, placement_ids[0], {'location_id': bed_ids[0]}, context=context)
             activity_pool.complete(cr, uid, placement_ids[0], context=context)
         else:
-            self.create_complete(cr, SUPERUSER_ID, 't4.clinical.patient.move', {
+            self.create_complete(cr, SUPERUSER_ID, 'nh.clinical.patient.move', {
                 'parent_id': spell_activity_id,
                 'creator_id': vals.get('activity_id')
             }, {
@@ -202,9 +202,9 @@ class t4_clinical_api_btuh(orm.AbstractModel):
             activity_pool.submit(cr, SUPERUSER_ID, spell_activity_id, {'location_id': bed_ids[0]})
 
 
-class t4_clinical_adt_patient_admit_btuh(orm.Model):
-    _name = 't4.clinical.adt.patient.admit'
-    _inherit = 't4.clinical.adt.patient.admit'
+class nh_clinical_adt_patient_admit_btuh(orm.Model):
+    _name = 'nh.clinical.adt.patient.admit'
+    _inherit = 'nh.clinical.adt.patient.admit'
 
     _columns = {
         'bed': fields.char('Bed', size=50)
@@ -212,8 +212,8 @@ class t4_clinical_adt_patient_admit_btuh(orm.Model):
 
     def complete(self, cr, uid, activity_id, context=None):
         res = {}
-        res[self._name] = super(t4_clinical_adt_patient_admit_btuh, self).complete(cr, uid, activity_id, context=context)
-        api_pool = self.pool['t4.clinical.api']
+        res[self._name] = super(nh_clinical_adt_patient_admit_btuh, self).complete(cr, uid, activity_id, context=context)
+        api_pool = self.pool['nh.clinical.api']
         admit_activity = api_pool.get_activity(cr, uid, activity_id)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, admit_activity.data_ref.patient_id.id, context=context)
         if admit_activity.data_ref.bed:
@@ -226,9 +226,9 @@ class t4_clinical_adt_patient_admit_btuh(orm.Model):
         return res
             
 
-class t4_clinical_adt_spell_update_btuh(orm.Model):
-    _name = 't4.clinical.adt.spell.update'
-    _inherit = 't4.clinical.adt.spell.update'
+class nh_clinical_adt_spell_update_btuh(orm.Model):
+    _name = 'nh.clinical.adt.spell.update'
+    _inherit = 'nh.clinical.adt.spell.update'
     
     _columns = {
         'bed': fields.char('Bed', size=50)
@@ -236,8 +236,8 @@ class t4_clinical_adt_spell_update_btuh(orm.Model):
     
     def complete(self, cr, uid, activity_id, context=None):
         res = {}
-        res[self._name] = super(t4_clinical_adt_spell_update_btuh, self).complete(cr, uid, activity_id, context=context)
-        api_pool = self.pool['t4.clinical.api']
+        res[self._name] = super(nh_clinical_adt_spell_update_btuh, self).complete(cr, uid, activity_id, context=context)
+        api_pool = self.pool['nh.clinical.api']
         update_activity = api_pool.get_activity(cr, uid, activity_id)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, update_activity.data_ref.patient_id.id, context=context)
         if update_activity.data_ref.bed:
@@ -250,9 +250,9 @@ class t4_clinical_adt_spell_update_btuh(orm.Model):
         return res
             
 
-class t4_clinical_adt_patient_transfer_btuh(orm.Model):
-    _name = 't4.clinical.adt.patient.transfer'
-    _inherit = 't4.clinical.adt.patient.transfer'
+class nh_clinical_adt_patient_transfer_btuh(orm.Model):
+    _name = 'nh.clinical.adt.patient.transfer'
+    _inherit = 'nh.clinical.adt.patient.transfer'
     
     _columns = {
         'bed': fields.char('Bed', size=50)
@@ -260,8 +260,8 @@ class t4_clinical_adt_patient_transfer_btuh(orm.Model):
     
     def complete(self, cr, uid, activity_id, context=None):
         res = {}
-        res[self._name] = super(t4_clinical_adt_patient_transfer_btuh, self).complete(cr, uid, activity_id, context=context)
-        api_pool = self.pool['t4.clinical.api']
+        res[self._name] = super(nh_clinical_adt_patient_transfer_btuh, self).complete(cr, uid, activity_id, context=context)
+        api_pool = self.pool['nh.clinical.api']
         transfer_activity = api_pool.get_activity(cr, uid, activity_id)
         spell_activity_id = api_pool.get_patient_spell_activity_id(cr, SUPERUSER_ID, transfer_activity.data_ref.patient_id.id, context=context)
         if transfer_activity.data_ref.bed:

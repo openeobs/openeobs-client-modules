@@ -2,7 +2,7 @@ from openerp.tests import common
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from faker import Faker
 import logging
-from openerp.addons.t4clinical_activity_types.tests.test_scenario import ActivityTypesTest
+from openerp.addons.nh_clinical_activity_types.tests.test_scenario import ActivityTypesTest
 
 _logger = logging.getLogger(__name__)
 
@@ -33,30 +33,30 @@ class TestBtuhPolicy(ActivityTypesTest):
 
         cr, uid = self.cr, self.uid
 
-        register_pool = self.registry('t4.clinical.adt.patient.register')
-        patient_pool = self.registry('t4.clinical.patient')
-        admit_pool = self.registry('t4.clinical.adt.patient.admit')
-        discharge_pool = self.registry('t4.clinical.patient.discharge')
-        activity_pool = self.registry('t4.activity')
-        transfer_pool = self.registry('t4.clinical.adt.patient.transfer')
-        ews_pool = self.registry('t4.clinical.patient.observation.ews')
-        height_pool = self.registry('t4.clinical.patient.observation.height')
-        weight_pool = self.registry('t4.clinical.patient.observation.weight')
-        blood_sugar_pool = self.registry('t4.clinical.patient.observation.blood_sugar')
-        blood_product_pool = self.registry('t4.clinical.patient.observation.blood_product')
-        stools_pool = self.registry('t4.clinical.patient.observation.stools')
-        gcs_pool = self.registry('t4.clinical.patient.observation.gcs')
-        vips_pool = self.registry('t4.clinical.patient.observation.vips')
-        api_pool = self.registry('t4.clinical.api')
-        location_pool = self.registry('t4.clinical.location')
-        pos_pool = self.registry('t4.clinical.pos')
+        register_pool = self.registry('nh.clinical.adt.patient.register')
+        patient_pool = self.registry('nh.clinical.patient')
+        admit_pool = self.registry('nh.clinical.adt.patient.admit')
+        discharge_pool = self.registry('nh.clinical.patient.discharge')
+        activity_pool = self.registry('nh.activity')
+        transfer_pool = self.registry('nh.clinical.adt.patient.transfer')
+        ews_pool = self.registry('nh.clinical.patient.observation.ews')
+        height_pool = self.registry('nh.clinical.patient.observation.height')
+        weight_pool = self.registry('nh.clinical.patient.observation.weight')
+        blood_sugar_pool = self.registry('nh.clinical.patient.observation.blood_sugar')
+        blood_product_pool = self.registry('nh.clinical.patient.observation.blood_product')
+        stools_pool = self.registry('nh.clinical.patient.observation.stools')
+        gcs_pool = self.registry('nh.clinical.patient.observation.gcs')
+        vips_pool = self.registry('nh.clinical.patient.observation.vips')
+        api_pool = self.registry('nh.clinical.api')
+        location_pool = self.registry('nh.clinical.location')
+        pos_pool = self.registry('nh.clinical.pos')
         user_pool = self.registry('res.users')
         partner_pool = self.registry('res.partner')
         imd_pool = self.registry('ir.model.data')
-        device_connect_pool = self.registry('t4.clinical.device.connect')
-        device_disconnect_pool = self.registry('t4.clinical.device.disconnect')
-        o2target_pool = self.registry('t4.clinical.o2level')
-        o2target_activity_pool = self.registry('t4.clinical.patient.o2target')
+        device_connect_pool = self.registry('nh.clinical.device.connect')
+        device_disconnect_pool = self.registry('nh.clinical.device.disconnect')
+        o2target_pool = self.registry('nh.clinical.o2level')
+        o2target_activity_pool = self.registry('nh.clinical.patient.o2target')
 
         super(TestBtuhPolicy, self).setUp()
             
@@ -151,7 +151,7 @@ class TestBtuhPolicy(ActivityTypesTest):
             domain = [
                 ('creator_id', '=', ews_id),
                 ('state', 'not in', ['completed', 'cancelled']),
-                ('data_model', '=', 't4.clinical.notification.assessment')]
+                ('data_model', '=', 'nh.clinical.notification.assessment')]
             assessment_ids = activity_pool.search(cr, uid, domain)
             if assessment:
                 self.assertTrue(assessment_ids, msg='Assessment notification not triggered')
@@ -159,7 +159,7 @@ class TestBtuhPolicy(ActivityTypesTest):
                 domain = [
                     ('creator_id', '=', assessment_ids[0]),
                     ('state', 'not in', ['completed', 'cancelled']),
-                    ('data_model', '=', 't4.clinical.notification.frequency')]
+                    ('data_model', '=', 'nh.clinical.notification.frequency')]
                 frequency_ids = activity_pool.search(cr, uid, domain)
                 self.assertTrue(frequency_ids, msg='Review frequency not triggered after Assessment complete')
                 activity_pool.cancel(cr, uid, frequency_ids[0])
@@ -169,7 +169,7 @@ class TestBtuhPolicy(ActivityTypesTest):
             domain = [
                 ('creator_id', '=', ews_id),
                 ('state', 'not in', ['completed', 'cancelled']),
-                ('data_model', '=', 't4.clinical.notification.frequency')]
+                ('data_model', '=', 'nh.clinical.notification.frequency')]
             frequency_ids = activity_pool.search(cr, uid, domain)
             if review_frequency:
                 self.assertTrue(frequency_ids, msg='Review frequency notification not triggered')
@@ -180,7 +180,7 @@ class TestBtuhPolicy(ActivityTypesTest):
             domain = [
                 ('creator_id', '=', ews_id),
                 ('state', 'not in', ['completed', 'cancelled']),
-                ('data_model', '=', 't4.clinical.notification.nurse')]
+                ('data_model', '=', 'nh.clinical.notification.nurse')]
             notification_ids = activity_pool.search(cr, uid, domain)
             self.assertEqual(len(notification_ids), len(nurse_notifications), msg='Wrong notifications triggered')
         
@@ -229,7 +229,7 @@ class TestBtuhPolicy(ActivityTypesTest):
             domain = [
                 ('creator_id', '=', ews_id),
                 ('state', 'not in', ['completed', 'cancelled']),
-                ('data_model', '=', 't4.clinical.notification.assessment')]
+                ('data_model', '=', 'nh.clinical.notification.assessment')]
             assessment_ids = activity_pool.search(cr, uid, domain)
             if assessment:
                 self.assertTrue(assessment_ids, msg='Assessment notification not triggered')
@@ -237,7 +237,7 @@ class TestBtuhPolicy(ActivityTypesTest):
                 domain = [
                     ('creator_id', '=', assessment_ids[0]),
                     ('state', 'not in', ['completed', 'cancelled']),
-                    ('data_model', '=', 't4.clinical.notification.frequency')]
+                    ('data_model', '=', 'nh.clinical.notification.frequency')]
                 frequency_ids = activity_pool.search(cr, uid, domain)
                 self.assertTrue(frequency_ids, msg='Review frequency not triggered after Assessment complete')
                 activity_pool.cancel(cr, uid, frequency_ids[0])
@@ -247,7 +247,7 @@ class TestBtuhPolicy(ActivityTypesTest):
             domain = [
                 ('creator_id', '=', ews_id),
                 ('state', 'not in', ['completed', 'cancelled']),
-                ('data_model', '=', 't4.clinical.notification.frequency')]
+                ('data_model', '=', 'nh.clinical.notification.frequency')]
             frequency_ids = activity_pool.search(cr, uid, domain)
             if review_frequency:
                 self.assertTrue(frequency_ids, msg='Review frequency notification not triggered')
@@ -258,7 +258,7 @@ class TestBtuhPolicy(ActivityTypesTest):
             domain = [
                 ('creator_id', '=', ews_id),
                 ('state', 'not in', ['completed', 'cancelled']),
-                ('data_model', '=', 't4.clinical.notification.nurse')]
+                ('data_model', '=', 'nh.clinical.notification.nurse')]
             notification_ids = activity_pool.search(cr, uid, domain)
             if 88 <= o2_test_data['O2'][i] <= 92:
                 self.assertEqual(len(notification_ids), len(nurse_notifications), msg='Wrong notifications triggered')

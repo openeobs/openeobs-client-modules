@@ -4,8 +4,8 @@
 
         <record model="ir.ui.view" id="view_wardboard_form_btuh">
             <field name="name">Wardboard Patients Form View (BTUH)</field>
-            <field name="model">t4.clinical.wardboard</field>
-            <field name="inherit_id" ref="t4clinical_ui.view_wardboard_form"/>
+            <field name="model">nh.clinical.wardboard</field>
+            <field name="inherit_id" ref="nh_clinical_ui.view_wardboard_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/sheet/notebook/page[@string='Monitoring']" position="replace"/>
                 <xpath expr="/form/sheet/notebook/page[@string='Other Obs']/group[@string='Postural Blood Pressure']" position="replace">
@@ -13,7 +13,7 @@
                         <field name="o2target" widget="selection" string="Current Target"/>
                         <field name="o2target_ids" nolabel="1" colspan="2" readonly="1">
                             <tree>
-                                <field name="date_terminated" string="Date" widget="t4c_datetime"/>
+                                <field name="date_terminated" string="Date" widget="nhc_datetime"/>
                                 <field name="level_id" string="Value"/>
                                 <field name="terminate_uid"/>
                             </tree>
@@ -25,8 +25,8 @@
 
         <record model="ir.ui.view" id="view_wardboard_form_discharged_btuh">
             <field name="name">Wardboard Discharged Patients Form View (BTUH)</field>
-            <field name="model">t4.clinical.wardboard</field>
-            <field name="inherit_id" ref="t4clinical_ui.view_wardboard_form_discharged"/>
+            <field name="model">nh.clinical.wardboard</field>
+            <field name="inherit_id" ref="nh_clinical_ui.view_wardboard_form_discharged"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/sheet/notebook/page[@string='Monitoring']" position="replace"/>
                 <xpath expr="/form/sheet/notebook/page[@string='Other Obs']/group[@string='Postural Blood Pressure']" position="replace">
@@ -34,7 +34,7 @@
                         <field name="o2target" widget="selection" string="Current Target"/>
                         <field name="o2target_ids" nolabel="1" colspan="2" readonly="1">
                             <tree>
-                                <field name="date_terminated" string="Date" widget="t4c_datetime"/>
+                                <field name="date_terminated" string="Date" widget="nhc_datetime"/>
                                 <field name="level_id" string="Value"/>
                                 <field name="terminate_uid"/>
                             </tree>
