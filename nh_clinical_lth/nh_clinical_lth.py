@@ -4,9 +4,9 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class t4_clinical_patient_observation_lth_ews(orm.Model):
-    _name = 't4.clinical.patient.observation.ews'
-    _inherit = 't4.clinical.patient.observation.ews'
+class nh_clinical_patient_observation_lth_ews(orm.Model):
+    _name = 'nh.clinical.patient.observation.ews'
+    _inherit = 'nh.clinical.patient.observation.ews'
 
     _POLICY = {'ranges': [0, 4, 6], 'case': '0123', 'frequencies': [720, 240, 120, 60],
                'notifications': [
@@ -29,11 +29,11 @@ class t4_clinical_patient_observation_lth_ews(orm.Model):
 
 
 class lth_notification_frequency(orm.Model):
-    _name = 't4.clinical.notification.frequency'
-    _inherit = 't4.clinical.notification.frequency'
+    _name = 'nh.clinical.notification.frequency'
+    _inherit = 'nh.clinical.notification.frequency'
 
     def complete(self, cr, uid, activity_id, context=None):
-        activity_pool = self.pool['t4.activity']
+        activity_pool = self.pool['nh.activity']
         review_frequency = activity_pool.browse(cr, uid, activity_id, context=context)
         domain = [
             ('patient_id', '=', review_frequency.data_ref.patient_id.id),
