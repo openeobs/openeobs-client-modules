@@ -3,7 +3,7 @@
     <t t-extend="Login">
         <t t-jquery=".oe_login_logo" t-operation="replace">
             <div class="oe_login_logo">
-                <img src="/t4clinical_bhft/static/src/img/burton-hospitals-nhs.png"/>
+                <img src="/nh_clinical_bhft/static/src/img/burton-hospitals-nhs.png"/>
             </div>
         </t>
         <t t-jquery="div.oe_login_footer" t-operation="replace">

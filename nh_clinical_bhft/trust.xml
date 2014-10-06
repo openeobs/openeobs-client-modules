@@ -3,7 +3,7 @@
         <!--UI changes-->
         <template id="assets_backend" name="lth assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/t4clinical_bhft/static/src/js/t4clinical_bhft.js"></script>
+                <script type="text/javascript" src="/nh_clinical_bhft/static/src/js/nh_clinical_bhft.js"></script>
             </xpath>
         </template>
         <!--Main Partner-->
