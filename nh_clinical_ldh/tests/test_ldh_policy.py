@@ -2,7 +2,7 @@ from openerp.tests import common
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from faker import Faker
 import logging
-from openerp.addons.t4clinical_activity_types.tests.test_scenario import ActivityTypesTest
+from openerp.addons.nh_clinical_activity_types.tests.test_scenario import ActivityTypesTest
 
 _logger = logging.getLogger(__name__)
 
@@ -20,30 +20,30 @@ class TestLdhPolicy(ActivityTypesTest):
 
         cr, uid = self.cr, self.uid
 
-        register_pool = self.registry('t4.clinical.adt.patient.register')
-        patient_pool = self.registry('t4.clinical.patient')
-        admit_pool = self.registry('t4.clinical.adt.patient.admit')
-        discharge_pool = self.registry('t4.clinical.patient.discharge')
-        activity_pool = self.registry('t4.activity')
-        transfer_pool = self.registry('t4.clinical.adt.patient.transfer')
-        ews_pool = self.registry('t4.clinical.patient.observation.ews')
-        height_pool = self.registry('t4.clinical.patient.observation.height')
-        weight_pool = self.registry('t4.clinical.patient.observation.weight')
-        blood_sugar_pool = self.registry('t4.clinical.patient.observation.blood_sugar')
-        blood_product_pool = self.registry('t4.clinical.patient.observation.blood_product')
-        stools_pool = self.registry('t4.clinical.patient.observation.stools')
-        gcs_pool = self.registry('t4.clinical.patient.observation.gcs')
-        vips_pool = self.registry('t4.clinical.patient.observation.vips')
-        api_pool = self.registry('t4.clinical.api')
-        location_pool = self.registry('t4.clinical.location')
-        pos_pool = self.registry('t4.clinical.pos')
+        register_pool = self.registry('nh.clinical.adt.patient.register')
+        patient_pool = self.registry('nh.clinical.patient')
+        admit_pool = self.registry('nh.clinical.adt.patient.admit')
+        discharge_pool = self.registry('nh.clinical.patient.discharge')
+        activity_pool = self.registry('nh.activity')
+        transfer_pool = self.registry('nh.clinical.adt.patient.transfer')
+        ews_pool = self.registry('nh.clinical.patient.observation.ews')
+        height_pool = self.registry('nh.clinical.patient.observation.height')
+        weight_pool = self.registry('nh.clinical.patient.observation.weight')
+        blood_sugar_pool = self.registry('nh.clinical.patient.observation.blood_sugar')
+        blood_product_pool = self.registry('nh.clinical.patient.observation.blood_product')
+        stools_pool = self.registry('nh.clinical.patient.observation.stools')
+        gcs_pool = self.registry('nh.clinical.patient.observation.gcs')
+        vips_pool = self.registry('nh.clinical.patient.observation.vips')
+        api_pool = self.registry('nh.clinical.api')
+        location_pool = self.registry('nh.clinical.location')
+        pos_pool = self.registry('nh.clinical.pos')
         user_pool = self.registry('res.users')
         partner_pool = self.registry('res.partner')
         imd_pool = self.registry('ir.model.data')
-        device_connect_pool = self.registry('t4.clinical.device.connect')
-        device_disconnect_pool = self.registry('t4.clinical.device.disconnect')
-        o2target_pool = self.registry('t4.clinical.o2level')
-        o2target_activity_pool = self.registry('t4.clinical.patient.o2target')
+        device_connect_pool = self.registry('nh.clinical.device.connect')
+        device_disconnect_pool = self.registry('nh.clinical.device.disconnect')
+        o2target_pool = self.registry('nh.clinical.o2level')
+        o2target_activity_pool = self.registry('nh.clinical.patient.o2target')
 
         super(TestLdhPolicy, self).setUp()
 
@@ -62,7 +62,7 @@ class TestLdhPolicy(ActivityTypesTest):
         for patient_id in pos1_env['patient_ids']:
             clerking_ids = activity_pool.search(cr, uid, [
                 ('patient_id', '=', patient_id),
-                ('data_model', '=', 't4.clinical.ldh.patient.clerking'),
+                ('data_model', '=', 'nh.clinical.ldh.patient.clerking'),
                 ('state', 'not in', ['completed', 'cancelled'])])
             self.assertTrue(clerking_ids, msg='Clerking activity not created')
             activity_pool.complete(cr, uid, clerking_ids[0])
@@ -72,7 +72,7 @@ class TestLdhPolicy(ActivityTypesTest):
         for patient_id in pos1_env['patient_ids']:
             review_ids = activity_pool.search(cr, uid, [
                 ('patient_id', '=', patient_id),
-                ('data_model', '=', 't4.clinical.ldh.patient.review'),
+                ('data_model', '=', 'nh.clinical.ldh.patient.review'),
                 ('state', 'not in', ['completed', 'cancelled'])])
             self.assertTrue(review_ids, msg='Review activity not created')
             activity_pool.complete(cr, uid, review_ids[0])
