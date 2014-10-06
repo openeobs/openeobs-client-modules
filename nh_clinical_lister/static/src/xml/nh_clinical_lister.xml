@@ -3,16 +3,16 @@
     <t t-extend="Login">
         <t t-jquery=".oe_login_logo" t-operation="replace">
             <div class="oe_login_logo">
-                <img src="/t4clinical_lister/static/src/img/lister-logo.png"/>
+                <img src="/nh_clinical_lister/static/src/img/lister-logo.png"/>
             </div>
         </t>
         <t t-jquery="div.oe_login_footer" t-operation="replace">
-            <a href="http://www.openerp.com" target="_blank">Powered by <span>T4Clinical / OpenERP</span></a>
+            <a href="http://www.openerp.com" target="_blank">Powered by <span>NH Clinical / OpenERP</span></a>
         </t>
     </t>
 
     <t t-name="lister_updown"
-        ><img t-attf-src="#{prefix}/t4clinical_lister/static/src/img/icons/up_down.png" t-att-alt="widget.string"/>
+        ><img t-attf-src="#{prefix}/nh_clinical_lister/static/src/img/icons/up_down.png" t-att-alt="widget.string"/>
     </t>
 
 </templates>

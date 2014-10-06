@@ -7,18 +7,18 @@ from openerp import SUPERUSER_ID
 _logger = logging.getLogger(__name__)
 
 
-class t4_clinical_patient_placement_lister(orm.Model):
-    _name = 't4.clinical.patient.placement'
-    _inherit = 't4.clinical.patient.placement'
+class nh_clinical_patient_placement_lister(orm.Model):
+    _name = 'nh.clinical.patient.placement'
+    _inherit = 'nh.clinical.patient.placement'
 
-    _POLICY = {'activities': [{'model': 't4.clinical.patient.observation.ews', 'type': 'recurring'},
-                              {'model': 't4.clinical.patient.weight_monitoring', 'type': 'complete',
+    _POLICY = {'activities': [{'model': 'nh.clinical.patient.observation.ews', 'type': 'recurring'},
+                              {'model': 'nh.clinical.patient.weight_monitoring', 'type': 'complete',
                                'data': {'weight_monitoring': True}}]}
 
 
-class t4_clinical_patient_observation_lister_ews(orm.Model):
-    _name = 't4.clinical.patient.observation.ews'
-    _inherit = 't4.clinical.patient.observation.ews'
+class nh_clinical_patient_observation_lister_ews(orm.Model):
+    _name = 'nh.clinical.patient.observation.ews'
+    _inherit = 'nh.clinical.patient.observation.ews'
 
     _POLICY = {'ranges': [0, 4, 6], 'case': '0123', 'frequencies': [240, 240, 60, 15],
                'notifications': [
@@ -40,12 +40,12 @@ class t4_clinical_patient_observation_lister_ews(orm.Model):
 
 
 class lister_wardboard(osv.Model):
-    _name = "t4.clinical.wardboard"
-    _inherit = "t4.clinical.wardboard"
+    _name = "nh.clinical.wardboard"
+    _inherit = "nh.clinical.wardboard"
 
     def _get_pbp_flag(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
-        pbp_pool = self.pool['t4.clinical.patient.observation.pbp']
+        pbp_pool = self.pool['nh.clinical.patient.observation.pbp']
         for wb_id in ids:
             pbp_ids = self.read(cr, uid, wb_id, ['pbp_ids'], context=context)['pbp_ids']
             res[wb_id] = any([pbp_pool.read(cr, uid, pbp_id, ['result'], context=context)['result'] == 'yes' for pbp_id in pbp_ids]) if pbp_ids else False
@@ -67,7 +67,7 @@ class lister_wardboard(osv.Model):
         return {
             'name': wardboard.full_name,
             'type': 'ir.actions.act_window',
-            'res_model': 't4.clinical.wardboard',
+            'res_model': 'nh.clinical.wardboard',
             'res_id': ids[0],
             'view_mode': 'form',
             'view_type': 'form',
@@ -77,9 +77,9 @@ class lister_wardboard(osv.Model):
         }
 
 
-class t4_clinical_notification_inform_doctor(orm.Model):
-    _name = 't4.clinical.notification.inform_doctor'
-    _inherit = ['t4.clinical.notification']
+class nh_clinical_notification_inform_doctor(orm.Model):
+    _name = 'nh.clinical.notification.inform_doctor'
+    _inherit = ['nh.clinical.notification']
     _description = 'Inform Medical Team?'
     _notifications = [{'model': 'doctor_assessment', 'groups': ['nurse']}]
 
@@ -95,9 +95,9 @@ class t4_clinical_notification_inform_doctor(orm.Model):
     ]
 
     def complete(self, cr, uid, activity_id, context=None):
-        activity_pool = self.pool['t4.activity']
+        activity_pool = self.pool['nh.activity']
         activity = activity_pool.browse(cr, uid, activity_id, context=context)
-        api_pool = self.pool['t4.clinical.api']
+        api_pool = self.pool['nh.clinical.api']
         api_pool.trigger_notifications(cr, uid, {
             'notifications': self._notifications,
             'parent_id': activity.parent_id.id,
@@ -106,7 +106,7 @@ class t4_clinical_notification_inform_doctor(orm.Model):
             'model': activity.creator_id._name,
             'group': 'nurse'
         }, context=context)
-        return super(t4_clinical_notification_inform_doctor, self).complete(cr, uid, activity_id, context=context)
+        return super(nh_clinical_notification_inform_doctor, self).complete(cr, uid, activity_id, context=context)
 
     def get_form_description(self, cr, uid, patient_id, context=None):
         partner_pool = self.pool['res.partner']
@@ -124,7 +124,7 @@ class t4_clinical_notification_inform_doctor(orm.Model):
 
 
 class lister_notification_frequency(orm.Model):
-    _name = 't4.clinical.notification.frequency'
-    _inherit = 't4.clinical.notification.frequency'
+    _name = 'nh.clinical.notification.frequency'
+    _inherit = 'nh.clinical.notification.frequency'
     _description = 'Review Frequency'
     _notifications = [{'model': 'inform_doctor', 'groups': ['nurse']}]

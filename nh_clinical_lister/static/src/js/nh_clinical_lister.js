@@ -1,7 +1,7 @@
-openerp.t4clinical_lister = function (instance) {
+openerp.nh_clinical_lister = function (instance) {
     var QWeb = instance.web.qweb;
 
-    instance.t4clinical_lister.PBPWidget = instance.web.list.Column.extend({
+    instance.nh_clinical_lister.PBPWidget = instance.web.list.Column.extend({
         _format: function (row_data, options) {
             if (row_data.pbp_flag.value == true){
                 return QWeb.render('lister_updown', {
@@ -14,5 +14,5 @@ openerp.t4clinical_lister = function (instance) {
         },
     });
 
-    instance.web.list.columns.add('field.lister_pbp', 'instance.t4clinical_lister.PBPWidget');
+    instance.web.list.columns.add('field.lister_pbp', 'instance.nh_clinical_lister.PBPWidget');
 };

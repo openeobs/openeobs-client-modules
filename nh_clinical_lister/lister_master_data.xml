@@ -12,7 +12,7 @@
         </record>
         
         <!-- Location - Point of Service - Hospital -->
-        <record id="t4c_lister_location_lh" model="t4.clinical.location">
+        <record id="nhc_lister_location_lh" model="nh.clinical.location">
             <field name="name">Lister POS Location</field>
             <field name="code">LH</field>
             <field name="type">pos</field>
@@ -20,48 +20,48 @@
         </record>
         
         <!-- Location Lots -->
-        <record id="t4c_lister_pos_hospital" model="t4.clinical.pos">
+        <record id="nhc_lister_pos_hospital" model="nh.clinical.pos">
             <field name="name">Lister Hospital</field>
-            <field name="location_id" ref="t4c_lister_location_lh"/>
+            <field name="location_id" ref="nhc_lister_location_lh"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
-        <record id="t4c_lister_location_lot_admission" model="t4.clinical.location">
+        <record id="nhc_lister_location_lot_admission" model="nh.clinical.location">
             <field name="name">Admission Location</field>
             <field name="code">ADML-LH</field>
             <field name="type">structural</field>
             <field name="usage">room</field>
-            <field name="parent_id" ref="t4c_lister_location_lh"/>
+            <field name="parent_id" ref="nhc_lister_location_lh"/>
         </record>
-        <record id="t4c_lister_location_lot_discharge" model="t4.clinical.location">
+        <record id="nhc_lister_location_lot_discharge" model="nh.clinical.location">
             <field name="name">Discharge Location</field>
             <field name="code">DISL-LH</field>
             <field name="type">structural</field>
             <field name="usage">room</field>
-            <field name="parent_id" ref="t4c_lister_location_lh"/>
+            <field name="parent_id" ref="nhc_lister_location_lh"/>
         </record>      
         
         <!-- Point of Service - Hospital -->
-        <record id="t4c_lister_pos_hospital" model="t4.clinical.pos">
+        <record id="nhc_lister_pos_hospital" model="nh.clinical.pos">
             <field name="name">Lister Hospital</field>
-            <field name="location_id" ref="t4c_lister_location_lh"/>
+            <field name="location_id" ref="nhc_lister_location_lh"/>
             <field name="company_id" ref="base.main_company"/>
-            <field name="lot_admission_id" ref="t4c_lister_location_lot_admission"/>
-            <field name="lot_discharge_id" ref="t4c_lister_location_lot_discharge"/>
+            <field name="lot_admission_id" ref="nhc_lister_location_lot_admission"/>
+            <field name="lot_discharge_id" ref="nhc_lister_location_lot_discharge"/>
         </record>
         
         <!-- Point of Service Delivery - Wards -->
-        <record id="t4c_lister_ward_6BN" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BN" model="nh.clinical.location">
             <field name="name">6B North</field>
             <field name="code">06BN</field>
-            <field name="parent_id" ref="t4c_lister_location_lh"/>
+            <field name="parent_id" ref="nhc_lister_location_lh"/>
             <field name="type">poc</field>             
             <field name="usage">ward</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS" model="nh.clinical.location">
             <field name="name">6B South</field>
             <field name="code">06BS</field>
-            <field name="parent_id" ref="t4c_lister_location_lh"/>
+            <field name="parent_id" ref="nhc_lister_location_lh"/>
             <field name="type">poc</field>             
             <field name="usage">ward</field>
         </record>
@@ -70,630 +70,630 @@
         <!-- Point of Service Delivery - Beds -->
 
         <!-- 6BN Ward -->
-        <record id="t4c_lister_ward_6BN_bed_1" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BN_bed_1" model="nh.clinical.location">
             <field name="name">Bed 1</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BN_bed_2" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BN_bed_2" model="nh.clinical.location">
             <field name="name">Bed 2</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BN_bed_3" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BN_bed_3" model="nh.clinical.location">
             <field name="name">Bed 3</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_4" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_4" model="nh.clinical.location">
             <field name="name">Bed 4</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_5" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_5" model="nh.clinical.location">
             <field name="name">Bed 5</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_6" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_6" model="nh.clinical.location">
             <field name="name">Bed 6</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_7" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_7" model="nh.clinical.location">
             <field name="name">Bed 7</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_8" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_8" model="nh.clinical.location">
             <field name="name">Bed 8</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_9" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_9" model="nh.clinical.location">
             <field name="name">Bed 9</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_10" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_10" model="nh.clinical.location">
             <field name="name">Bed 10</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_11" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_11" model="nh.clinical.location">
             <field name="name">Bed 11</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_12" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_12" model="nh.clinical.location">
             <field name="name">Bed 12</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_13" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_13" model="nh.clinical.location">
             <field name="name">Bed 13</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_14" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_14" model="nh.clinical.location">
             <field name="name">Bed 14</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_bed_15" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_bed_15" model="nh.clinical.location">
             <field name="name">Bed 15</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-	    <record id="t4c_lister_ward_6BN_swap_location" model="t4.clinical.location">
+	    <record id="nhc_lister_ward_6BN_swap_location" model="nh.clinical.location">
             <field name="name">Swap Location</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BN"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BN"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
         <!-- 6BS Ward -->
 
-        <record id="t4c_lister_ward_6BS_bed_16" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_16" model="nh.clinical.location">
             <field name="name">Bed 16</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_17" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_17" model="nh.clinical.location">
             <field name="name">Bed 17</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_18" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_18" model="nh.clinical.location">
             <field name="name">Bed 18</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_19" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_19" model="nh.clinical.location">
             <field name="name">Bed 19</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_20" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_20" model="nh.clinical.location">
             <field name="name">Bed 20</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_21" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_21" model="nh.clinical.location">
             <field name="name">Bed 21</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_22" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_22" model="nh.clinical.location">
             <field name="name">Bed 22</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_23" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_23" model="nh.clinical.location">
             <field name="name">Bed 23</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_24" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_24" model="nh.clinical.location">
             <field name="name">Bed 24</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_25" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_25" model="nh.clinical.location">
             <field name="name">Bed 25</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_26" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_26" model="nh.clinical.location">
             <field name="name">Bed 26</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_1" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_1" model="nh.clinical.location">
             <field name="name">Day Case 1</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_2" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_2" model="nh.clinical.location">
             <field name="name">Day Case 2</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_3" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_3" model="nh.clinical.location">
             <field name="name">Day Case 3</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_4" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_4" model="nh.clinical.location">
             <field name="name">Day Case 4</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_5" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_5" model="nh.clinical.location">
             <field name="name">Day Case 5</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_6" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_6" model="nh.clinical.location">
             <field name="name">Day Case 6</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_7" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_7" model="nh.clinical.location">
             <field name="name">Day Case 7</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_8" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_8" model="nh.clinical.location">
             <field name="name">Day Case 8</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_9" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_9" model="nh.clinical.location">
             <field name="name">Day Case 9</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_dc_10" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_dc_10" model="nh.clinical.location">
             <field name="name">Day Case 10</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
 
-        <record id="t4c_lister_ward_6BS_bed_swap_location" model="t4.clinical.location">
+        <record id="nhc_lister_ward_6BS_bed_swap_location" model="nh.clinical.location">
             <field name="name">Swap Location</field>
-            <field name="parent_id" ref="t4c_lister_ward_6BS"/>
+            <field name="parent_id" ref="nhc_lister_ward_6BS"/>
             <field name="type">poc</field>
             <field name="usage">bed</field>
         </record>
         
         <!--Users-->
         
-        <record id="t4c_lister_adt_user" model="res.users">
+        <record id="nhc_lister_adt_user" model="res.users">
             <field name="name">LISTER-ADT</field>
             <field name="login">adt</field>
             <field name="password">adt</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_admin'))]"/>
-            <field name="pos_id" ref="t4c_lister_pos_hospital"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_admin'))]"/>
+            <field name="pos_id" ref="nhc_lister_pos_hospital"/>
         </record>
         
-        <record id="t4c_lister_hca_harold_user" model="res.users">
+        <record id="nhc_lister_hca_harold_user" model="res.users">
             <field name="name">Harold Bishop</field>
             <field name="login">harold</field>
             <field name="password">harold</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_1'),ref('t4c_lister_ward_6BN_bed_2'),
-            ref('t4c_lister_ward_6BN_bed_3'),ref('t4c_lister_ward_6BN_bed_4')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_hca'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN_bed_1'),ref('nhc_lister_ward_6BN_bed_2'),
+            ref('nhc_lister_ward_6BN_bed_3'),ref('nhc_lister_ward_6BN_bed_4')]]]"/>
         </record>
 
-        <record id="t4c_lister_hca_henry_user" model="res.users">
+        <record id="nhc_lister_hca_henry_user" model="res.users">
             <field name="name">Henry Higgins</field>
             <field name="login">henry</field>
             <field name="password">henry</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_5'),ref('t4c_lister_ward_6BN_bed_6'),
-            ref('t4c_lister_ward_6BN_bed_7'),ref('t4c_lister_ward_6BN_bed_8')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_hca'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN_bed_5'),ref('nhc_lister_ward_6BN_bed_6'),
+            ref('nhc_lister_ward_6BN_bed_7'),ref('nhc_lister_ward_6BN_bed_8')]]]"/>
         </record>
 
-        <record id="t4c_lister_hca_hannah_user" model="res.users">
+        <record id="nhc_lister_hca_hannah_user" model="res.users">
             <field name="name">Hannah Mitchell</field>
             <field name="login">hannah</field>
             <field name="password">hannah</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_hca'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_16'),ref('t4c_lister_ward_6BS_bed_17'),
-            ref('t4c_lister_ward_6BS_bed_18'),ref('t4c_lister_ward_6BS_bed_19')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_hca'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BS_bed_16'),ref('nhc_lister_ward_6BS_bed_17'),
+            ref('nhc_lister_ward_6BS_bed_18'),ref('nhc_lister_ward_6BS_bed_19')]]]"/>
         </record>
 
-        <record id="t4c_lister_nurse_norah_user" model="res.users">
+        <record id="nhc_lister_nurse_norah_user" model="res.users">
             <field name="name">Norah Miller</field>
             <field name="login">norah</field>
             <field name="password">norah</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_1'),ref('t4c_lister_ward_6BN_bed_2'),
-            ref('t4c_lister_ward_6BN_bed_3'),ref('t4c_lister_ward_6BN_bed_4')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_nurse'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN_bed_1'),ref('nhc_lister_ward_6BN_bed_2'),
+            ref('nhc_lister_ward_6BN_bed_3'),ref('nhc_lister_ward_6BN_bed_4')]]]"/>
         </record>
 
-        <record id="t4c_lister_nurse_nadine_user" model="res.users">
+        <record id="nhc_lister_nurse_nadine_user" model="res.users">
             <field name="name">Nadine Bullock</field>
             <field name="login">nadine</field>
             <field name="password">nadine</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_5'),ref('t4c_lister_ward_6BN_bed_6'),
-            ref('t4c_lister_ward_6BN_bed_7'),ref('t4c_lister_ward_6BN_bed_8')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_nurse'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN_bed_5'),ref('nhc_lister_ward_6BN_bed_6'),
+            ref('nhc_lister_ward_6BN_bed_7'),ref('nhc_lister_ward_6BN_bed_8')]]]"/>
         </record>
 
-        <record id="t4c_lister_nurse_nathan_user" model="res.users">
+        <record id="nhc_lister_nurse_nathan_user" model="res.users">
             <field name="name">Nathan Lewis</field>
             <field name="login">nathan</field>
             <field name="password">nathan</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_nurse'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_16'),ref('t4c_lister_ward_6BS_bed_17'),
-            ref('t4c_lister_ward_6BS_bed_18'),ref('t4c_lister_ward_6BS_bed_19')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_nurse'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BS_bed_16'),ref('nhc_lister_ward_6BS_bed_17'),
+            ref('nhc_lister_ward_6BS_bed_18'),ref('nhc_lister_ward_6BS_bed_19')]]]"/>
         </record>
 
-        <record id="t4c_lister_ward_manager_winifred_user" model="res.users">
+        <record id="nhc_lister_ward_manager_winifred_user" model="res.users">
             <field name="name">Winifred Kirrin</field>
             <field name="login">winifred</field>
             <field name="password">winifred</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_ward_manager'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_ward_manager'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN')]]]"/>
         </record>
 
-        <record id="t4c_lister_ward_manager_walter_user" model="res.users">
+        <record id="nhc_lister_ward_manager_walter_user" model="res.users">
             <field name="name">Walter Smith</field>
             <field name="login">walter</field>
             <field name="password">walter</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_ward_manager'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_ward_manager'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN')]]]"/>
         </record>
 
-        <record id="t4c_lister_ward_manager_whitney_user" model="res.users">
+        <record id="nhc_lister_ward_manager_whitney_user" model="res.users">
             <field name="name">Whitney Williams</field>
             <field name="login">whitney</field>
             <field name="password">whitney</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_ward_manager'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_ward_manager'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BS')]]]"/>
         </record>
 
-        <record id="t4c_lister_doctor_dave_user" model="res.users">
+        <record id="nhc_lister_doctor_dave_user" model="res.users">
             <field name="name">Dave Chas</field>
             <field name="login">dave</field>
             <field name="password">dave</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BN_bed_1'),ref('t4c_lister_ward_6BN_bed_2'),
-            ref('t4c_lister_ward_6BN_bed_3'),ref('t4c_lister_ward_6BN_bed_4')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_doctor'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BN_bed_1'),ref('nhc_lister_ward_6BN_bed_2'),
+            ref('nhc_lister_ward_6BN_bed_3'),ref('nhc_lister_ward_6BN_bed_4')]]]"/>
         </record>
 
-        <record id="t4c_lister_doctor_davina_user" model="res.users">
+        <record id="nhc_lister_doctor_davina_user" model="res.users">
             <field name="name">Davina McCall</field>
             <field name="login">davina</field>
             <field name="password">davina</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_doctor'))]"/>
-            <field name="location_ids" eval="[[6, False, [ref('t4c_lister_ward_6BS_bed_16'),ref('t4c_lister_ward_6BS_bed_17'),
-            ref('t4c_lister_ward_6BS_bed_18'),ref('t4c_lister_ward_6BS_bed_19')]]]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_doctor'))]"/>
+            <field name="location_ids" eval="[[6, False, [ref('nhc_lister_ward_6BS_bed_16'),ref('nhc_lister_ward_6BS_bed_17'),
+            ref('nhc_lister_ward_6BS_bed_18'),ref('nhc_lister_ward_6BS_bed_19')]]]"/>
         </record>
 
         <record id="base.user_root" model="res.users">
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('t4clinical_base.group_t4clinical_admin'))]"/>
+            <field name="groups_id" eval="[(4, ref('nhclinical_base.group_nhclinical_admin'))]"/>
         </record>
 
         <!-- O2 Saturation Levels -->
-        <record id="t4c_sat_level_1" model="t4.clinical.o2level">
+        <record id="nhc_sat_level_1" model="nh.clinical.o2level">
             <field name="min">88</field>
             <field name="max">92</field>
         </record>
-        <record id="t4c_sat_level_2" model="t4.clinical.o2level">
+        <record id="nhc_sat_level_2" model="nh.clinical.o2level">
             <field name="min">92</field>
             <field name="max">96</field>
         </record>
-        <record id="t4c_sat_level_3" model="t4.clinical.o2level">
+        <record id="nhc_sat_level_3" model="nh.clinical.o2level">
             <field name="min">90</field>
             <field name="max">94</field>
         </record>
-        <record id="t4c_sat_level_4" model="t4.clinical.o2level">
+        <record id="nhc_sat_level_4" model="nh.clinical.o2level">
             <field name="min">86</field>
             <field name="max">90</field>
         </record>
 
         <!-- Device Types -->
-        <record model="t4.clinical.device.type" id="t4c_device_type_catheter">
+        <record model="nh.clinical.device.type" id="nhc_device_type_catheter">
             <field name="name">Catheter</field>
             <field name="flow_direction">both</field>
         </record>
-        <record model="t4.clinical.device.type" id="t4c_device_type_enteric">
+        <record model="nh.clinical.device.type" id="nhc_device_type_enteric">
             <field name="name">Enteric</field>
             <field name="flow_direction">both</field>
         </record>
-        <record model="t4.clinical.device.type" id="t4c_device_type_stoma">
+        <record model="nh.clinical.device.type" id="nhc_device_type_stoma">
             <field name="name">Stoma</field>
             <field name="flow_direction">out</field>
         </record>
-        <record model="t4.clinical.device.type" id="t4c_device_type_surgical">
+        <record model="nh.clinical.device.type" id="nhc_device_type_surgical">
             <field name="name">Surgical</field>
             <field name="flow_direction">out</field>
         </record>
-        <record model="t4.clinical.device.type" id="t4c_device_type_urinary">
+        <record model="nh.clinical.device.type" id="nhc_device_type_urinary">
             <field name="name">Urinary</field>
             <field name="flow_direction">out</field>
         </record>
-        <record model="t4.clinical.device.type" id="t4c_device_type_vascular">
+        <record model="nh.clinical.device.type" id="nhc_device_type_vascular">
             <field name="name">Vascular</field>
             <field name="flow_direction">in</field>
         </record>
-        <record model="t4.clinical.device.type" id="t4c_device_type_o2">
+        <record model="nh.clinical.device.type" id="nhc_device_type_o2">
             <field name="name">Supplemental O2</field>
             <field name="flow_direction">none</field>
         </record>
 
         <!-- Devices -->
-        <record model="t4.clinical.device" id="t4c_device_hickman_catheter">
+        <record model="nh.clinical.device" id="nhc_device_hickman_catheter">
             <field name="name">Hickman Catheter</field>
-            <field name="type_id" ref="t4c_device_type_catheter"/>
+            <field name="type_id" ref="nhc_device_type_catheter"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_pigtail_catheter">
+        <record model="nh.clinical.device" id="nhc_device_pigtail_catheter">
             <field name="name">Pigtail Catheter</field>
-            <field name="type_id" ref="t4c_device_type_catheter"/>
+            <field name="type_id" ref="nhc_device_type_catheter"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_robinson_catheter">
+        <record model="nh.clinical.device" id="nhc_device_robinson_catheter">
             <field name="name">Robinson Catheter</field>
-            <field name="type_id" ref="t4c_device_type_catheter"/>
+            <field name="type_id" ref="nhc_device_type_catheter"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_subclavian_catheter">
+        <record model="nh.clinical.device" id="nhc_device_subclavian_catheter">
             <field name="name">Subclavian Catheter</field>
-            <field name="type_id" ref="t4c_device_type_catheter"/>
+            <field name="type_id" ref="nhc_device_type_catheter"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_swan_ganz_catheter">
+        <record model="nh.clinical.device" id="nhc_device_swan_ganz_catheter">
             <field name="name">Swan-Ganz Catheter</field>
-            <field name="type_id" ref="t4c_device_type_catheter"/>
+            <field name="type_id" ref="nhc_device_type_catheter"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_transhepatic_biliary_catheter">
+        <record model="nh.clinical.device" id="nhc_device_transhepatic_biliary_catheter">
             <field name="name">Transhepatic Biliary Catheter</field>
-            <field name="type_id" ref="t4c_device_type_catheter"/>
+            <field name="type_id" ref="nhc_device_type_catheter"/>
         </record>
 
-        <record model="t4.clinical.device" id="t4c_device_gastrostomy">
+        <record model="nh.clinical.device" id="nhc_device_gastrostomy">
             <field name="name">Gastrostomy</field>
-            <field name="type_id" ref="t4c_device_type_enteric"/>
+            <field name="type_id" ref="nhc_device_type_enteric"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_jejunostomy">
+        <record model="nh.clinical.device" id="nhc_device_jejunostomy">
             <field name="name">Jejunostomy</field>
-            <field name="type_id" ref="t4c_device_type_enteric"/>
+            <field name="type_id" ref="nhc_device_type_enteric"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_nasogastric_tube">
+        <record model="nh.clinical.device" id="nhc_device_nasogastric_tube">
             <field name="name">Nasogastric Tube</field>
-            <field name="type_id" ref="t4c_device_type_enteric"/>
+            <field name="type_id" ref="nhc_device_type_enteric"/>
         </record>
 
-        <record model="t4.clinical.device" id="t4c_device_colostomy">
+        <record model="nh.clinical.device" id="nhc_device_colostomy">
             <field name="name">Colostomy</field>
-            <field name="type_id" ref="t4c_device_type_stoma"/>
+            <field name="type_id" ref="nhc_device_type_stoma"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_ileostomy">
+        <record model="nh.clinical.device" id="nhc_device_ileostomy">
             <field name="name">Ileostomy</field>
-            <field name="type_id" ref="t4c_device_type_stoma"/>
+            <field name="type_id" ref="nhc_device_type_stoma"/>
         </record>
 
-        <record model="t4.clinical.device" id="t4c_device_ascitic_drain">
+        <record model="nh.clinical.device" id="nhc_device_ascitic_drain">
             <field name="name">Ascitic Drain</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_chest_drain_small_bore">
+        <record model="nh.clinical.device" id="nhc_device_chest_drain_small_bore">
             <field name="name">Chest Drain (Small Bore)</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_chest_drain_large_bore">
+        <record model="nh.clinical.device" id="nhc_device_chest_drain_large_bore">
             <field name="name">Chest Drain (Large Bore)</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_corrugated_drain">
+        <record model="nh.clinical.device" id="nhc_device_corrugated_drain">
             <field name="name">Corrugated Drain</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_csf_drain">
+        <record model="nh.clinical.device" id="nhc_device_csf_drain">
             <field name="name">CSF Drain</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_pericardial_drain">
+        <record model="nh.clinical.device" id="nhc_device_pericardial_drain">
             <field name="name">Pericardial Drain</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_pigtail_drain">
+        <record model="nh.clinical.device" id="nhc_device_pigtail_drain">
             <field name="name">Pigtail Drain</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_wallace_drain">
+        <record model="nh.clinical.device" id="nhc_device_wallace_drain">
             <field name="name">Wallace Drain</field>
-            <field name="type_id" ref="t4c_device_type_surgical"/>
+            <field name="type_id" ref="nhc_device_type_surgical"/>
         </record>
 
-        <record model="t4.clinical.device" id="t4c_device_condom_catheter">
+        <record model="nh.clinical.device" id="nhc_device_condom_catheter">
             <field name="name">Condom Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_cystostomy">
+        <record model="nh.clinical.device" id="nhc_device_cystostomy">
             <field name="name">Cystostomy</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_female_catheter">
+        <record model="nh.clinical.device" id="nhc_device_female_catheter">
             <field name="name">Female Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_foley_catheter">
+        <record model="nh.clinical.device" id="nhc_device_foley_catheter">
             <field name="name">Foley Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_irrigation_catheter">
+        <record model="nh.clinical.device" id="nhc_device_irrigation_catheter">
             <field name="name">Irrigation Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_nephrostomy">
+        <record model="nh.clinical.device" id="nhc_device_nephrostomy">
             <field name="name">Nephrostomy</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_silastic_catheter">
+        <record model="nh.clinical.device" id="nhc_device_silastic_catheter">
             <field name="name">Silastic Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_suprapubic_catheter">
+        <record model="nh.clinical.device" id="nhc_device_suprapubic_catheter">
             <field name="name">Suprapubic Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_transurethral_catheter">
+        <record model="nh.clinical.device" id="nhc_device_transurethral_catheter">
             <field name="name">Transurethral Catheter</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_urostomy">
+        <record model="nh.clinical.device" id="nhc_device_urostomy">
             <field name="name">Urostomy</field>
-            <field name="type_id" ref="t4c_device_type_urinary"/>
+            <field name="type_id" ref="nhc_device_type_urinary"/>
         </record>
 
-        <record model="t4.clinical.device" id="t4c_device_internal_jugular_catheter">
+        <record model="nh.clinical.device" id="nhc_device_internal_jugular_catheter">
             <field name="name">Internal Jugular Catheter</field>
-            <field name="type_id" ref="t4c_device_type_vascular"/>
+            <field name="type_id" ref="nhc_device_type_vascular"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_intravenous_catheter_venflon">
+        <record model="nh.clinical.device" id="nhc_device_intravenous_catheter_venflon">
             <field name="name">Intravenous Catheter (Venflon)</field>
-            <field name="type_id" ref="t4c_device_type_vascular"/>
+            <field name="type_id" ref="nhc_device_type_vascular"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_tunneled_cvc_jugular">
+        <record model="nh.clinical.device" id="nhc_device_tunneled_cvc_jugular">
             <field name="name">Tunneled CVC (Jugular)</field>
-            <field name="type_id" ref="t4c_device_type_vascular"/>
+            <field name="type_id" ref="nhc_device_type_vascular"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_subclavian">
+        <record model="nh.clinical.device" id="nhc_device_subclavian">
             <field name="name">Tunneled CVC (Subclavian)</field>
-            <field name="type_id" ref="t4c_device_type_vascular"/>
+            <field name="type_id" ref="nhc_device_type_vascular"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_haemocath">
+        <record model="nh.clinical.device" id="nhc_device_haemocath">
             <field name="name">Haemocath</field>
-            <field name="type_id" ref="t4c_device_type_vascular"/>
+            <field name="type_id" ref="nhc_device_type_vascular"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_subcutaneous_catheter_butterfly">
+        <record model="nh.clinical.device" id="nhc_device_subcutaneous_catheter_butterfly">
             <field name="name">Subcutaneous Catheter (Butterfly)</field>
-            <field name="type_id" ref="t4c_device_type_vascular"/>
+            <field name="type_id" ref="nhc_device_type_vascular"/>
         </record>
 
-        <record model="t4.clinical.device" id="t4c_device_nasal_cannula">
+        <record model="nh.clinical.device" id="nhc_device_nasal_cannula">
             <field name="name">Nasal Cannula</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_simple_mask">
+        <record model="nh.clinical.device" id="nhc_device_simple_mask">
             <field name="name">Simple Mask</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_with_reservoir">
+        <record model="nh.clinical.device" id="nhc_device_with_reservoir">
             <field name="name">With Reservoir</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_aerosol_neb">
+        <record model="nh.clinical.device" id="nhc_device_aerosol_neb">
             <field name="name">Aerosol/Neb</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_venturi_mask">
+        <record model="nh.clinical.device" id="nhc_device_venturi_mask">
             <field name="name">Venturi Mask</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_humidified_sytem">
+        <record model="nh.clinical.device" id="nhc_device_humidified_sytem">
             <field name="name">Humidified System</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_tracheostomy">
+        <record model="nh.clinical.device" id="nhc_device_tracheostomy">
             <field name="name">Tracheostomy</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_intubated">
+        <record model="nh.clinical.device" id="nhc_device_intubated">
             <field name="name">Intubated</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_cpap">
+        <record model="nh.clinical.device" id="nhc_device_cpap">
             <field name="name">CPAP</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
-        <record model="t4.clinical.device" id="t4c_device_niv_bipap">
+        <record model="nh.clinical.device" id="nhc_device_niv_bipap">
             <field name="name">NIV BiPAP</field>
-            <field name="type_id" ref="t4c_device_type_o2"/>
+            <field name="type_id" ref="nhc_device_type_o2"/>
         </record>
 
     </data>
