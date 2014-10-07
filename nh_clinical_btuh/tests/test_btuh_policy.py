@@ -2,7 +2,7 @@ from openerp.tests import common
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from faker import Faker
 import logging
-from openerp.addons.nh_clinical_activity_types.tests.test_scenario import ActivityTypesTest
+from openerp.addons.nh_observations.tests.test_scenario import ActivityTypesTest
 
 _logger = logging.getLogger(__name__)
 
