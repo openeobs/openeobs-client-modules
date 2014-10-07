@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 {
-    'name': 'NH Clinical Lister Configuration',
+    'name': 'Open e-Obs Lister Configuration',
     'version': '0.1',
     'category': 'Clinical',
     'license': 'AGPL-3',
@@ -8,7 +8,7 @@
     'description': """    """,
     'author': 'Neova Health',
     'website': 'http://www.neovahealth.co.uk/',
-    'depends': ['mobile_frontend'],
+    'depends': ['nh_eobs_mobile'],
     'data': ['security/ir.model.access.csv',
              'lister_master_data.xml',
              'nh_clinical_lister_view.xml'],
