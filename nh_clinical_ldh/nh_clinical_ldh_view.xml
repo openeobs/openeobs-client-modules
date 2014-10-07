@@ -53,7 +53,7 @@
                   parent="nh_clinical_ui.menu_nhui_left_patient"
                   id="menu_nhldh_left_workload"
                   action="action_show_ldh_workload"
-                  groups="nh_clinical_base.group_nhc_ward_manager,nh_clinical_base.group_nhc_doctor,nh_clinical_base.group_nhc_dev,base.user_root"/>
+                  groups="nh_clinical.group_nhc_ward_manager,nh_clinical.group_nhc_doctor,nh_clinical.group_nhc_dev,base.user_root"/>
         
         <record model="ir.ui.view" id="view_nh_clinical_ldh_clerking_tree">
             <field name="name">NH Clinical LDH Clerking Tree View</field>
@@ -103,13 +103,13 @@
                   id="menu_nh_ldh_left_clerking"
                   parent="nh_clinical_ui.menu_nhui_left_patient"
                   action="action_show_clerkings"
-                  groups="nh_clinical_base.group_nhc_hca,nh_clinical_base.group_nhc_dev,base.user_root"/>
+                  groups="nh_clinical.group_nhc_hca,nh_clinical.group_nhc_dev,base.user_root"/>
 
         <menuitem name="Patient Reviews"
                   id="menu_nh_ldh_left_review"
                   parent="nh_clinical_ui.menu_nhui_left_patient"
                   action="action_show_reviews"
-                  groups="nh_clinical_base.group_nhc_doctor,nh_clinical_base.group_nhc_dev,base.user_root"/>
+                  groups="nh_clinical.group_nhc_doctor,nh_clinical.group_nhc_dev,base.user_root"/>
 
         <record model="ir.ui.view" id="view_patient_review_complete">
             <field name="name">Patient Review</field>
@@ -184,7 +184,7 @@
                   id="menu_nh_ldh_left_patientlist"
                   parent="nh_clinical_ui.menu_nhui_left_patient"
                   action="action_show_patientlist"
-                  groups="nh_clinical_base.group_nhc_ward_manager,nh_clinical_base.group_nhc_dev,base.user_root"/>
+                  groups="nh_clinical.group_nhc_ward_manager,nh_clinical.group_nhc_dev,base.user_root"/>
 
         <record model="ir.actions.act_window" id="nh_clinical_ui.action_show_placements" >
             <field name="name">Patient Referrals</field>
@@ -193,7 +193,7 @@
                   id="nh_clinical_ui.menu_nhui_left_placement"
                   parent="nh_clinical_ui.menu_nhui_left_patient"
                   action="nh_clinical_ui.action_show_placements"
-                  groups="nh_clinical_base.group_nhc_ward_manager,nh_clinical_base.group_nhc_dev,base.user_root"/>
+                  groups="nh_clinical.group_nhc_ward_manager,nh_clinical.group_nhc_dev,base.user_root"/>
 
         <record model="ir.ui.view" id="view_patient_placement_complete_ldh">
             <field name="name">Patient Placement</field>
