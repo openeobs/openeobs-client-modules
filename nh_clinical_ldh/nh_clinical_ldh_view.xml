@@ -50,7 +50,7 @@
         </record>
 
         <menuitem name="Patient Board"
-                  parent="nh_clinical_ui.menu_nhui_left_patient"
+                  parent="nh_eobs.menu_nhui_left_patient"
                   id="menu_nhldh_left_workload"
                   action="action_show_ldh_workload"
                   groups="nh_clinical.group_nhc_ward_manager,nh_clinical.group_nhc_doctor,nh_clinical.group_nhc_dev,base.user_root"/>
@@ -101,13 +101,13 @@
 
         <menuitem name="Patient Clerkings"
                   id="menu_nh_ldh_left_clerking"
-                  parent="nh_clinical_ui.menu_nhui_left_patient"
+                  parent="nh_eobs.menu_nhui_left_patient"
                   action="action_show_clerkings"
                   groups="nh_clinical.group_nhc_hca,nh_clinical.group_nhc_dev,base.user_root"/>
 
         <menuitem name="Patient Reviews"
                   id="menu_nh_ldh_left_review"
-                  parent="nh_clinical_ui.menu_nhui_left_patient"
+                  parent="nh_eobs.menu_nhui_left_patient"
                   action="action_show_reviews"
                   groups="nh_clinical.group_nhc_doctor,nh_clinical.group_nhc_dev,base.user_root"/>
 
@@ -182,17 +182,17 @@
         <menuitem name="Patient List"
                   sequence="1"
                   id="menu_nh_ldh_left_patientlist"
-                  parent="nh_clinical_ui.menu_nhui_left_patient"
+                  parent="nh_eobs.menu_nhui_left_patient"
                   action="action_show_patientlist"
                   groups="nh_clinical.group_nhc_ward_manager,nh_clinical.group_nhc_dev,base.user_root"/>
 
-        <record model="ir.actions.act_window" id="nh_clinical_ui.action_show_placements" >
+        <record model="ir.actions.act_window" id="nh_eobs.action_show_placements" >
             <field name="name">Patient Referrals</field>
         </record>
         <menuitem name="Patient Referrals"
-                  id="nh_clinical_ui.menu_nhui_left_placement"
-                  parent="nh_clinical_ui.menu_nhui_left_patient"
-                  action="nh_clinical_ui.action_show_placements"
+                  id="nh_eobs.menu_nhui_left_placement"
+                  parent="nh_eobs.menu_nhui_left_patient"
+                  action="nh_eobs.action_show_placements"
                   groups="nh_clinical.group_nhc_ward_manager,nh_clinical.group_nhc_dev,base.user_root"/>
 
         <record model="ir.ui.view" id="view_patient_placement_complete_ldh">
