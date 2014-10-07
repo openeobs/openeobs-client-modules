@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 {
-    'name': 'NH Clinical BHFT Configuration',
+    'name': 'Open e-Obs BHFT Configuration',
     'version': '0.1',
     'category': 'Clinical',
     'license': 'AGPL-3',
@@ -8,7 +8,7 @@
     'description': """    """,
     'author': 'Neova Health',
     'website': 'http://www.neovahealth.co.uk/',
-    'depends': ['mobile_frontend'],
+    'depends': ['nh_eobs_mobile'],
     'data': ['bhft_devices.xml',
              'bhft_pos.xml',
              'bhft_locations.xml',
