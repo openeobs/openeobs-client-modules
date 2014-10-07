@@ -5,7 +5,7 @@
         <record model="ir.ui.view" id="view_wardboard_form_btuh">
             <field name="name">Wardboard Patients Form View (BTUH)</field>
             <field name="model">nh.clinical.wardboard</field>
-            <field name="inherit_id" ref="nh_clinical_ui.view_wardboard_form"/>
+            <field name="inherit_id" ref="nh_eobs.view_wardboard_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/sheet/notebook/page[@string='Monitoring']" position="replace"/>
                 <xpath expr="/form/sheet/notebook/page[@string='Other Obs']/group[@string='Postural Blood Pressure']" position="replace">
@@ -26,7 +26,7 @@
         <record model="ir.ui.view" id="view_wardboard_form_discharged_btuh">
             <field name="name">Wardboard Discharged Patients Form View (BTUH)</field>
             <field name="model">nh.clinical.wardboard</field>
-            <field name="inherit_id" ref="nh_clinical_ui.view_wardboard_form_discharged"/>
+            <field name="inherit_id" ref="nh_eobs.view_wardboard_form_discharged"/>
             <field name="arch" type="xml">
                 <xpath expr="/form/sheet/notebook/page[@string='Monitoring']" position="replace"/>
                 <xpath expr="/form/sheet/notebook/page[@string='Other Obs']/group[@string='Postural Blood Pressure']" position="replace">

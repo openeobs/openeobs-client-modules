@@ -8,7 +8,7 @@
     'description': """    """,
     'author': 'Neova Health',
     'website': 'http://www.neovahealth.co.uk/',
-    'depends': ['nh_clinical_ui'],
+    'depends': ['mobile_frontend'],
     'data': ['btuh_master_data.xml',
              'btuh_view.xml'],
     'qweb': ['static/src/xml/nh_clinical_btuh.xml'],
