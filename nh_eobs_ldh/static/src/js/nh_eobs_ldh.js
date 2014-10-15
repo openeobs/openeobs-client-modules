@@ -1,4 +1,4 @@
-openerp.nh_clinical_ldh = function (instance) {
+openerp.nh_eobs_ldh = function (instance) {
     instance.web.ListView.include({
         init: function(parent, dataset, view_id, options) {
             if (options.action){
