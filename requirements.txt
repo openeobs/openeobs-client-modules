@@ -1,0 +1,1 @@
+-e git://github.com/NeovaHealth/openeobs-quality-assurance#egg=openeobs_quality_assurance
