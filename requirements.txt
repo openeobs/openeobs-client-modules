@@ -1,0 +1,3 @@
+-e git://github.com/NeovaHealth/openeobs-quality-assurance@master#egg=openeobs_quality_assurance
+behave==1.2.5
+selenium==2.53.1
