@@ -1,0 +1,7 @@
+HOST="fqdn.tld"
+CREDENTIALS="/path/to/.smbcredentials"
+MOUNT_OPTS="iocharset=utf8,file_mode=0777,dir_mode=0777,verbose,ip=1.2.3.4"
+REMOTE_MOUNT_POINT="root_share"
+LOCAL_MOUNT_POINT="/bcp/remote"
+REMOTE_RSYNC_DIR="path/on/remote"
+LOCAL_RSYNC_DIR="/bcp/out/"
