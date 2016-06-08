@@ -69,6 +69,7 @@ VERSION=0.1
 
 getOptions() {
 	# vars file is passed to function as $1
+	echo ""
 	echo "INFO: Sourcing options from $1"	
 	source $1
 }
@@ -82,7 +83,6 @@ printOptions() {
 	echo "LOCAL_MOUNT_POINT = $LOCAL_MOUNT_POINT"
 	echo "REMOTE_RSYNC_DIR = $REMOTE_RSYNC_DIR"
 	echo "LOCAL_RSYNC_DIR = $LOCAL_RSYNC_DIR"
-	exit 0
 }
 
 # Ping the host
@@ -100,6 +100,7 @@ mountDestination() {
 
 dryrunDestination() {
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
+	echo ""
 	echo "INFO: rsync started at $DATE"
 	rsync --dry-run -rv ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTE_RSYNC_DIR}"
 	checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
@@ -107,6 +108,7 @@ dryrunDestination() {
 
 rsyncDestination() {
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
+	echo ""
 	echo "INFO: rsync started at $DATE"
 	rsync -rv ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTE_RSYNC_DIR}"
 	checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
@@ -114,10 +116,13 @@ rsyncDestination() {
 
 completeRun() {
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
+	echo ""
 	echo "INFO: rsync completed successfully"
 }
 
 umountDestination() {
+	echo ""
+	echo "INFO: Unmounting ${LOCAL_MOUNT_POINT}"
 	umount  ${LOCAL_MOUNT_POINT}
 	checkErrors $? "ERROR: Directory did not mount correctly. Return code was: $?."
 }
@@ -137,11 +142,11 @@ do
             VARS=$1
             ;;
         l)
-			ACTION="liverun"
-			VARS=$1
-			;;
+	    ACTION="liverun"
+	    VARS=$1
+	    ;;
         ?)
-        	usage
+            usage
             ;;
     esac
 done
@@ -164,6 +169,7 @@ fi
 if [ $ACTION = dryrun ] ; then
 	echo "INFO: Action = Dry";
 	getOptions $2;
+	printOptions;
 	pingDestination;
 	mountDestination;
 	dryrunDestination;
@@ -182,9 +188,3 @@ if [ $ACTION = liverun ] ; then
 fi
 
 #######################################################################################
-# Done
-
-cd ${ROOT_DIR}
-echo -e "INFO: Exit with code 0"
-echo
-exit 0
