@@ -188,3 +188,9 @@ if [ $ACTION = liverun ] ; then
 fi
 
 #######################################################################################
+# Done
+
+cd ${ROOT_DIR}
+echo -e "INFO: Exit with code 0"
+echo
+exit 0
