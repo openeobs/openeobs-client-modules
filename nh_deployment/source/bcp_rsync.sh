@@ -81,7 +81,7 @@ printOptions() {
 	echo "MOUNT_OPTS = $MOUNT_OPTS"
 	echo "REMOTE_MOUNT_POINT = $REMOTE_MOUNT_POINT"
 	echo "LOCAL_MOUNT_POINT = $LOCAL_MOUNT_POINT"
-	echo "REMOTE_RSYNC_DIR = $REMOTE_RSYNC_DIR"
+	echo "REMOTEDIRMAP = $REMOTEDIRMAP"
 	echo "LOCAL_RSYNC_DIR = $LOCAL_RSYNC_DIR"
 }
 
@@ -101,17 +101,23 @@ mountDestination() {
 dryrunDestination() {
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
 	echo ""
-	echo "INFO: rsync started at $DATE"
-	rsync --dry-run -rv ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTE_RSYNC_DIR}"
-	checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	for K in "${!REMOTEDIRMAP[@]}"
+	do
+	    echo "INFO: rsync for $K started at $DATE"
+	    rsync --dry-run -rv --include="$K*.pdf" ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
+	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	done
 }
 
 rsyncDestination() {
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
 	echo ""
-	echo "INFO: rsync started at $DATE"
-	rsync -rv ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTE_RSYNC_DIR}"
-	checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	for K in "${!REMOTEDIRMAP[@]}"
+	do
+	    echo "INFO: rsync for $K started at $DATE"
+	    rsync -rv --include="$K*.pdf" ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
+	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	done
 }
 
 completeRun() {
