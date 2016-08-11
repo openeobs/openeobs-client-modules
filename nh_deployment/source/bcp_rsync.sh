@@ -75,13 +75,14 @@ getOptions() {
 }
 
 printOptions() {
+	source wards_to_backup
 	echo "INFO: Display vars from conf file"
 	echo "HOST = $HOST"
 	echo "CREDENTIALS = $CREDENTIALS"
 	echo "MOUNT_OPTS = $MOUNT_OPTS"
 	echo "REMOTE_MOUNT_POINT = $REMOTE_MOUNT_POINT"
 	echo "LOCAL_MOUNT_POINT = $LOCAL_MOUNT_POINT"
-	echo "REMOTEDIRMAP = $REMOTEDIRMAP"
+	echo "REMOTEDIRMAP = ${REMOTEDIRMAP[@]}"
 	echo "LOCAL_RSYNC_DIR = $LOCAL_RSYNC_DIR"
 }
 
@@ -99,23 +100,25 @@ mountDestination() {
 }
 
 dryrunDestination() {
+	source wards_to_backup
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
 	echo ""
 	for K in "${!REMOTEDIRMAP[@]}"
 	do
 	    echo "INFO: rsync for $K started at $DATE"
-	    find ${LOCAL_RSYNC_DIR} -type f -a -iname="$K_*.pdf" > files_to_copy && rsync --dry-run -rv --files-from=files_to_copy / "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
+	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync --dry-run -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
 	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
 	done
 }
 
 rsyncDestination() {
+	source wards_to_backup
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
 	echo ""
 	for K in "${!REMOTEDIRMAP[@]}"
 	do
 	    echo "INFO: rsync for $K started at $DATE"
-	    find ${LOCAL_RSYNC_DIR} -type f -a -iname="$K_*.pdf" > files_to_copy && rsync -rv --files-from=files_to_copy / "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
+	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
 	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
 	done
 }
