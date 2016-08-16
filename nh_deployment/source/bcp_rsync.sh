@@ -120,7 +120,7 @@ dryrunDestination() {
 	for K in "${!REMOTEDIRMAP[@]}"
 	do
 	    echo "INFO: rsync for $K started at $DATE"
-	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync --dry-run -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} $LOCAL_MOUNT_POINT/$REMOTEDIRMAP[$K]
+	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync --dry-run -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
 	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
 	done
 }
@@ -132,7 +132,7 @@ rsyncDestination() {
 	for K in "${!REMOTEDIRMAP[@]}"
 	do
 	    echo "INFO: rsync for $K started at $DATE"
-	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} $LOCAL_MOUNT_POINT/$REMOTEDIRMAP[$K]
+	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
 	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
 	done
 }
