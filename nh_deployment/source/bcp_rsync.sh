@@ -8,17 +8,31 @@ declare SCRIPT_NAME="${0##*/}"
 declare SCRIPT_DIR="$(cd ${0%/*} ; pwd)"
 declare ROOT_DIR="$PWD"
 
-# Script functions
-
-# Handles usage of script
 usage() {
 cat << EOF
-Usage: $0
+USAGE
+[options] pathToVariablesFile
 
-OPTIONS:
+OPTIONS
 	o - Print opts from filename
-	t - Test Run
+	d - Dry Run
 	l - Live Run
+
+VARIABLES FILE
+The variables file should contain the following key-value pairs:
+
+HOST_IP="fqdn.tld"
+CREDENTIALS="/path/to/.smbcredentials"
+MOUNT_OPTS="iocharset=utf8,file_mode=0777,dir_mode=0777,verbose,ip=1.2.3.4"
+REMOTE_MOUNT_POINT="root_share"
+LOCAL_MOUNT_POINT="/bcp/remote"
+REMOTE_RSYNC_DIR="path/on/remote"
+LOCAL_RSYNC_DIR="/bcp/out/"
+
+CREDENTIALS FILE
+username=NameOfUser
+password=PasswordOfUser
+domain=the.domain.of.the.server.com
 EOF
 exit 0
 }
@@ -75,43 +89,52 @@ getOptions() {
 }
 
 printOptions() {
+	source wards_to_backup
 	echo "INFO: Display vars from conf file"
-	echo "HOST = $HOST"
+	echo "HOST_IP = $HOST_IP"
 	echo "CREDENTIALS = $CREDENTIALS"
 	echo "MOUNT_OPTS = $MOUNT_OPTS"
 	echo "REMOTE_MOUNT_POINT = $REMOTE_MOUNT_POINT"
 	echo "LOCAL_MOUNT_POINT = $LOCAL_MOUNT_POINT"
-	echo "REMOTE_RSYNC_DIR = $REMOTE_RSYNC_DIR"
+	echo "REMOTEDIRMAP = ${REMOTEDIRMAP[@]}"
 	echo "LOCAL_RSYNC_DIR = $LOCAL_RSYNC_DIR"
 }
 
 # Ping the host
 pingDestination(){
-	ping -c 1 ${HOST} > /dev/null 2>&1
-	checkErrors $? "ERROR: unable to ping host ${HOST}"
+	ping -c 1 ${HOST_IP} > /dev/null 2>&1
+	checkErrors $? "ERROR: unable to ping host ${HOST_IP}"
 }
 
 mountDestination() {
 	if [ ! "`mount | grep ${LOCAL_MOUNT_POINT}`" ] ; then #if its not alread mounted, mount it
-		mount -v -t cifs -o credentials=${CREDENTIALS},${MOUNT_OPTS} "//${HOST}/${REMOTE_MOUNT_POINT}" ${LOCAL_MOUNT_POINT}
+		mount -v -t cifs -o credentials=${CREDENTIALS},${MOUNT_OPTS} "//${HOST_IP}/${REMOTE_MOUNT_POINT}" ${LOCAL_MOUNT_POINT}
 		checkErrors $? "ERROR: Directory did not mount correctly. Return code was: $?."
 	fi
 }
 
 dryrunDestination() {
+	source wards_to_backup
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
 	echo ""
-	echo "INFO: rsync started at $DATE"
-	rsync --dry-run -rv ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTE_RSYNC_DIR}"
-	checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	for K in "${!REMOTEDIRMAP[@]}"
+	do
+	    echo "INFO: rsync for $K started at $DATE"
+	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync --dry-run -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
+	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	done
 }
 
 rsyncDestination() {
+	source wards_to_backup
 	DATE=$(date +"%Y-%m-%d %H:%M:%S")
 	echo ""
-	echo "INFO: rsync started at $DATE"
-	rsync -rv ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTE_RSYNC_DIR}"
-	checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	for K in "${!REMOTEDIRMAP[@]}"
+	do
+	    echo "INFO: rsync for $K started at $DATE"
+	    find ${LOCAL_RSYNC_DIR} -type f -a -iname "${K}_*.pdf" -exec basename {} \; > files_to_copy && rsync -rv --files-from=files_to_copy ${LOCAL_RSYNC_DIR} "${LOCAL_MOUNT_POINT}/${REMOTEDIRMAP[$K]}"
+	    checkErrors $? "ERROR: rsync errored for some reason. Return code was: $?."
+	done
 }
 
 completeRun() {
