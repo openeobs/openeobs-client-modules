@@ -6,3 +6,4 @@ venv/
 .idea/
 *.egg-info/
 *.egg
+node_modules/
