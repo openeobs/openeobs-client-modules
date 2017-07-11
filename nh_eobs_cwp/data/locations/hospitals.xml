@@ -24,7 +24,7 @@
             <field name="parent_id" ref="cwp_clatterbridge_hospital"/>
         </record>
         <!-- POS -->
-        <record id="cwp_clatterbridge_hospital" model="nh.clinical.pos">
+        <record id="cwp_clatterbridge_hospital_pos" model="nh.clinical.pos">
             <field name="name">Clatterbridge Hospital</field>
             <field name="location_id" ref="cwp_clatterbridge_hospital"/>
             <field name="company_id" ref="base.main_company"/>
