@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
-        <record id="cwp_shift_coordinator_tracey_myers" model="res.users" forcecreate="0">
-            <field name="name">Tracey Myers</field>
-            <field name="login">traceymyers</field>
-            <field name="password"></field>
+        <record id="cwp_senior_manager_shirley_birch" model="res.users" forcecreate="0">
+            <field name="name">Shirley Birch</field>
+            <field name="login">shirleybirch</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('nh_clinical.group_shift_coordinator'))]"/>
-            <field name="category_id" eval="[(4, ref('nh_clinical.role_shift_coordinator'))]"/>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_senior_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_senior_manager'))]"/>
         </record>
-        <!-- This person is a 'Ward Resource Manager'. Assuming this is still a shift coordinator. -->
-        <record id="cwp_shift_coordinator_annette_allan" model="res.users" forcecreate="0">
-            <field name="name">Annette Allan</field>
-            <field name="login">annetteallan</field>
-            <field name="password"></field>
+        <record id="cwp_senior_manager_sara_young" model="res.users" forcecreate="0">
+            <field name="name">Sara Young</field>
+            <field name="login">sarayoung</field>
             <field name="tz">Europe/London</field>
-            <field name="groups_id" eval="[(4, ref('nh_clinical.group_shift_coordinator'))]"/>
-            <field name="category_id" eval="[(4, ref('nh_clinical.role_shift_coordinator'))]"/>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_senior_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_senior_manager'))]"/>
+        </record>
+        <record id="cwp_senior_manager_andrew_dobson" model="res.users" forcecreate="0">
+            <field name="name">Andrew Dobson</field>
+            <field name="login">andrewdobson</field>
+            <field name="tz">Europe/London</field>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_senior_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_senior_manager'))]"/>
+        </record>
+        <record id="cwp_senior_manager_robert_darby" model="res.users" forcecreate="0">
+            <field name="name">Robert Darby</field>
+            <field name="login">robertdarby</field>
+            <field name="tz">Europe/London</field>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_senior_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_senior_manager'))]"/>
+        </record>
+        <record id="cwp_senior_manager_lynda_currie" model="res.users" forcecreate="0">
+            <field name="name">Lynda Currie</field>
+            <field name="login">lyndacurrie</field>
+            <field name="tz">Europe/London</field>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_senior_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_senior_manager'))]"/>
         </record>
     </data>
 </openerp>

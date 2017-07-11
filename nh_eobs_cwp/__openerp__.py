@@ -19,8 +19,8 @@
         'data/locations/wards.xml',
         'data/locations/beds.xml',
         'data/users/doctors.xml',
-        'data/users/shift_coordinators.xml',
         'data/users/senior_managers.xml',
+        'data/users/shift_coordinators.xml',
         'data/users/nurses.xml',
         'data/users/hcas.xml'
     ],

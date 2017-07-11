@@ -4,7 +4,6 @@
         <record id="cwp_nurse_cheryl_avis" model="res.users" forcecreate="0">
             <field name="name">Cheryl Avis</field>
             <field name="login">cherylavis</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -12,7 +11,6 @@
         <record id="cwp_nurse_gerogina_chamberlain" model="res.users" forcecreate="0">
             <field name="name">Georgina Chamberlain</field>
             <field name="login">georginachamberlain</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -20,7 +18,6 @@
         <record id="cwp_nurse_alison_cookson" model="res.users" forcecreate="0">
             <field name="name">Alison Cookson</field>
             <field name="login">alisoncookson</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -28,7 +25,6 @@
         <record id="cwp_nurse_matthew_edwards" model="res.users" forcecreate="0">
             <field name="name">Matthew Edwards</field>
             <field name="login">matthewedwards</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -36,7 +32,6 @@
         <record id="cwp_nurse_jean_evans" model="res.users" forcecreate="0">
             <field name="name">Jean Evans</field>
             <field name="login">jeanevans</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -44,7 +39,6 @@
         <record id="cwp_nurse_jackie_rushby" model="res.users" forcecreate="0">
             <field name="name">Jackie Rushby</field>
             <field name="login">jackierushby</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -52,7 +46,6 @@
         <record id="cwp_nurse_charmaine_halsall" model="res.users" forcecreate="0">
             <field name="name">Charmaine Halsall</field>
             <field name="login">charmainehalsall</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
@@ -60,7 +53,6 @@
         <record id="cwp_nurse_racheal_sullivan" model="res.users" forcecreate="0">
             <field name="name">Racheal Sullivan</field>
             <field name="login">rachealsullivan</field>
-            <field name="password"></field>
             <field name="tz">Europe/London</field>
             <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_nurse'))]"/>
             <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_nurse'))]"/>
