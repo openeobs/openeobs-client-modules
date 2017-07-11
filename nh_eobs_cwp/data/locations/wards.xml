@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record id="cwp_meadowbank" model="nh.clinical.location">
-            <field name="name">Clatterbridge Hospital Meadowbank</field>
+            <field name="name">Meadowbank</field>
             <field name="code">7823</field>
             <field name="parent_id" ref="cwp_clatterbridge_hospital"/>
             <field name="type">poc</field>

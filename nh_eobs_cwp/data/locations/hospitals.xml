@@ -10,14 +10,14 @@
             <field name="usage">hospital</field>
         </record>
         <record id="cwp_clatterbridge_hospital_admission" model="nh.clinical.location">
-            <field name="name">Clatterbridge Hospital Meadowbank Admission</field>
+            <field name="name">Clatterbridge Hospital Admission</field>
             <field name="code">cwp_clatterbdrige_hospital_admission</field>
             <field name="type">structural</field>
             <field name="usage">room</field>
             <field name="parent_id" ref="cwp_clatterbridge_hospital"/>
         </record>
         <record id="cwp_clatterbridge_hospital_discharge" model="nh.clinical.location">
-            <field name="name">Clatterbridge Hospital Meadowbank Discharge</field>
+            <field name="name">Clatterbridge Hospital Discharge</field>
             <field name="code">cwp_clatterbdrige_hospital_discharge</field>
             <field name="type">structural</field>
             <field name="usage">room</field>
