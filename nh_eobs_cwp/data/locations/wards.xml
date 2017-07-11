@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="cwp_meadowbank" model="nh.clinical.location">
+            <field name="name">Clatterbridge Hospital Meadowbank</field>
+            <field name="code">7823</field>
+            <field name="parent_id" ref="cwp_springview_clatterbridge_hospital"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">ward</field>
+        </record>
+    </data>
+</openerp>
