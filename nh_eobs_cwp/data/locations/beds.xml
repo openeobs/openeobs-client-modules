@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="cwp_meadowbank_bed_01" model="nh.clinical.location">
+            <field name="name">Bed 01</field>
+            <field name="code">cwp_meadowbank_bed_01</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_02" model="nh.clinical.location">
+            <field name="name">Bed 02</field>
+            <field name="code">cwp_meadowbank_bed_02</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_03" model="nh.clinical.location">
+            <field name="name">Bed 03</field>
+            <field name="code">cwp_meadowbank_bed_03</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_04" model="nh.clinical.location">
+            <field name="name">Bed 04</field>
+            <field name="code">cwp_meadowbank_bed_04</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_05" model="nh.clinical.location">
+            <field name="name">Bed 05</field>
+            <field name="code">cwp_meadowbank_bed_05</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_06" model="nh.clinical.location">
+            <field name="name">Bed 06</field>
+            <field name="code">cwp_meadowbank_bed_06</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_07" model="nh.clinical.location">
+            <field name="name">Bed 07</field>
+            <field name="code">cwp_meadowbank_bed_07</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_08" model="nh.clinical.location">
+            <field name="name">Bed 08</field>
+            <field name="code">cwp_meadowbank_bed_08</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_09" model="nh.clinical.location">
+            <field name="name">Bed 09</field>
+            <field name="code">cwp_meadowbank_bed_09</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_10" model="nh.clinical.location">
+            <field name="name">Bed 10</field>
+            <field name="code">cwp_meadowbank_bed_10</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_11" model="nh.clinical.location">
+            <field name="name">Bed 11</field>
+            <field name="code">cwp_meadowbank_bed_11</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_12" model="nh.clinical.location">
+            <field name="name">Bed 12</field>
+            <field name="code">cwp_meadowbank_bed_12</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+        <record id="cwp_meadowbank_bed_13" model="nh.clinical.location">
+            <field name="name">Bed 13</field>
+            <field name="code">cwp_meadowbank_bed_13</field>
+            <field name="parent_id" ref="cwp_meadowbank"/>
+            <field name="type">poc</field>
+            <field name="context_ids" eval="[[6, False, [ref('nh_eobs.nh_eobs_context')]]]"/>
+            <field name="usage">bed</field>
+        </record>
+    </data>
+</openerp>

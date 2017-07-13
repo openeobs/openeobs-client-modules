@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Clatterbridge Hospital -->
+        <!-- Locations -->
+        <record id="cwp_clatterbridge_hospital" model="nh.clinical.location">
+            <field name="name">Clatterbridge Hospital</field>
+            <field name="code">cwp_clatterbridge_hospital</field>
+            <field name="type">poc</field>
+            <field name="usage">hospital</field>
+        </record>
+        <record id="cwp_clatterbridge_hospital_admission" model="nh.clinical.location">
+            <field name="name">Clatterbridge Hospital Admission</field>
+            <field name="code">cwp_clatterbdrige_hospital_admission</field>
+            <field name="type">structural</field>
+            <field name="usage">room</field>
+            <field name="parent_id" ref="cwp_clatterbridge_hospital"/>
+        </record>
+        <record id="cwp_clatterbridge_hospital_discharge" model="nh.clinical.location">
+            <field name="name">Clatterbridge Hospital Discharge</field>
+            <field name="code">cwp_clatterbdrige_hospital_discharge</field>
+            <field name="type">structural</field>
+            <field name="usage">room</field>
+            <field name="parent_id" ref="cwp_clatterbridge_hospital"/>
+        </record>
+        <!-- POS -->
+        <record id="cwp_clatterbridge_hospital_pos" model="nh.clinical.pos">
+            <field name="name">Clatterbridge Hospital</field>
+            <field name="location_id" ref="cwp_clatterbridge_hospital"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="lot_admission_id" ref="cwp_clatterbridge_hospital_admission"/>
+            <field name="lot_discharge_id" ref="cwp_clatterbridge_hospital_discharge"/>
+        </record>
+    </data>
+</openerp>
