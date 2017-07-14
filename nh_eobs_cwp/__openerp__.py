@@ -15,6 +15,7 @@
         'nh_eobs_slam_policy'
     ],
     'data': [
+        'data/cwp_master_data.xml',
         'data/locations/hospitals.xml',
         'data/locations/wards.xml',
         'data/locations/beds.xml',
