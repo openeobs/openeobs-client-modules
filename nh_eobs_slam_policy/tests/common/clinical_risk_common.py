@@ -1,12 +1,10 @@
 # coding: utf-8
 """ Common Clinical Risk setUp"""
 from datetime import datetime, timedelta
-from unittest import SkipTest
-
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 from openerp.addons.nh_eobs_mental_health.tests.common.observation \
     import ObservationCase
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 
 class ClinicalRiskCase(ObservationCase):
@@ -95,17 +93,20 @@ class ClinicalRiskCase(ObservationCase):
                                          given_name='Jon', family_name='Snow'):
         cr, uid = cls.cr, cls.uid
 
-        cls.patient_id = cls.api_pool.register(
+        registration_id = cls.api_pool.register(
             cr, cls.adt_id, hospital_number,
             {
                 'given_name': given_name,
                 'family_name': family_name,
                 'patient_identifier': hospital_number
-            })
+            }
+        )
+        registration_model = cls.registry('nh.clinical.adt.patient.register')
+        cls.registration = registration_model.browse(
+            cr, uid, registration_id)
 
-        cls.patient = cls.patient_pool.search(cr, uid, [
-            ['other_identifier', '=', hospital_number]
-        ])[0]
+        cls.patient = cls.registration.patient_id
+        cls.patient_id = cls.patient.id
         cls.patient_pool.write(cr, uid, cls.patient_id,
                                {'follower_ids': [(4, 1)]})
 
