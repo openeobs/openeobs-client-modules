@@ -93,7 +93,7 @@ class ClinicalRiskCase(ObservationCase):
                                          given_name='Jon', family_name='Snow'):
         cr, uid = cls.cr, cls.uid
 
-        registration_id = cls.api_pool.register(
+        cls.registration_id = cls.api_pool.register(
             cr, cls.adt_id, hospital_number,
             {
                 'given_name': given_name,
@@ -101,9 +101,10 @@ class ClinicalRiskCase(ObservationCase):
                 'patient_identifier': hospital_number
             }
         )
-        registration_model = cls.registry('nh.clinical.adt.patient.register')
-        cls.registration = registration_model.browse(
-            cr, uid, registration_id)
+        cls.registration_pool = cls.registry(
+            'nh.clinical.adt.patient.register')
+        cls.registration = cls.registration_pool.browse(
+            cr, uid, cls.registration_id)
 
         cls.patient = cls.registration.patient_id
         cls.patient_id = cls.patient.id
@@ -112,7 +113,7 @@ class ClinicalRiskCase(ObservationCase):
 
         cls.spell_id = cls.spellboard_pool.create(
             cr, cls.doctor, {
-                'patient_id': cls.patient,
+                'patient_id': cls.patient_id,
                 'location_id': cls.ward,
                 'code': hospital_number,
                 'start_date': (
@@ -123,7 +124,7 @@ class ClinicalRiskCase(ObservationCase):
 
         placement_data = {
             'suggested_location_id': cls.ward,
-            'patient_id': cls.patient
+            'patient_id': cls.patient_id
         }
         cls.placement_id = cls.placement_pool.create_activity(
             cr, cls.doctor, {}, placement_data)
