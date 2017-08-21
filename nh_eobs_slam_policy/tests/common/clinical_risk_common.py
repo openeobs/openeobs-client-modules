@@ -113,12 +113,12 @@ class ClinicalRiskCase(ObservationCase):
 
         cls.spell_id = cls.spellboard_pool.create(
             cr, cls.doctor, {
-                'patient_id': cls.patient_id,
                 'location_id': cls.ward,
                 'code': hospital_number,
                 'start_date': (
                     datetime.now() - timedelta(days=admitted_days_ago)
-                ).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                ).strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                'registration': cls.registration_id
             }
         )
 

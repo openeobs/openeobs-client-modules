@@ -44,18 +44,20 @@ class TestDoctorObsPermissions(SingleTransactionCase):
         })
 
         # Create a patient to place
-        cls.api_pool.register(cr, cls.doctor, 'HOSPTESTPATIENT', {
+        register_id = cls.api_pool.register(cr, cls.doctor, 'HOSPTESTPATIENT', {
             'given_name': 'Test',
             'family_name': 'Patient',
             'patient_identifier': 'NHSTESTPATIENT'
         })
 
         # Create a patient to not place
-        cls.api_pool.register(cr, cls.doctor, 'HOSPTESTPATIENT2', {
-            'given_name': 'Test',
-            'family_name': 'Patient 2',
-            'patient_identifier': 'NHSTESTPA2'
-        })
+        register_id2 = cls.api_pool.register(
+            cr, cls.doctor, 'HOSPTESTPATIENT2', {
+                'given_name': 'Test',
+                'family_name': 'Patient 2',
+                'patient_identifier': 'NHSTESTPA2'
+            }
+        )
 
         patient = cls.patient_pool.search(cr, uid, [
             ['other_identifier', '=', 'HOSPTESTPATIENT']
@@ -77,17 +79,17 @@ class TestDoctorObsPermissions(SingleTransactionCase):
         ])[0]
 
         cls.spell_id = cls.spellboard_pool.create(cr, cls.doctor, {
-            'patient_id': patient,
             'location_id': ward,
             'code': 'TESTPATIENTSPELL',
-            'start_date': '2016-07-18 00:00:00'
+            'start_date': '2016-07-18 00:00:00',
+            'registration': register_id
         })
 
         cls.spell_id = cls.spellboard_pool.create(cr, cls.doctor, {
-            'patient_id': patient2,
             'location_id': ward,
             'code': 'TESTPATIENTSPELL2',
-            'start_date': '2016-07-18 00:00:00'
+            'start_date': '2016-07-18 00:00:00',
+            'registration': register_id2
         })
 
         # Place patient into bed on ES2
