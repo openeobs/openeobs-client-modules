@@ -6,7 +6,7 @@
     'category': 'Clinical',
     'license': 'AGPL-3',
     'summary': '',
-    'description': """ 
+    'description': """
     CWP-specific functionality and master data.
     """,
     'author': 'BJSS',
