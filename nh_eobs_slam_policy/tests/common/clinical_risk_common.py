@@ -1,7 +1,6 @@
 # coding: utf-8
 """ Common Clinical Risk setUp"""
 from datetime import datetime, timedelta
-from unittest import SkipTest
 
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
