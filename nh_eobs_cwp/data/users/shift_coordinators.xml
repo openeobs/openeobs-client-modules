@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="cwp_shift_coordinator_tracey_myers" model="res.users" forcecreate="0">
+            <field name="name">Tracey Myers</field>
+            <field name="login">traceymyers</field>
+            <field name="tz">Europe/London</field>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_ward_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_ward_manager'))]"/>
+        </record>
+        <!-- This person is a 'Ward Resource Manager'. Assuming this is still a shift coordinator. -->
+        <record id="cwp_shift_coordinator_annette_allan" model="res.users" forcecreate="0">
+            <field name="name">Annette Allan</field>
+            <field name="login">annetteallan</field>
+            <field name="tz">Europe/London</field>
+            <field name="groups_id" eval="[(4, ref('nh_clinical.group_nhc_ward_manager'))]"/>
+            <field name="category_id" eval="[(4, ref('nh_clinical.role_nhc_ward_manager'))]"/>
+        </record>
+    </data>
+</openerp>
