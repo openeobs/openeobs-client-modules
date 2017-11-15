@@ -44,11 +44,13 @@ class TestDoctorObsPermissions(SingleTransactionCase):
         })
 
         # Create a patient to place
-        register_id = cls.api_pool.register(cr, cls.doctor, 'HOSPTESTPATIENT', {
-            'given_name': 'Test',
-            'family_name': 'Patient',
-            'patient_identifier': 'NHSTESTPATIENT'
-        })
+        register_id = cls.api_pool.register(
+            cr, cls.doctor, 'HOSPTESTPATIENT', {
+                'given_name': 'Test',
+                'family_name': 'Patient',
+                'patient_identifier': 'NHSTESTPATIENT'
+            }
+        )
 
         # Create a patient to not place
         register_id2 = cls.api_pool.register(
