@@ -79,11 +79,13 @@ class TestInitialObsFreqChangeNo(InitialObsFreqCommon):
 
     def setUp(self):
         super(TestInitialObsFreqChangeNo, self).setUp()
+        self.frequencies_model = \
+            self.env['nh.clinical.frequencies.ews']
 
     def test_uses_initial_period(self):
         self.assertEqual(
             self.complete_obs(clinical_risk_sample_data.NO_RISK_DATA),
-            self.observation_pool._POLICY['frequencies'][0],
+            self.frequencies_model.get_risk_frequency('no'),
             msg="Did not apply initial period")
 
 

@@ -19,7 +19,6 @@ class NHClinicalPatientObservationSlamEws(orm.Model):
     _POLICY = {
         'ranges': [0, 4, 6],
         'case': '0123',
-        'frequencies': [720, 360, 60, 30],
         'notifications': [
             [
                 {
@@ -84,7 +83,7 @@ class NHClinicalPatientObservationSlamEws(orm.Model):
 
     INITIAL_EWS_DAYS = 4
     FINAL_EWS_DAYS = 7
-    PRE_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ = _POLICY['frequencies'][0]
+    PRE_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ = None  # Populated in `init()`.
     POST_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ = frequencies.EVERY_DAY[0]
 
     def init(self, cr):
@@ -95,6 +94,10 @@ class NHClinicalPatientObservationSlamEws(orm.Model):
         """
         partial_ews_ids = self.search(cr, 1, [['is_partial', '=', True]])
         self.write(cr, 1, partial_ews_ids, {'clinical_risk': 'Unknown'})
+
+        frequencies_pool = self.pool['nh.clinical.frequencies.ews']
+        no_risk_frequency = frequencies_pool.get_risk_frequency(cr, 1, 'no')
+        self.PRE_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ = no_risk_frequency
 
     def get_notifications(self, cr, uid, activity):
         """ Override of
