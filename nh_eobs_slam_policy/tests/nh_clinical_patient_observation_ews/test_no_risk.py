@@ -57,11 +57,13 @@ class TestNoClinicalRiskPatientAdmittedLessThanFourDaysAgo(ClinicalRiskCase):
         )
 
     def setUp(self):
+        config_model = self.env['ir.config_parameter']
+        no_risk_frequency = int(config_model.get_param('no_risk'))
+
         self.obs_data = clinical_risk_sample_data.NO_RISK_DATA
         self.expected_score = 0
         self.expected_risk = 'None'
-        self.expected_freq = \
-            self.observation_pool.PRE_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ
+        self.expected_freq = no_risk_frequency
         super(TestNoClinicalRiskPatientAdmittedLessThanFourDaysAgo, self)\
             .setUp()
 

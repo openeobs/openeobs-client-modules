@@ -18,10 +18,11 @@
         # 'nh_food_and_fluid',
         'nh_weight'
     ],
-    'data': ['security/ir.model.access.csv',
-             'views/mobile_template.xml',
-             'views/wardboard.xml'
-             ],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/mobile_template.xml',
+        'views/wardboard.xml'
+    ],
     'demo': [],
     'qweb': ['static/src/xml/slam.xml'],
     'css': [],

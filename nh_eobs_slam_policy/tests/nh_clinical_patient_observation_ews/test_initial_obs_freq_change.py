@@ -28,7 +28,6 @@ class TestChangeNoRiskAdmittedLessThanSevenDaysAgo(InitialObsFreqCommon):
     Test after initial obs frequencey change for no risk admitte less than 7
     days ago
     """
-
     def tearDown(self):
         self.spell_pool._revert_method('read')
         super(TestChangeNoRiskAdmittedLessThanSevenDaysAgo, self).tearDown()
@@ -41,11 +40,16 @@ class TestChangeNoRiskAdmittedLessThanSevenDaysAgo(InitialObsFreqCommon):
                 five_days_ago = now - td
                 return {'date_started': five_days_ago.strftime(dtf)}
             return mock_spell_read.origin(*args, **kwargs)
-
         self.spell_pool._patch_method('read', mock_spell_read)
+
+        config_model = self.env['ir.config_parameter']
+        expected_frequency = int(config_model.get_param('no_risk'))
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.NO_RISK_DATA)
+
         self.assertEqual(
-            self.complete_obs(clinical_risk_sample_data.NO_RISK_DATA),
-            self.observation_pool.PRE_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ,
+            actual_frequency,
+            expected_frequency,
             msg='Did not change freq after initial period')
 
 
@@ -53,7 +57,6 @@ class TestChangeNoRiskAdmittedMoreThanSevenDaysAgo(InitialObsFreqCommon):
     """
     Test Post Initial Obs Freq Change No Risk Admitted More than 7 days ago
     """
-
     def tearDown(self):
         self.spell_pool._revert_method('read')
         super(TestChangeNoRiskAdmittedMoreThanSevenDaysAgo, self).tearDown()
@@ -79,11 +82,13 @@ class TestInitialObsFreqChangeNo(InitialObsFreqCommon):
 
     def setUp(self):
         super(TestInitialObsFreqChangeNo, self).setUp()
+        self.frequencies_model = \
+            self.env['nh.clinical.frequencies.ews']
 
     def test_uses_initial_period(self):
         self.assertEqual(
             self.complete_obs(clinical_risk_sample_data.NO_RISK_DATA),
-            self.observation_pool._POLICY['frequencies'][0],
+            self.frequencies_model.get_risk_frequency('no'),
             msg="Did not apply initial period")
 
 
