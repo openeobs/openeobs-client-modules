@@ -97,7 +97,9 @@ class NHClinicalPatientObservationSlamEws(orm.Model):
     def get_notifications(self, cr, uid, activity):
         """ Override of
         :py:meth:`nh_clinical_patient_observation_ews.get_notifications`
-        to ensure some notifications are created in specific situations.
+        to ensure Select Frequency is not returned when the patient's spell was
+        started recently ('recently' means less than N amount of days specified
+        by `self.FINAL_EWS_DAYS`).
 
         :return:
         """
@@ -106,16 +108,18 @@ class NHClinicalPatientObservationSlamEws(orm.Model):
         # Do not return any notifications when the patient's admittance date
         # or last obs is less than 7 days ago AND the acuity case is 'no risk'.
         if case == 0:
-            can_descrease = observation_pool.can_decrease_obs_frequency(
+            can_decrease = observation_pool.can_decrease_obs_frequency(
                 cr, uid, activity.patient_id.id, self.FINAL_EWS_DAYS)
-            if not can_descrease:
+            if not can_decrease:
                 return []
         return super(NHClinicalPatientObservationSlamEws, self)\
             .get_notifications(cr, uid, activity)
 
     def change_activity_frequency(self, cr, uid, patient_id, name, case,
                                   context=None):
-        """ Override the frequency update so can do a 72 hour old spell check
+        """
+        Override the frequency update so can do a 72 hour old spell check.
+
         :param cr: cursor
         :param uid: user id
         :param patient_id: patient id
