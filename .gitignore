@@ -7,3 +7,6 @@ venv/
 *.egg-info/
 *.egg
 node_modules/
+
+# Readthedocs
+html/
