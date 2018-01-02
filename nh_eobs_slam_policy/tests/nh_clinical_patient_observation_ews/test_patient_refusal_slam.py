@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+There is no SLaM specific customisation to the refusal logic so the tests in
+this module can be seen as functional regression for the SLaM module, ensuring
+that refusals still behave in integration with other SLaM policy
+customisations.
+"""
 from datetime import datetime, timedelta
 
-from openerp.addons.nh_eobs_slam_policy.tests\
+from openerp.addons.nh_eobs_slam_policy.tests \
     .nh_clinical_patient_observation_ews.test_no_risk \
     import TestNoClinicalRiskForPatientBetween4And7Days \
     as fourtoseven
-from openerp.addons.nh_eobs_slam_policy.tests\
+from openerp.addons.nh_eobs_slam_policy.tests \
     .nh_clinical_patient_observation_ews.test_no_risk \
     import TestNoClinicalRiskPatientAdmittedSevenOrMoreDaysAgo \
     as sevenormore
@@ -15,7 +21,9 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 
 
 class TestPatientRefusalSlam(fourtoseven):
-
+    """
+    Verify that refusal behaves under happy path circumstances.
+    """
     def setUp(self):
         self.obs_data = clinical_risk_sample_data.NO_RISK_DATA
         self.expected_score = 0
