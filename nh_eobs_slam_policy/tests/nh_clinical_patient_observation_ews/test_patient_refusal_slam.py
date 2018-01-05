@@ -61,7 +61,7 @@ class TestPatientRefusalSlam(fourtoseven):
             self.patient_id, self.spell_id)
 
         expected_after_refused_frequency = \
-            self.frequencies_model.get_risk_frequency('no')
+            self.ews_model.POST_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ
 
         expected = datetime.strptime(
             obs_activity_after_refused.create_date, DTF
@@ -100,10 +100,10 @@ class TestPatientRefusalSlamAfterSelectFrequency(sevenormore):
         self.frequency_notification = \
             self.frequency_notification_activity.data_ref
 
-    def test_refusal_with_no_clinical_risk_and_freq_one_week(self):
+    def test_refusal_with_no_clinical_risk_and_freq_one_week_capped(self):
         """
-        Test that a selected frequency of one week is properly adjusted after a
-        patient refusal.
+        Test that a selected frequency of one week is properly capped to 24
+        hours after a week.
         """
         # Select a frequency
         self.frequency_notification.observation = \
@@ -119,8 +119,7 @@ class TestPatientRefusalSlamAfterSelectFrequency(sevenormore):
             self.patient_id, self.spell_id
         )
 
-        expected_after_refused_frequency = \
-            self.frequencies_model.get_risk_frequency('no')
+        expected_after_refused_frequency = frequencies.ONE_DAY
 
         expected = datetime.strptime(
             obs_activity_before_refused.date_terminated, DTF

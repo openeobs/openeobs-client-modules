@@ -83,6 +83,7 @@ class NHClinicalPatientObservationSlamEws(orm.Model):
 
     INITIAL_EWS_DAYS = 4
     FINAL_EWS_DAYS = 7
+    # TODO Should we make this configurable like the other frequencies?
     POST_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ = frequencies.EVERY_DAY[0]
 
     def init(self, cr):
