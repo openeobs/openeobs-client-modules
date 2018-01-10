@@ -13,6 +13,7 @@ class InitialObsFreqCommon(ObservationCase):
         self.spell_pool = self.registry('nh.clinical.spell')
         self.observation_pool = \
             self.registry('nh.clinical.patient.observation.ews')
+        self.frequencies_model = self.env['nh.clinical.frequencies.ews']
         super(InitialObsFreqCommon, self).setUp()
 
     def complete_obs(self, obs_data):
@@ -82,14 +83,13 @@ class TestInitialObsFreqChangeNo(InitialObsFreqCommon):
 
     def setUp(self):
         super(TestInitialObsFreqChangeNo, self).setUp()
-        self.frequencies_model = \
-            self.env['nh.clinical.frequencies.ews']
 
     def test_uses_initial_period(self):
-        self.assertEqual(
-            self.complete_obs(clinical_risk_sample_data.NO_RISK_DATA),
-            self.frequencies_model.get_risk_frequency('no'),
-            msg="Did not apply initial period")
+        expected_frequency = self.frequencies_model.get_risk_frequency('no')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.NO_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency,
+                         msg="Did not apply initial period.")
 
 
 class TestPostInitialObsFreqChangeLow(InitialObsFreqCommon):
@@ -109,9 +109,11 @@ class TestPostInitialObsFreqChangeLow(InitialObsFreqCommon):
             return mock_spell_read.origin(*args, **kwargs)
 
         self.spell_pool._patch_method('read', mock_spell_read)
-        self.assertEqual(
-            self.complete_obs(clinical_risk_sample_data.LOW_RISK_DATA), 360,
-            msg='Did not change freq after initial period')
+
+        expected_frequency = self.frequencies_model.get_risk_frequency('low')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.LOW_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency)
 
 
 class TestInitialObsFreqChangeLow(InitialObsFreqCommon):
@@ -120,9 +122,10 @@ class TestInitialObsFreqChangeLow(InitialObsFreqCommon):
         super(TestInitialObsFreqChangeLow, self).setUp()
 
     def test_uses_initial_period(self):
-        self.assertEqual(
-            self.complete_obs(clinical_risk_sample_data.LOW_RISK_DATA), 360,
-            msg="Did not apply initial period")
+        expected_frequency = self.frequencies_model.get_risk_frequency('low')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.LOW_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency)
 
 
 class TestPostInitialObsFreqChangeMedium(InitialObsFreqCommon):
@@ -142,9 +145,12 @@ class TestPostInitialObsFreqChangeMedium(InitialObsFreqCommon):
             return mock_spell_read.origin(*args, **kwargs)
 
         self.spell_pool._patch_method('read', mock_spell_read)
-        self.assertEqual(self.complete_obs(
-            clinical_risk_sample_data.MEDIUM_RISK_DATA), 60,
-            msg='Did not change freq after initial period')
+
+        expected_frequency = \
+            self.frequencies_model.get_risk_frequency('medium')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.MEDIUM_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency)
 
 
 class TestInitialObsFreqChangeMedium(InitialObsFreqCommon):
@@ -153,9 +159,11 @@ class TestInitialObsFreqChangeMedium(InitialObsFreqCommon):
         super(TestInitialObsFreqChangeMedium, self).setUp()
 
     def test_uses_initial_period(self):
-        self.assertEqual(self.complete_obs(
-            clinical_risk_sample_data.MEDIUM_RISK_DATA), 60,
-            msg="Did not apply initial period")
+        expected_frequency = \
+            self.frequencies_model.get_risk_frequency('medium')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.MEDIUM_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency)
 
 
 class TestPostInitialObsFreqChangeHigh(InitialObsFreqCommon):
@@ -175,9 +183,11 @@ class TestPostInitialObsFreqChangeHigh(InitialObsFreqCommon):
             return mock_spell_read.origin(*args, **kwargs)
 
         self.spell_pool._patch_method('read', mock_spell_read)
-        self.assertEqual(self.complete_obs(
-            clinical_risk_sample_data.HIGH_RISK_DATA), 30,
-            msg='Did not change freq after initial period')
+
+        expected_frequency = self.frequencies_model.get_risk_frequency('high')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.HIGH_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency)
 
 
 class TestInitialObsFreqChangeHigh(InitialObsFreqCommon):
@@ -186,6 +196,7 @@ class TestInitialObsFreqChangeHigh(InitialObsFreqCommon):
         super(TestInitialObsFreqChangeHigh, self).setUp()
 
     def test_uses_initial_period(self):
-        self.assertEqual(self.complete_obs(
-            clinical_risk_sample_data.HIGH_RISK_DATA), 30,
-            msg="Did not apply initial period")
+        expected_frequency = self.frequencies_model.get_risk_frequency('high')
+        actual_frequency = \
+            self.complete_obs(clinical_risk_sample_data.HIGH_RISK_DATA)
+        self.assertEqual(expected_frequency, actual_frequency)

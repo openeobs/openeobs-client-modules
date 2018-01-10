@@ -14,7 +14,8 @@ class TestHighClinicalRisk(clinical_risk_common.MedHighClinicalRiskCase):
         self.obs_data = clinical_risk_sample_data.HIGH_RISK_DATA
         self.expected_score = 10
         self.expected_risk = 'High'
-        self.expected_freq = 30
+        self.frequencies_model = self.env['nh.clinical.frequencies.ews']
+        self.expected_freq = self.frequencies_model.get_risk_frequency('high')
         super(TestHighClinicalRisk, self).setUp()
         notifications = self.activity_pool.browse(self.cr, self.uid,
                                                   self.triggered_ids)
