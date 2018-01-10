@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+There is no SLaM specific customisation to the refusal logic so the tests in
+this module can be seen as functional regression for the SLaM module, ensuring
+that refusals still behave in integration with other SLaM policy
+customisations.
+"""
 from datetime import datetime, timedelta
 
-from openerp.addons.nh_eobs_slam_policy.tests\
+from openerp.addons.nh_eobs_slam_policy.tests \
     .nh_clinical_patient_observation_ews.test_no_risk \
     import TestNoClinicalRiskForPatientBetween4And7Days \
     as fourtoseven
-from openerp.addons.nh_eobs_slam_policy.tests\
+from openerp.addons.nh_eobs_slam_policy.tests \
     .nh_clinical_patient_observation_ews.test_no_risk \
     import TestNoClinicalRiskPatientAdmittedSevenOrMoreDaysAgo \
     as sevenormore
@@ -15,7 +21,9 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 
 
 class TestPatientRefusalSlam(fourtoseven):
-
+    """
+    Verify that refusal behaves under happy path circumstances.
+    """
     def setUp(self):
         self.obs_data = clinical_risk_sample_data.NO_RISK_DATA
         self.expected_score = 0
@@ -36,6 +44,7 @@ class TestPatientRefusalSlam(fourtoseven):
         self.ews_model = self.env['nh.clinical.patient.observation.ews']
         # nh.eobs.api not available to this module
         self.api_model = self.env['nh.clinical.api']
+        self.frequencies_model = self.env['nh.clinical.frequencies.ews']
 
         self.datetime_test_utils = self.env['datetime_test_utils']
         self.test_utils_model = self.env['nh.clinical.test_utils']
@@ -48,18 +57,15 @@ class TestPatientRefusalSlam(fourtoseven):
         frequency of 24 hours when the patient has been admitted 4 days or more
         ago.
         """
-        obs_activity_before_refused = \
-            self.ews_model.get_open_obs_activity(self.spell_id)
         obs_activity_after_refused = self.test_utils_model.refuse_open_obs(
             self.patient_id, self.spell_id)
 
-        default_frequency = frequencies.ONE_DAY
-        after_refused_frequency = frequencies\
-            .PATIENT_REFUSAL_ADJUSTMENTS['None'][default_frequency][0]
+        expected_after_refused_frequency = \
+            self.frequencies_model.get_risk_frequency('no')
 
-        expected = datetime.strptime(obs_activity_before_refused
-                                     .date_terminated, DTF) \
-            + timedelta(minutes=after_refused_frequency)
+        expected = datetime.strptime(
+            obs_activity_after_refused.create_date, DTF
+        ) + timedelta(minutes=expected_after_refused_frequency)
         actual = datetime.strptime(
             obs_activity_after_refused.date_scheduled, DTF
         )
@@ -85,6 +91,7 @@ class TestPatientRefusalSlamAfterSelectFrequency(sevenormore):
 
         self.datetime_test_utils = self.env['datetime_test_utils']
         self.test_utils_model = self.env['nh.clinical.test_utils']
+        self.frequencies_model = self.env['nh.clinical.frequencies.ews']
 
         self.initial_no_risk_obs = \
             self.activity_model.browse(self.ews_activity_id)
@@ -112,14 +119,12 @@ class TestPatientRefusalSlamAfterSelectFrequency(sevenormore):
             self.patient_id, self.spell_id
         )
 
-        selected_frequency = self.frequency_notification.frequency
-        after_refused_frequency = frequencies\
-            .PATIENT_REFUSAL_ADJUSTMENTS['None'][selected_frequency][0]
+        expected_after_refused_frequency = \
+            self.frequencies_model.get_risk_frequency('no')
 
-        expected = \
-            datetime.strptime(
-                obs_activity_before_refused.date_terminated, DTF)\
-            + timedelta(minutes=after_refused_frequency)
+        expected = datetime.strptime(
+            obs_activity_before_refused.date_terminated, DTF
+        ) + timedelta(minutes=expected_after_refused_frequency)
         actual = datetime.strptime(
             obs_activity_after_refused.date_scheduled, DTF
         )
