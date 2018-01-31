@@ -7,8 +7,15 @@ UserVoice=window.UserVoice||[];
   var s=document.getElementsByTagName('script')[0];
   s.parentNode.insertBefore(uv,s)
 })();
-UserVoice.push(['addTrigger', {}]);
+UserVoice.push(['addTrigger', {
+    mode: 'feedback'
+}]);
 UserVoice.push(['set', {
-    'screenshot_enabled': false,
-    'forum_id': 909394
+    screenshot_enabled: false,
+    permalinks_enabled: false,
+    smartvote_enabled: false,
+    contact_enabled: false,
+    post_suggestion_enabled: true,
+    menu_enabled: false,
+    forum_id: 601582
 }]);
