@@ -7,7 +7,7 @@
     'license': 'AGPL-3',
     'summary': '',
     'description': """
-    Add Uservoice Integration to Odoo 
+    Add Uservoice Integration to Odoo
     """,
     'author': 'BJSS',
     'website': 'http://www.bjss.com/',
