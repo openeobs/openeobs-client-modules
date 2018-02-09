@@ -18,12 +18,7 @@
         'data/cwp_master_data.xml',
         'data/locations/hospitals.xml',
         'data/locations/wards.xml',
-        'data/locations/beds.xml',
-        'data/users/doctors.xml',
-        'data/users/shift_coordinators.xml',
-        'data/users/senior_managers.xml',
-        'data/users/nurses.xml',
-        'data/users/hcas.xml'
+        'data/locations/beds.xml'
     ],
     'demo': [],
     'qweb': [],
