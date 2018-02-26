@@ -57,6 +57,8 @@ class TestPatientRefusalSlam(fourtoseven):
         frequency of 24 hours when the patient has been admitted 4 days or more
         ago.
         """
+        obs_activity_before_refused = self.ews_model.get_open_obs_activity(
+            self.spell_id)
         obs_activity_after_refused = self.test_utils_model.refuse_open_obs(
             self.patient_id, self.spell_id)
 
@@ -64,7 +66,7 @@ class TestPatientRefusalSlam(fourtoseven):
             self.ews_model.POST_INITIAL_EWS_DAYS_NO_RISK_OBS_FREQ
 
         expected = datetime.strptime(
-            obs_activity_after_refused.create_date, DTF
+            obs_activity_before_refused.date_terminated, DTF
         ) + timedelta(minutes=expected_after_refused_frequency)
         actual = datetime.strptime(
             obs_activity_after_refused.date_scheduled, DTF
