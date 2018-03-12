@@ -14,6 +14,7 @@
     'depends': [
         'nh_eobs_mobile',
         'nh_eobs_mental_health',
+        'acute',
         'nh_neurological',
         # 'nh_food_and_fluid',
         'nh_weight'
