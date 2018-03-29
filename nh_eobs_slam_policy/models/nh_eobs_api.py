@@ -77,7 +77,8 @@ class NhEobsApi(orm.AbstractModel):
         """
         # users_pool = self.pool.get('res.users')
         # user = users_pool.browse(cr, uid, uid)
-        # clinical_groups = ['NH Clinical HCA Group', 'NH Clinical Nurse Group',
+        # clinical_groups = ['NH Clinical HCA Group',
+        # 'NH Clinical Nurse Group',
         #                    'NH Clinical Doctor Group']
         # user_groups = [g.name for g in user.groups_id]
         # clinical_user = any([g in clinical_groups for g in user_groups])
