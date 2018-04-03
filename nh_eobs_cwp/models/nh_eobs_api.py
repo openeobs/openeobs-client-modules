@@ -7,9 +7,8 @@ class NhEobsApi(models.Model):
 
     @api.model
     def get_active_observations(self, patient_id):
-        if self._patient_on_obs_stop(patient_id):
-            return []
-        active_observations = self._get_active_observations()
+        active_observations = super(NhEobsApi, self).get_active_observations(
+            patient_id)
         if not self.user_allocated_to_patient(patient_id):
             active_observations = filter(
                 lambda active_observation: active_observation['type'] != 'ews',
