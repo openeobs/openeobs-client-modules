@@ -64,48 +64,6 @@ class NhEobsApi(orm.AbstractModel):
 
         return self.collect_activities(cr, uid, domain, context=context)
 
-    def get_patients(self, cr, uid, ids, context=None):
-        """
-        Return containing every field from
-        :class:`patient<base.nh_clinical_patient>` for each patients.
-
-        :param ids: ids of the patients. If empty, then all patients are
-            returned
-        :type ids: list
-        :returns: list of patient dictionaries
-        :rtype: list
-        """
-        # users_pool = self.pool.get('res.users')
-        # user = users_pool.browse(cr, uid, uid)
-        # clinical_groups = ['NH Clinical HCA Group',
-        # 'NH Clinical Nurse Group',
-        #                    'NH Clinical Doctor Group']
-        # user_groups = [g.name for g in user.groups_id]
-        # clinical_user = any([g in clinical_groups for g in user_groups])
-        # domain = []
-        # if clinical_user:
-        #     domain.append(
-        #         ('patient_id.current_location_id.usage', '=', 'bed')
-        #     )
-        # if ids:
-        #     domain += [
-        #         ('patient_id', 'in', ids),
-        #         ('state', '=', 'started'),
-        #         ('data_model', '=', 'nh.clinical.spell'),
-        #         '|',
-        #         ('user_ids', 'in', [uid]),  # filter user responsibility
-        #         ('patient_id.follower_ids', 'in', [uid])
-        #     ]
-        # else:
-        #     domain += [
-        #         ('state', '=', 'started'),
-        #         ('data_model', '=', 'nh.clinical.spell'),
-        #         ('user_ids', 'in', [uid]),  # filter user responsibility
-        #     ]
-        # return self.collect_patients(cr, uid, domain, context=context)
-        return super(NhEobsApi, self).get_patients(
-            cr, uid, ids, context=context)
-
     @api.model
     def get_active_observations(self, patient_id):
         """
