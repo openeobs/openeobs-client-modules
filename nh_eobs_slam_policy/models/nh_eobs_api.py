@@ -72,41 +72,45 @@ class NhEobsApi(orm.AbstractModel):
 
         :return: list of dictionaries to render into template
         """
-        active_obs = super(NhEobsApi, self).get_active_observations(patient_id)
-        if active_obs:
-            return [
-                {
-                    'type': 'ews',
-                    'name': 'NEWS'
-                },
-                {
-                    'type': 'blood_glucose',
-                    'name': 'Blood Glucose'
-                },
-                {
-                    'type': 'blood_product',
-                    'name': 'Blood Product'
-                },
-                # {
-                #     'type': 'food_fluid',
-                #     'name': 'Daily Food and Fluid'
-                # },
-                {
-                    'type': 'height',
-                    'name': 'Height'
-                },
-                {
-                    'type': 'neurological',
-                    'name': 'Neurological'
-                },
-                {
-                    'type': 'pbp',
-                    'name': 'Postural Blood Pressure'
-                },
-                {
-                    'type': 'weight',
-                    'name': 'Weight'
-                },
-            ]
-        else:
+        # Check for obs stop.
+        if not super(NhEobsApi, self).get_active_observations(patient_id):
             return []
+        active_observations = [
+            {
+                'type': 'ews',
+                'name': 'NEWS'
+            },
+            {
+                'type': 'blood_glucose',
+                'name': 'Blood Glucose'
+            },
+            {
+                'type': 'blood_product',
+                'name': 'Blood Product'
+            },
+            # {
+            #     'type': 'food_fluid',
+            #     'name': 'Daily Food and Fluid'
+            # },
+            {
+                'type': 'height',
+                'name': 'Height'
+            },
+            {
+                'type': 'neurological',
+                'name': 'Neurological'
+            },
+            {
+                'type': 'pbp',
+                'name': 'Postural Blood Pressure'
+            },
+            {
+                'type': 'weight',
+                'name': 'Weight'
+            },
+        ]
+        if not self.user_allocated_to_patient(patient_id):
+            active_observations = filter(
+                lambda active_observation: active_observation['type'] != 'ews',
+                active_observations)
+        return active_observations
