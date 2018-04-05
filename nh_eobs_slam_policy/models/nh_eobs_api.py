@@ -70,7 +70,10 @@ class NhEobsApi(orm.AbstractModel):
         Provide the active observations list for SLaM as well as the order they
         will be displayed in.
 
+        :param patient_id:
+        :type patient_id: int
         :return: list of dictionaries to render into template
+        :rtype: list of dict
         """
         # Check for obs stop.
         if not super(NhEobsApi, self).get_active_observations(patient_id):
