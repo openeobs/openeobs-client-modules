@@ -64,88 +64,56 @@ class NhEobsApi(orm.AbstractModel):
 
         return self.collect_activities(cr, uid, domain, context=context)
 
-    def get_patients(self, cr, uid, ids, context=None):
-        """
-        Return containing every field from
-        :class:`patient<base.nh_clinical_patient>` for each patients.
-
-        :param ids: ids of the patients. If empty, then all patients are
-            returned
-        :type ids: list
-        :returns: list of patient dictionaries
-        :rtype: list
-        """
-        users_pool = self.pool.get('res.users')
-        user = users_pool.browse(cr, uid, uid)
-        clinical_groups = ['NH Clinical HCA Group', 'NH Clinical Nurse Group',
-                           'NH Clinical Doctor Group']
-        user_groups = [g.name for g in user.groups_id]
-        clinical_user = any([g in clinical_groups for g in user_groups])
-        domain = []
-        if clinical_user:
-            domain.append(
-                ('patient_id.current_location_id.usage', '=', 'bed')
-            )
-        if ids:
-            domain += [
-                ('patient_id', 'in', ids),
-                ('state', '=', 'started'),
-                ('data_model', '=', 'nh.clinical.spell'),
-                '|',
-                ('user_ids', 'in', [uid]),  # filter user responsibility
-                ('patient_id.follower_ids', 'in', [uid])
-            ]
-        else:
-            domain += [
-                ('state', '=', 'started'),
-                ('data_model', '=', 'nh.clinical.spell'),
-                ('user_ids', 'in', [uid]),  # filter user responsibility
-            ]
-        return self.collect_patients(cr, uid, domain, context=context)
-
     @api.model
     def get_active_observations(self, patient_id):
         """
         Provide the active observations list for SLaM as well as the order they
         will be displayed in.
 
+        :param patient_id:
+        :type patient_id: int
         :return: list of dictionaries to render into template
+        :rtype: list of dict
         """
-        active_obs = super(NhEobsApi, self).get_active_observations(patient_id)
-        if active_obs:
-            return [
-                {
-                    'type': 'ews',
-                    'name': 'NEWS'
-                },
-                {
-                    'type': 'blood_glucose',
-                    'name': 'Blood Glucose'
-                },
-                {
-                    'type': 'blood_product',
-                    'name': 'Blood Product'
-                },
-                # {
-                #     'type': 'food_fluid',
-                #     'name': 'Daily Food and Fluid'
-                # },
-                {
-                    'type': 'height',
-                    'name': 'Height'
-                },
-                {
-                    'type': 'neurological',
-                    'name': 'Neurological'
-                },
-                {
-                    'type': 'pbp',
-                    'name': 'Postural Blood Pressure'
-                },
-                {
-                    'type': 'weight',
-                    'name': 'Weight'
-                },
-            ]
-        else:
+        # Check for obs stop.
+        if not super(NhEobsApi, self).get_active_observations(patient_id):
             return []
+        active_observations = [
+            {
+                'type': 'ews',
+                'name': 'NEWS'
+            },
+            {
+                'type': 'blood_glucose',
+                'name': 'Blood Glucose'
+            },
+            {
+                'type': 'blood_product',
+                'name': 'Blood Product'
+            },
+            # {
+            #     'type': 'food_fluid',
+            #     'name': 'Daily Food and Fluid'
+            # },
+            {
+                'type': 'height',
+                'name': 'Height'
+            },
+            {
+                'type': 'neurological',
+                'name': 'Neurological'
+            },
+            {
+                'type': 'pbp',
+                'name': 'Postural Blood Pressure'
+            },
+            {
+                'type': 'weight',
+                'name': 'Weight'
+            },
+        ]
+        if not self.user_allocated_to_patient(patient_id):
+            active_observations = filter(
+                lambda active_observation: active_observation['type'] != 'ews',
+                active_observations)
+        return active_observations

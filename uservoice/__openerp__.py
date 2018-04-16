@@ -11,7 +11,9 @@
     """,
     'author': 'BJSS',
     'website': 'http://www.bjss.com/',
-    'depends': [],
+    'depends': [
+        'nh_eobs_mobile'
+    ],
     'data': [
         'views/add-widget.xml'
     ],

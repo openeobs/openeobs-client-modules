@@ -82,11 +82,21 @@ class ClinicalRiskCase(ObservationCase):
             'category_id': [[4, cls.doctor_category]]
         })
 
-        cls.ward = cls.location_pool.search(cr, uid, [
-            ['code', '=', '325']
-        ])[0]
+        cls.bed_2_id = cls.location_pool.create(
+            cr, uid, {
+                'name': 'Test Bed 2',
+                'parent_id': cls.eobs_ward_id,
+                'usage': 'bed',
+                'code': 'TESTWARDBED2'
+            }
+        )
 
-        cls.bed = cls.location_pool.get_available_location_ids(cr, uid)[0]
+        # Allocate user so they are allowed to be assigned tasks for that bed.
+        cls.user_pool.write(
+            cr, uid, cls.user_id, {
+                'location_ids': [(4, cls.bed_2_id)]
+            }
+        )
 
     @classmethod
     def create_and_admit_patient_at_date(cls, hospital_number,
@@ -111,7 +121,7 @@ class ClinicalRiskCase(ObservationCase):
         cls.spell_id = cls.spellboard_pool.create(
             cr, cls.doctor, {
                 'patient_id': cls.patient,
-                'location_id': cls.ward,
+                'location_id': cls.eobs_ward_id,
                 'code': hospital_number,
                 'start_date': (
                     datetime.now() - timedelta(days=admitted_days_ago)
@@ -120,20 +130,14 @@ class ClinicalRiskCase(ObservationCase):
         )
 
         placement_data = {
-            'suggested_location_id': cls.ward,
+            'suggested_location_id': cls.eobs_ward_id,
             'patient_id': cls.patient
         }
         cls.placement_id = cls.placement_pool.create_activity(
             cr, cls.doctor, {}, placement_data)
 
-        available_bed_ids = \
-            cls.location_pool.get_available_location_ids(cr, uid)
-        bed_ids = \
-            [bed_id for bed_id in cls.bed_ids if bed_id in available_bed_ids]
-        cls.bed_id = bed_ids[0]
-
         cls.activity_pool.submit(
-            cr, cls.doctor, cls.placement_id, {'location_id': cls.bed_id})
+            cr, cls.doctor, cls.placement_id, {'location_id': cls.bed_2_id})
         cls.activity_pool.complete(cr, cls.doctor, cls.placement_id)
 
 

@@ -12,8 +12,11 @@
     'author': 'Neova Health',
     'website': 'http://www.neovahealth.co.uk/',
     'depends': [
+        'shift_allocation',
+        'user_management',
         'nh_eobs_mobile',
         'nh_eobs_mental_health',
+        'acute',
         'nh_neurological',
         # 'nh_food_and_fluid',
         'nh_weight'
