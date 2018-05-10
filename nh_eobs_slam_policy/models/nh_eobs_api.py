@@ -112,4 +112,8 @@ class NhEobsApi(orm.AbstractModel):
                 'name': 'Weight'
             },
         ]
+        if not self.user_allocated_to_patient(patient_id):
+            active_observations = filter(
+                lambda active_observation: active_observation['type'] != 'ews',
+                active_observations)
         return active_observations
