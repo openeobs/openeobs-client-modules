@@ -8,7 +8,7 @@ class NhEobsApi(models.Model):
     @api.model
     def get_active_observations(self, patient_id):
         """
-        Override to add therapeutic observation and filter out the NEWS
+        Override to add Therapeutic observation and filter out the NEWS
         observation if the user is not allocated to the patient's bed.
 
         :param patient_id:
