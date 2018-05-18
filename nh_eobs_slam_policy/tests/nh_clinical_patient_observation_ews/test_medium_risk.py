@@ -19,3 +19,5 @@ class TestMediumClinicalRisk(clinical_risk_common.MedHighClinicalRiskCase):
         notifications = self.activity_pool.browse(self.cr, self.uid,
                                                   self.triggered_ids)
         self.notifications = [act.data_model for act in notifications]
+
+# TODO - there arte no tests here
