@@ -12,7 +12,7 @@
     'author': 'BJSS',
     'website': 'http://www.liveobs.com/',
     'depends': [
-        'nh_eobs_slam_policy',
+        'nh_eobs_client_policy',
         'nh_eobs_mental_health',
         'therapeutic',
         'uservoice'
